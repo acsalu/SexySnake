@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */; };
+		0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F11173BD60500E0C838 /* GameLayer.m */; };
+		0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */; };
 		902A70BB173B6F7000745D43 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902A70BA173B6F7000745D43 /* QuartzCore.framework */; };
 		902A70BD173B6F7000745D43 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902A70BC173B6F7000745D43 /* OpenGLES.framework */; };
 		902A70BF173B6F7000745D43 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902A70BE173B6F7000745D43 /* OpenAL.framework */; };
@@ -200,6 +203,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenLayer.h; sourceTree = "<group>"; };
+		0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenLayer.m; sourceTree = "<group>"; };
+		0FD93F10173BD60500E0C838 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
+		0FD93F11173BD60500E0C838 /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
+		0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSConnectionManager.h; sourceTree = "<group>"; };
+		0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSConnectionManager.m; sourceTree = "<group>"; };
 		902A70B7173B6F7000745D43 /* SexySnake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SexySnake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		902A70BA173B6F7000745D43 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		902A70BC173B6F7000745D43 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -637,6 +646,12 @@
 			children = (
 				902A72D7173B6F7400745D43 /* AppDelegate.h */,
 				902A72D8173B6F7400745D43 /* AppDelegate.mm */,
+				0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */,
+				0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */,
+				0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */,
+				0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */,
+				0FD93F10173BD60500E0C838 /* GameLayer.h */,
+				0FD93F11173BD60500E0C838 /* GameLayer.m */,
 				902A72DA173B6F7400745D43 /* HelloWorldLayer.h */,
 				902A72DB173B6F7400745D43 /* HelloWorldLayer.mm */,
 				902A72DD173B6F7400745D43 /* IntroLayer.h */,
@@ -1289,6 +1304,9 @@
 				902A72DF173B6F7400745D43 /* IntroLayer.mm in Sources */,
 				902A72E2173B6F7400745D43 /* GLES-Render.mm in Sources */,
 				902A72E5173B6F7400745D43 /* PhysicsSprite.mm in Sources */,
+				0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */,
+				0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */,
+				0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1606,6 +1624,7 @@
 				902A72EC173B6F7400745D43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		902A72FA173B700400745D43 /* Build configuration list for PBXNativeTarget "cocos2d-library" */ = {
 			isa = XCConfigurationList;
@@ -1614,6 +1633,7 @@
 				902A72FC173B700400745D43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
