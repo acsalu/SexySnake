@@ -193,6 +193,7 @@
 		90587130173E596000B6D31D /* snake-head-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9058712D173E596000B6D31D /* snake-head-ipad.png */; };
 		90587131173E596000B6D31D /* target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9058712E173E596000B6D31D /* target-ipad.png */; };
 		90587133173E688F00B6D31D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90587132173E688F00B6D31D /* CoreMotion.framework */; };
+		90587137173E765D00B6D31D /* SSMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 90587136173E765D00B6D31D /* SSMap.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -588,6 +589,8 @@
 		9058712D173E596000B6D31D /* snake-head-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-head-ipad.png"; sourceTree = "<group>"; };
 		9058712E173E596000B6D31D /* target-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "target-ipad.png"; sourceTree = "<group>"; };
 		90587132173E688F00B6D31D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		90587135173E765C00B6D31D /* SSMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSMap.h; sourceTree = "<group>"; };
+		90587136173E765D00B6D31D /* SSMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSMap.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -662,6 +665,10 @@
 			children = (
 				902A72D7173B6F7400745D43 /* AppDelegate.h */,
 				902A72D8173B6F7400745D43 /* AppDelegate.mm */,
+				902A72DD173B6F7400745D43 /* IntroLayer.h */,
+				902A72DE173B6F7400745D43 /* IntroLayer.mm */,
+				90587128173E535D00B6D31D /* Const.h */,
+				90587129173E535D00B6D31D /* Const.m */,
 				0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */,
 				0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */,
 				0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */,
@@ -670,16 +677,9 @@
 				0FD93F11173BD60500E0C838 /* GameLayer.m */,
 				90587125173E50A900B6D31D /* SSSnake.h */,
 				90587126173E50A900B6D31D /* SSSnake.m */,
-				90587128173E535D00B6D31D /* Const.h */,
-				90587129173E535D00B6D31D /* Const.m */,
-				902A72DA173B6F7400745D43 /* HelloWorldLayer.h */,
-				902A72DB173B6F7400745D43 /* HelloWorldLayer.mm */,
-				902A72DD173B6F7400745D43 /* IntroLayer.h */,
-				902A72DE173B6F7400745D43 /* IntroLayer.mm */,
-				902A72E0173B6F7400745D43 /* GLES-Render.h */,
-				902A72E1173B6F7400745D43 /* GLES-Render.mm */,
-				902A72E3173B6F7400745D43 /* PhysicsSprite.h */,
-				902A72E4173B6F7400745D43 /* PhysicsSprite.mm */,
+				90587135173E765C00B6D31D /* SSMap.h */,
+				90587136173E765D00B6D31D /* SSMap.m */,
+				90587134173E755400B6D31D /* Box2D sample */,
 				902A70CD173B6F7000745D43 /* Resources */,
 				902A72D3173B6F7400745D43 /* Supporting Files */,
 			);
@@ -1238,6 +1238,19 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
+		90587134173E755400B6D31D /* Box2D sample */ = {
+			isa = PBXGroup;
+			children = (
+				902A72E0173B6F7400745D43 /* GLES-Render.h */,
+				902A72E1173B6F7400745D43 /* GLES-Render.mm */,
+				902A72DA173B6F7400745D43 /* HelloWorldLayer.h */,
+				902A72DB173B6F7400745D43 /* HelloWorldLayer.mm */,
+				902A72E3173B6F7400745D43 /* PhysicsSprite.h */,
+				902A72E4173B6F7400745D43 /* PhysicsSprite.mm */,
+			);
+			name = "Box2D sample";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1343,6 +1356,7 @@
 				0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */,
 				90587127173E50A900B6D31D /* SSSnake.m in Sources */,
 				9058712A173E535D00B6D31D /* Const.m in Sources */,
+				90587137173E765D00B6D31D /* SSMap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
