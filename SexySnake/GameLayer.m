@@ -104,6 +104,11 @@
     [_mySnake move];
 }
 
+- (void)updateMapInfo:(ccTime)delta
+{
+    
+}
+
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     CCLOG(@"Send Hello Message");

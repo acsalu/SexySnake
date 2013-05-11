@@ -14,5 +14,11 @@
 @property (nonatomic) NSMutableDictionary *mapData;
 
 - (void)printMap;
+- (void)checkEventOfBiting;
+- (void)checkEventOfShooting;
+- (void)checkEventOfBuildingWall;
+- (void)checkEventOfEatingTarget;
+- (void)spawnGeneralTarget;
+- (void)spawnBulletTarget;
 
 @end
