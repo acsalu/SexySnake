@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMotion/CoreMotion.h>
 #import "cocos2d.h"
 
 @class SSSnake;
@@ -18,6 +19,11 @@
 
 + (CCScene *)scene;
 
+// Motion Control
+@property (nonatomic, strong) CCLabelTTF *label;
+@property (nonatomic, strong) CMMotionManager *motionManager;
+
+// Game UI
 @property (strong, nonatomic) SSSnake *mySnake;
 
 @end

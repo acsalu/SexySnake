@@ -52,18 +52,63 @@
     _direction = direction;
 }
 
+// call this method when add or remove components
 - (void)reorganize
 {
     [self removeAllChildrenWithCleanup:NO];
-    for (CCSprite *sprite in _components) {
-        [self addChild:sprite];
+    for (int i = 0; i < _components.count; ++i) {
+        ((CCSprite *) _components[i]).position = [self positionForComponentAtIndex:i];
+        [self addChild:_components[i]];
     }
+}
+
+// call this method when moving
+- (void)reformWithNewHeadPosition:(CGPoint)position
+{
+    for (int i = 1; i < _components.count; ++i) {
+        _componentPositions[i] = _componentPositions[i - 1];
+        ((CCSprite *) _components[i]).position = [self positionForComponentAtIndex:i];
+    }
+    
+    _componentPositions[0] = [NSValue valueWithCGPoint:position];
+    ((CCSprite *) _components[0]).position = [self positionForComponentAtIndex:0];
+    
 }
 
 #pragma mark - Snake Actions
 
+- (void)move
+{
+    CGPoint currentHead = [self positionForComponentAtIndex:0];
+    CGPoint newHead;
+    switch (_direction) {
+        case UP:
+            CCLOG(@"Move UP.");
+            newHead = ccp(currentHead.x, currentHead.y + GRID_SIZE);
+            break;
+        case DOWN:
+            CCLOG(@"Move DOWN.");
+            newHead = ccp(currentHead.x, currentHead.y - GRID_SIZE);
+            break;
+        case RIGHT:
+            CCLOG(@"Move RIGHT.");
+            newHead = ccp(currentHead.x + GRID_SIZE, currentHead.y);
+            break;
+        case LEFT:
+            CCLOG(@"Move LEFT.");
+            newHead = ccp(currentHead.x - GRID_SIZE, currentHead.y);
+            break;
+    }
+    [self reformWithNewHeadPosition:newHead];
+}
 
 
+#pragma mark - Utility Methods
+
+- (CGPoint)positionForComponentAtIndex:(NSUInteger)i
+{
+    return [((NSValue *) _componentPositions[i]) CGPointValue];
+}
 
 
 @end

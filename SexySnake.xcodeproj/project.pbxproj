@@ -192,6 +192,7 @@
 		9058712F173E596000B6D31D /* snake-body-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9058712C173E596000B6D31D /* snake-body-ipad.png */; };
 		90587130173E596000B6D31D /* snake-head-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9058712D173E596000B6D31D /* snake-head-ipad.png */; };
 		90587131173E596000B6D31D /* target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9058712E173E596000B6D31D /* target-ipad.png */; };
+		90587133173E688F00B6D31D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90587132173E688F00B6D31D /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -586,6 +587,7 @@
 		9058712C173E596000B6D31D /* snake-body-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-body-ipad.png"; sourceTree = "<group>"; };
 		9058712D173E596000B6D31D /* snake-head-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-head-ipad.png"; sourceTree = "<group>"; };
 		9058712E173E596000B6D31D /* target-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "target-ipad.png"; sourceTree = "<group>"; };
+		90587132173E688F00B6D31D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -593,6 +595,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90587133173E688F00B6D31D /* CoreMotion.framework in Frameworks */,
 				902A7303173B707900745D43 /* libcocos2d-library.a in Frameworks */,
 				902A70BB173B6F7000745D43 /* QuartzCore.framework in Frameworks */,
 				902A70BD173B6F7000745D43 /* OpenGLES.framework in Frameworks */,
@@ -640,6 +643,7 @@
 		902A70B9173B6F7000745D43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				90587132173E688F00B6D31D /* CoreMotion.framework */,
 				902A70BA173B6F7000745D43 /* QuartzCore.framework */,
 				902A70BC173B6F7000745D43 /* OpenGLES.framework */,
 				902A70BE173B6F7000745D43 /* OpenAL.framework */,
