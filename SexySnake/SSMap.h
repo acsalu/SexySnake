@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Const.h"
 
 @interface SSMap : NSObject
+
+@property (nonatomic) NSMutableDictionary *mapData;
+
+- (void)printMap;
 
 @end

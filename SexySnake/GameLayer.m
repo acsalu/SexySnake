@@ -82,13 +82,13 @@
                        CC_RADIANS_TO_DEGREES(roll), CC_RADIANS_TO_DEGREES(pitch), CC_RADIANS_TO_DEGREES(yaw)]];
     
     float componentX = - CC_RADIANS_TO_DEGREES(pitch) * 20;
-    float componentY = CC_RADIANS_TO_DEGREES(roll) * 20;
+    float componentY = - CC_RADIANS_TO_DEGREES(roll) * 20;
     
     if (abs(componentX) > abs(componentY)) {
         if (componentX > 0) _mySnake.direction = RIGHT;
         else _mySnake.direction = LEFT;
     } else {
-        if (componentX > 0) _mySnake.direction = UP;
+        if (componentY > 0) _mySnake.direction = UP;
         else _mySnake.direction = DOWN;
     }
 }
