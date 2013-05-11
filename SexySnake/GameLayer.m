@@ -9,6 +9,7 @@
 #import "GameLayer.h"
 #import "SSSnake.h"
 
+
 #define BASE_UPDATE_INTERVAL 0.5
 
 
@@ -40,6 +41,8 @@
         
         CGSize size = [[CCDirector sharedDirector] winSize];
         
+        isTouchEnabled_ = YES;
+        
         // Create label for motion data
         _label = [CCLabelTTF labelWithString:@"Hello World!" fontName:@"Helvetica" fontSize:20];
         _label.position = ccp(size.width / 2, size.height - 40);
@@ -62,6 +65,9 @@
         
         [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
         [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        
+        // set SSConnectionManager delegate
+        [SSConnectionManager sharedManager].delegate = self;
     }
     return self;
 }
@@ -96,6 +102,19 @@
 - (void)updateMySnakePosition:(ccTime)delta
 {
     [_mySnake move];
+}
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CCLOG(@"Send Hello Message");
+    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend."];
+}
+
+#pragma mark - SSConnectionManager delegate methods
+
+- (void)connectionManager:(SSConnectionManager *)connectionManager didReceiveMessage:(NSString *)message
+{
+    CCLOG(@"Receive Message:%@", message);
 }
 
 @end

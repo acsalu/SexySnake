@@ -1567,6 +1567,7 @@
 				GCC_PREFIX_HEADER = SexySnake/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"SexySnake/libs/kazmath/include\"";
 				INFOPLIST_FILE = SexySnake/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lz",
@@ -1588,6 +1589,7 @@
 				GCC_PREFIX_HEADER = SexySnake/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"SexySnake/libs/kazmath/include\"";
 				INFOPLIST_FILE = SexySnake/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lz",

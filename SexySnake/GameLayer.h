@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreMotion/CoreMotion.h>
 #import "cocos2d.h"
+#import "SSConnectionManager.h"
 
 @class SSSnake;
 
-@interface GameLayer : CCLayer
+@interface GameLayer : CCLayer <SSConnectionManagerDelegate>
 
 + (CCScene *)sceneOf1P;
 + (CCScene *)sceneOf2P;

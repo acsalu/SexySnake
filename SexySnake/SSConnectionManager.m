@@ -37,17 +37,30 @@
 }
 
 
-- (void)sendMessage
+- (void)sendMessage:(NSString *)message
 {
-    NSData *testData = [@"Jack Chao ^.<" dataUsingEncoding:NSUTF8StringEncoding];
-    [self.session sendDataToAllPeers:testData withDataMode:GKSendDataReliable error:nil];
+//    NSData *testData = [@"Jack Chao ^.<" dataUsingEncoding:NSUTF8StringEncoding];
+    [self.session sendDataToAllPeers:[message dataUsingEncoding:NSUTF8StringEncoding] withDataMode:GKSendDataReliable error:nil];
 }
 
 - (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession: (GKSession *)session context:(void *)context
 {
     NSString *receivedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Message" message:receivedString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
+    if (self.delegate) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self.delegate respondsToSelector:@selector(connectionManager:didReceiveMessage:)])
+                [self.delegate connectionManager:self didReceiveMessage:receivedString];
+            else
+                CCLOG(@"sucks");
+        });
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                            message:receivedString
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 

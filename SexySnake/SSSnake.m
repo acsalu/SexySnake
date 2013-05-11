@@ -102,6 +102,11 @@
     [self reformWithNewHeadPosition:newHead];
 }
 
+- (void)eatTarget
+{
+    
+}
+
 
 #pragma mark - Utility Methods
 
