@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+@class SSSnake;
+
 @interface GameLayer : CCLayer
 
 + (CCScene *)sceneOf1P;
 + (CCScene *)sceneOf2P;
 
 + (CCScene *)scene;
+
+@property (strong, nonatomic) SSSnake *mySnake;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "GameLayer.h"
+#import "SSSnake.h"
 
 
 @implementation GameLayer
