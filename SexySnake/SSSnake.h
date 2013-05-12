@@ -20,7 +20,6 @@
 
 
 + (SSSnake *)snakeWithInitialGrid:(Grid *)grid;
-+ (SSSnake *)snakeWithInitialPosition:(CGPoint)position;
 
 // update from other device
 - (void)setDirectionFromRemote:(Direction)direction;

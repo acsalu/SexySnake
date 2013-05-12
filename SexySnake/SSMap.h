@@ -44,7 +44,8 @@
 @property (nonatomic) int col;
 
 + (CGPoint) positionWithGrid:(Grid*)grid;
-- (Grid*) gridWithRow:(int)r Col:(int)c;
++ (Grid*) gridWithRow:(int)r Col:(int)c;
++ (Grid*)gridForDirection:(Direction)direction toGrid:(Grid *)grid;
 
 @end
 
