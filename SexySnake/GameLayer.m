@@ -9,6 +9,7 @@
 #import "GameLayer.h"
 #import "SSSnake.h"
 #import "SSMap.h"
+#import "MainScreenLayer.h"
 
 #define BASE_UPDATE_INTERVAL 0.3
 
@@ -211,7 +212,13 @@
     }];
     
     CCMenuItem *quitBtn = [CCMenuItemFont itemWithString:@"Quit" block:^(id sender) {
-        
+        if (_mode == SINGLE_PLAYER) {
+            [self quitGame];
+            
+        } else {
+            // TODO
+            // should ask another player
+        }
     }];
         
     CCMenu *menu = [CCMenu menuWithItems:resumeBtn, restartBtn, quitBtn, nil];
@@ -239,6 +246,11 @@
     isTouchEnabled_ = YES;
     [self removeChild:_pauseLayer cleanup:NO];
     [self resumeSchedulerAndActions];
+}
+
+- (void)quitGame
+{
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[MainScreenLayer scene] withColor:ccWHITE]];
 }
 
 @end
