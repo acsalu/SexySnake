@@ -77,8 +77,8 @@
         // set SSConnectionManager delegate
         [SSConnectionManager sharedManager].delegate = self;
         
-//        _map = [[SSMap alloc] init];
-//        _map.gameLayer = self;
+        _map = [[SSMap alloc] init];
+        _map.gameLayer = self;
         
         if ([SSConnectionManager sharedManager].role == SERVER)
             [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];

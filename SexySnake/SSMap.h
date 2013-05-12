@@ -28,7 +28,7 @@
 @property (nonatomic) CGFloat startY;
 @property (nonatomic,weak) GameLayer *gameLayer;
 
-- (id)init;
+
 - (void)printMap;
 - (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
                         ClientSnake:(NSMutableArray*) cSnake;
