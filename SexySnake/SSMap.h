@@ -11,14 +11,18 @@
 #import "cocos2d.h"
 
 
+
+
 @class GameLayer;
+@class Grid;
 
 @interface SSMap : NSObject
 
 @property (nonatomic) NSMutableDictionary *mapData;
 @property (nonatomic) NSMutableArray *mapInfo;
-@property (nonatomic) NSMutableSet *targets;
-@property (nonatomic) NSMutableSet *bullets;
+@property (nonatomic) NSMutableArray *targets;
+@property (nonatomic) NSMutableArray *bulletTargets;
+@property (nonatomic) NSMutableArray *bullets;
 @property (nonatomic) NSMutableSet *walls;
 @property (nonatomic) CGFloat startX;
 @property (nonatomic) CGFloat startY;
@@ -28,13 +32,14 @@
 - (void)printMap;
 - (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
                         ClientSnake:(NSMutableArray*) cSnake;
-//- (void)updateClientSnake;
-//- (void)checkEventOfBiting;
+- (void)snakeShootsAt:(Grid*) grid;
 //- (void)checkEventOfShooting;
-//- (void)checkEventOfBuildingWall;
-//- (void)checkEventOfEatingTarget;
+
 - (void)spawnTarget;
-- (void)spawnBullet;
+- (void)spawnBulletTarget;
+- (void)removeTargetAt:(Grid*)grid;
+- (void)removeBulletTargetAt:(Grid*)grid;
+- (void)removeBulletAt:(Grid*)grid;
 
 @end
 

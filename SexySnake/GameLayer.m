@@ -136,6 +136,7 @@
 
 - (void)updateMapInfo:(ccTime)delta
 {
+
     
 }
 - (void)updateOtherSnakePosition:(ccTime)delta
