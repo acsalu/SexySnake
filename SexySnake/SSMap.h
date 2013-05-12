@@ -43,6 +43,7 @@
 @property (nonatomic) int row;
 @property (nonatomic) int col;
 
++ (CGPoint) positionWithGrid:(Grid*)grid;
 - (Grid*) gridWithRow:(int)r Col:(int)c;
 
 @end
