@@ -16,8 +16,18 @@ enum Item {
     SNAKE_HEAD = 0, SNAKE_BODY, TARGET, BULLET, WALL, EMPTY
 };
 
+enum Role {
+    NONE, SERVER, CLIENT
+};
+
+enum Mode {
+    SINGLE_PLAYER = 0, MULTI_PLAYER
+};
+
 typedef enum Direction Direction;
 typedef enum Item Item;
+typedef enum Role Role;
+typedef enum Mode Mode;
 
 #define MAX_COLS 10
 #define MAX_ROWS 13

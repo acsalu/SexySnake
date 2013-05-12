@@ -36,13 +36,21 @@
         [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf1P]];
     }];
     
-    CCMenuItem *twoPlayerBtn = [CCMenuItemFont itemWithString:@"2P" block:^(id sender) {
+    CCMenuItem *twoPlayerClientBtn = [CCMenuItemFont itemWithString:@"Client" block:^(id sender) {
         
         // (temp )replace scene in connectToDecive
+        [SSConnectionManager sharedManager].role = CLIENT;
         [[SSConnectionManager sharedManager] connectToDevice];
     }];
     
-    CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerBtn, nil];
+    CCMenuItem *twoPlayerServerBtn = [CCMenuItemFont itemWithString:@"Server" block:^(id sender) {
+        
+        // (temp )replace scene in connectToDecive
+        [SSConnectionManager sharedManager].role = SERVER;
+        [[SSConnectionManager sharedManager] connectToDevice];
+    }];
+    
+    CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerClientBtn, twoPlayerServerBtn, nil];
     
     CGSize size = [[CCDirector sharedDirector] winSize];
     [mainMenu alignItemsHorizontallyWithPadding:80];
