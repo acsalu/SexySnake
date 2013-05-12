@@ -51,6 +51,7 @@
         
         [self addChild:_label];
         
+        [self createPauseMenu];
         
         // Create local snake
         
@@ -165,7 +166,79 @@
     
     if ([action isEqualToString:ACTION_CHANGE_DIRECTION]) {
         [_otherSnake setDirectionFromRemote:[message intValue]];
+        
+    } else if ([action isEqualToString:ACTION_PAUSE_GAME]) {
+        [self pauseGame];
+        
+    } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
+        [self resumeGame];
     }
+}
+
+#pragma mark - Game flow and control UI methods
+
+- (void)createPauseMenu
+{
+    CGSize size = [CCDirector sharedDirector].winSize;
+    CCMenuItem *pauseItem = [CCMenuItemImage itemWithNormalImage:@"pause-button.png"  selectedImage:@"pause-button.png" block:^(id sender) {
+        [self pauseGame];
+        [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
+    }];
+    
+    CCMenu *menu = [CCMenu menuWithItems:pauseItem, nil];
+    menu.position = ccp(size.width - pauseItem.boundingBox.size.width, pauseItem.boundingBox.size.height);
+    [self addChild:menu];
+}
+
+
+- (void)createPauseLayer
+{
+    CGSize size = [CCDirector sharedDirector].winSize;
+    
+    _pauseLayer = [CCLayerColor layerWithColor:ccc4(100, 100, 100, 200)];
+    CCLabelTTF *pauseTitle = [CCLabelTTF labelWithString:@"Pause" fontName:@"Helvetica" fontSize:28];
+    pauseTitle.color = ccc3(255, 255, 255);
+    pauseTitle.position = ccp(size.width / 2, size.height - 100);
+    [_pauseLayer addChild:pauseTitle];
+    
+    CCMenuItem *resumeBtn = [CCMenuItemFont itemWithString:@"Resume" block:^(id sender) {
+        [self resumeGame];
+        [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_RESUME_GAME];
+    }];
+    
+    CCMenuItem *restartBtn = [CCMenuItemFont itemWithString:@"Restart" block:^(id sender) {
+        
+    }];
+    
+    CCMenuItem *quitBtn = [CCMenuItemFont itemWithString:@"Quit" block:^(id sender) {
+        
+    }];
+        
+    CCMenu *menu = [CCMenu menuWithItems:resumeBtn, restartBtn, quitBtn, nil];
+    
+    [menu alignItemsVerticallyWithPadding:80];
+    menu.position = ccp(size.width / 2, size.height / 2);
+    
+    [_pauseLayer addChild:menu];
+}
+
+- (void)pauseGame
+{
+    if (!_isPaused) {
+        _isPaused = YES;
+        if (!_pauseLayer) [self createPauseLayer];
+        [self addChild:_pauseLayer];
+        isTouchEnabled_ = NO;
+        [self pauseSchedulerAndActions];
+    }
+}
+
+- (void)resumeGame
+{
+    _isPaused = NO;
+    isTouchEnabled_ = YES;
+    [self removeChild:_pauseLayer cleanup:NO];
+    [self resumeSchedulerAndActions];
 }
 
 @end

@@ -12,6 +12,10 @@
 
 extern NSString *const ACTION_HELLO;
 extern NSString *const ACTION_CHANGE_DIRECTION;
+extern NSString *const ACTION_PAUSE_GAME;
+extern NSString *const ACTION_RESUME_GAME;
+extern NSString *const ACTION_RESTART_GAME;
+extern NSString *const ACTION_QUIT_GAME;
 
 @class SSConnectionManager;
 
