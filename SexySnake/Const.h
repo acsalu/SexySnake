@@ -29,9 +29,14 @@ typedef enum Item Item;
 typedef enum Role Role;
 typedef enum Mode Mode;
 
-#define MAX_COLS 10
-#define MAX_ROWS 13
-#define GRID_SIZE 30
+#define MAX_COLS 30
+#define MAX_ROWS 20
+#define GRID_SIZE 60
+
+#define SERVER_ROW 10
+#define SERVER_COL 10
+#define CLIENT_ROW 10
+#define CLIENT_COL 20
 
 
 @interface SSUtility : NSObject

@@ -19,7 +19,8 @@
 @property (nonatomic, strong) NSMutableArray *grids;
 
 
-+ (SSSnake *)snakeWithInitialGrid:(Grid *)grid;
++ (SSSnake *)mySnakeWithInitialGrid:(Grid *)grid;
++ (SSSnake *)otherSnakeWithInitialGrid:(Grid *)grid;
 
 // update from other device
 - (void)setDirectionFromRemote:(Direction)direction;

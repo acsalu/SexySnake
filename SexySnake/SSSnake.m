@@ -12,17 +12,41 @@
 
 @implementation SSSnake
 
-+ (SSSnake *)snakeWithInitialGrid:(Grid *)grid
++ (SSSnake *)mySnakeWithInitialGrid:(Grid *)grid
 {
     SSSnake *snake = [SSSnake node];
     
     // set initial motion properties
     
+    // create head
+    snake.components = [NSMutableArray arrayWithCapacity:1];
     
+    if ([SSConnectionManager sharedManager].role == SERVER)
+        snake.components[0] = [CCSprite spriteWithFile:@"snake-head-green.png"];
+    else
+        snake.components[0] = [CCSprite spriteWithFile:@"snake-head-blue.png"];
+    
+    snake.grids = [NSMutableArray arrayWithCapacity:1];
+    snake.grids[0] = grid;
+    
+    [snake reorganize];
+    
+    return snake;
+}
+
++ (SSSnake *)otherSnakeWithInitialGrid:(Grid *)grid
+{
+    SSSnake *snake = [SSSnake node];
+    
+    // set initial motion properties
     
     // create head
     snake.components = [NSMutableArray arrayWithCapacity:1];
-    snake.components[0] = [CCSprite spriteWithFile:@"snake-head.png"];
+    
+    if ([SSConnectionManager sharedManager].role == SERVER)
+        snake.components[0] = [CCSprite spriteWithFile:@"snake-head-blue.png"];
+    else
+        snake.components[0] = [CCSprite spriteWithFile:@"snake-head-green.png"];
     
     snake.grids = [NSMutableArray arrayWithCapacity:1];
     snake.grids[0] = grid;
@@ -80,14 +104,15 @@
 // call this method when moving
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
-    for (int i = 1; i < _components.count; ++i) {
-        _grids[i] = _grids[i - 1];
-        ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+    if (newHead) {
+        for (int i = 1; i < _components.count; ++i) {
+            _grids[i] = _grids[i - 1];
+            ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+        }
+        
+        _grids[0] = newHead;
+        ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
     }
-    
-    _grids[0] = newHead;
-    ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
-    
 }
 
 #pragma mark - Snake Actions

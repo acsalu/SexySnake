@@ -133,7 +133,7 @@
 + (CGPoint)positionWithGrid:(Grid *)grid
 {
     CGSize size = [[CCDirector sharedDirector] winSize];
-    CGFloat startX = 20;
+    CGFloat startX = 80;
     CGFloat startY = size.height - 80;
     CGPoint p = ccp(startX + grid.col * GRID_SIZE, startY - grid.row * GRID_SIZE);
     
@@ -152,12 +152,16 @@
 {
     switch (direction) {
         case UP:
+            if (grid.row == 0) return nil;
             return [Grid gridWithRow:grid.row - 1 Col:grid.col];
         case DOWN:
+            if (grid.row == MAX_ROWS - 1) return nil;
             return [Grid gridWithRow:grid.row + 1 Col:grid.col];
         case RIGHT:
+            if (grid.col == MAX_COLS - 1) return nil;
             return [Grid gridWithRow:grid.row Col:grid.col + 1];
         case LEFT:
+            if (grid.col == 0) return nil;
             return [Grid gridWithRow:grid.row Col:grid.col - 1];
     }
 }

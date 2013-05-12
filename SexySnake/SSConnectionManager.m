@@ -103,6 +103,8 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
     if (state == GKPeerStateConnected) {
         NSLog(@"Session state changed : GKPeerStateConnected");
     } else {
+        if (state == GKPeerStateDisconnected) _role = NONE;
+        
         self.session.delegate = nil;
         
         self.session = nil;

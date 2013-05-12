@@ -10,7 +10,7 @@
 #import "SSSnake.h"
 #import "SSMap.h"
 
-#define BASE_UPDATE_INTERVAL 0.5
+#define BASE_UPDATE_INTERVAL 0.3
 
 
 @implementation GameLayer
@@ -53,7 +53,14 @@
         
         
         // Create local snake
-        _mySnake = [SSSnake snakeWithInitialGrid:[Grid gridWithRow:3 Col:4]];
+        
+        Grid *grid;
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
+        else
+            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+        
+        _mySnake = [SSSnake mySnakeWithInitialGrid:grid];
         [self addChild:_mySnake];
         
         
@@ -81,7 +88,13 @@
 - (void)setMode:(Mode)mode
 {
     if (mode == MULTI_PLAYER) {
-        _otherSnake =  [SSSnake snakeWithInitialGrid:[Grid gridWithRow:6 Col:8]];
+        Grid *grid;
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+        else
+            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
+        
+        _otherSnake =  [SSSnake otherSnakeWithInitialGrid:grid];
         [self addChild:_otherSnake];
         [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     }
