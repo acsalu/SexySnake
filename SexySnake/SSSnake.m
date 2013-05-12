@@ -8,9 +8,31 @@
 
 #import "SSSnake.h"
 #import "SSConnectionManager.h"
-
+#import "SSMap.h"
 
 @implementation SSSnake
+
++ (SSSnake *)snakeWithInitialGrid:(Grid *)grid
+{
+    SSSnake *snake = [SSSnake node];
+    
+    // set initial motion properties
+    
+    
+    
+    // create head
+    snake.components = [NSMutableArray arrayWithCapacity:1];
+    snake.components[0] = [CCSprite spriteWithFile:@"snake-head.png"];
+    
+    snake.grids = [NSMutableArray arrayWithCapacity:1];
+    snake.grids[0] = grid;
+    
+    [snake reorganize];
+    
+    return snake;
+}
+
+
 
 + (SSSnake *)snakeWithInitialPosition:(CGPoint)position
 {
@@ -24,8 +46,8 @@
     snake.components = [NSMutableArray arrayWithCapacity:1];
     snake.components[0] = [CCSprite spriteWithFile:@"snake-head.png"];
     
-    snake.componentPositions = [NSMutableArray arrayWithCapacity:1];
-    snake.componentPositions[0] = [NSValue valueWithCGPoint:position];
+    snake.grids = [NSMutableArray arrayWithCapacity:1];
+    snake.grids[0] = [NSValue valueWithCGPoint:position];
                               
     [snake reorganize];
     
@@ -81,11 +103,11 @@
 - (void)reformWithNewHeadPosition:(CGPoint)position
 {
     for (int i = 1; i < _components.count; ++i) {
-        _componentPositions[i] = _componentPositions[i - 1];
+        _grids[i] = _grids[i - 1];
         ((CCSprite *) _components[i]).position = [self positionForComponentAtIndex:i];
     }
     
-    _componentPositions[0] = [NSValue valueWithCGPoint:position];
+    _grids[0] = [NSValue valueWithCGPoint:position];
     ((CCSprite *) _components[0]).position = [self positionForComponentAtIndex:0];
     
 }
@@ -127,7 +149,7 @@
 
 - (CGPoint)positionForComponentAtIndex:(NSUInteger)i
 {
-    return [((NSValue *) _componentPositions[i]) CGPointValue];
+    return [((NSValue *) _grids[i]) CGPointValue];
 }
 
 
