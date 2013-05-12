@@ -79,6 +79,10 @@
         
 //        _map = [[SSMap alloc] init];
 //        _map.gameLayer = self;
+        
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
+        
     }
     return self;
 }
