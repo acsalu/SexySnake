@@ -30,11 +30,3 @@
 
 @end
 
-@interface Grid : NSObject
-
-@property (nonatomic) int row;
-@property (nonatomic) int col;
-
-- (Grid*) gridWithRow:(int)r Col:(int)c;
-
-@end

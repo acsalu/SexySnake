@@ -133,12 +133,4 @@
 
 @end
 
-@implementation Grid
 
-- (Grid*)gridWithRow:(int)r Col:(int)c;
-{
-    _row = r;
-    _col = c;
-}
-
-@end
