@@ -11,7 +11,10 @@
 #import "cocos2d.h"
 
 
+
+
 @class GameLayer;
+@class Grid;
 
 @interface SSMap : NSObject
 
@@ -28,11 +31,9 @@
 - (void)printMap;
 - (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
                         ClientSnake:(NSMutableArray*) cSnake;
-//- (void)updateClientSnake;
-//- (void)checkEventOfBiting;
+- (void)snakeShootsAt:(Grid*) grid;
 //- (void)checkEventOfShooting;
-//- (void)checkEventOfBuildingWall;
-//- (void)checkEventOfEatingTarget;
+
 - (void)spawnTarget;
 - (void)spawnBullet;
 

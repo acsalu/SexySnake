@@ -14,17 +14,20 @@
 
 - (id)init
 {
-    CGSize size = [[CCDirector sharedDirector] winSize];
-    _startX = 20;
-    _startY = size.height - 80;
-    _mapInfo = [NSMutableArray arrayWithCapacity:MAX_ROWS];
-    
-    for (int i = 0; i < MAX_ROWS; ++i) {
-        _mapInfo[i] = [NSMutableArray arrayWithCapacity:MAX_COLS];
-        for (int j = 0; j < MAX_COLS; ++j) {
-            _mapInfo[i][j] = [NSNumber numberWithInt:EMPTY];
+    if ((self = [super init])) {
+        CGSize size = [[CCDirector sharedDirector] winSize];
+        _startX = 20;
+        _startY = size.height - 80;
+        _mapInfo = [NSMutableArray arrayWithCapacity:MAX_ROWS];
+        
+        for (int i = 0; i < MAX_ROWS; ++i) {
+            _mapInfo[i] = [NSMutableArray arrayWithCapacity:MAX_COLS];
+            for (int j = 0; j < MAX_COLS; ++j) {
+                _mapInfo[i][j] = [NSNumber numberWithInt:EMPTY];
+            }
         }
     }
+    return  self;
     
 }
 
@@ -76,6 +79,11 @@
    }
 
 
+}
+
+- (void)snakeShootsAt:(Grid *)grid
+{
+    _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:BULLET];
 }
 
 //Generate a new general target
