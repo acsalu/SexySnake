@@ -7,6 +7,7 @@
 //
 
 #import "SSSnake.h"
+#import "SSConnectionManager.h"
 
 
 @implementation SSSnake
@@ -35,6 +36,22 @@
 
 - (void)setDirection:(Direction)direction
 {
+    [self rotateWithDirection:direction];
+    
+    if (direction != _direction)
+        [[SSConnectionManager sharedManager] sendMessage:[@(direction) stringValue] forAction:ACTION_CHANGE_DIRECTION];
+    
+    _direction = direction;
+}
+
+- (void)setDirectionFromRemote:(Direction)direction
+{
+    [self rotateWithDirection:direction];
+    _direction = direction;
+}
+
+- (void)rotateWithDirection:(Direction)direction
+{
     switch (direction) {
         case UP:
             ((CCSprite *) self.components[0]).rotation = 0;
@@ -48,8 +65,6 @@
         case LEFT:
             ((CCSprite *) self.components[0]).rotation = -90;
     }
-    
-    _direction = direction;
 }
 
 // call this method when add or remove components
@@ -83,19 +98,19 @@
     CGPoint newHead;
     switch (_direction) {
         case UP:
-            CCLOG(@"Move UP.");
+//            CCLOG(@"Move UP.");
             newHead = ccp(currentHead.x, currentHead.y + GRID_SIZE);
             break;
         case DOWN:
-            CCLOG(@"Move DOWN.");
+//            CCLOG(@"Move DOWN.");
             newHead = ccp(currentHead.x, currentHead.y - GRID_SIZE);
             break;
         case RIGHT:
-            CCLOG(@"Move RIGHT.");
+//            CCLOG(@"Move RIGHT.");
             newHead = ccp(currentHead.x + GRID_SIZE, currentHead.y);
             break;
         case LEFT:
-            CCLOG(@"Move LEFT.");
+//            CCLOG(@"Move LEFT.");
             newHead = ccp(currentHead.x - GRID_SIZE, currentHead.y);
             break;
     }

@@ -18,19 +18,20 @@
 + (CCScene *)sceneOf1P
 {
     NSLog(@"enter 1P mode");
-    return [GameLayer scene];
+    return [GameLayer sceneWithMode:SINGLE_PLAYER];
 }
 
 + (CCScene *)sceneOf2P
 {
     NSLog(@"enter 2P mode");
-    return [GameLayer scene];
+    return [GameLayer sceneWithMode:MULTI_PLAYER];
 }
 
-+ (CCScene *)scene
++ (CCScene *)sceneWithMode:(Mode)mode;
 {
     CCScene *scene = [CCScene node];
     GameLayer *gameLayer = [GameLayer node];
+    gameLayer.mode = mode;
     [scene addChild:gameLayer];
     return scene;
 }
@@ -72,7 +73,19 @@
     return self;
 }
 
-#pragma mark - Motion Control Methods
+#pragma mark - Setter methods
+
+- (void)setMode:(Mode)mode
+{
+    if (mode == MULTI_PLAYER) {
+        _otherSnake = [SSSnake snakeWithInitialPosition:ccp(500, 300)];
+        [self addChild:_otherSnake];
+        [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    }
+    _mode = mode;
+}
+
+#pragma mark - Motion control methods
 
 // set direction of mySnake
 - (void)updateDeviceMotion:(ccTime)delta
@@ -104,17 +117,28 @@
     [_mySnake move];
 }
 
+- (void)updateOtherSnakePosition:(ccTime)delta
+{
+    [_otherSnake move];
+}
+
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     CCLOG(@"Send Hello Message");
-    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend."];
+    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend." forAction:ACTION_HELLO];
 }
 
 #pragma mark - SSConnectionManager delegate methods
 
-- (void)connectionManager:(SSConnectionManager *)connectionManager didReceiveMessage:(NSString *)message
+- (void)connectionManager:(SSConnectionManager *)connectionManager didReceiveDictionary:(NSDictionary *)dictionary
 {
-    CCLOG(@"Receive Message:%@", message);
+    NSString *action = dictionary[@"action"];
+    NSString *message = dictionary[@"message"];
+    CCLOG(@"Receive Message:[%@] %@", action, message);
+    
+    if ([action isEqualToString:ACTION_CHANGE_DIRECTION]) {
+        [_otherSnake setDirectionFromRemote:[message intValue]];
+    }
 }
 
 @end

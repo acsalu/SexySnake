@@ -10,6 +10,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "cocos2d.h"
 #import "SSConnectionManager.h"
+#import "Const.h"
 
 @class SSSnake;
 
@@ -18,7 +19,10 @@
 + (CCScene *)sceneOf1P;
 + (CCScene *)sceneOf2P;
 
-+ (CCScene *)scene;
++ (CCScene *)sceneWithMode:(Mode)mode;
+
+// Game Data
+@property (nonatomic) Mode mode;
 
 // Motion Control
 @property (nonatomic, strong) CCLabelTTF *label;
@@ -26,5 +30,6 @@
 
 // Game UI
 @property (strong, nonatomic) SSSnake *mySnake;
+@property (strong, nonatomic) SSSnake *otherSnake;
 
 @end

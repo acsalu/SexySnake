@@ -7,11 +7,15 @@
 //
 
 #import "SSConnectionManager.h"
-
-//
 #import "GameLayer.h"
-//
+#import "JSONKit.h"
 
+
+NSString *const ACTION_HELLO = @"HELLO";
+NSString *const ACTION_CHANGE_DIRECTION = @"CHANGE_DIRECTION";
+
+
+NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
 @implementation SSConnectionManager 
 
@@ -21,6 +25,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedManager = [[self alloc] init];
+        sharedManager.role = NONE;
     });
     return sharedManager;
 }
@@ -37,19 +42,23 @@
 }
 
 
-- (void)sendMessage:(NSString *)message
+- (void)sendMessage:(NSString *)message forAction:(NSString *)action
 {
 //    NSData *testData = [@"Jack Chao ^.<" dataUsingEncoding:NSUTF8StringEncoding];
-    [self.session sendDataToAllPeers:[message dataUsingEncoding:NSUTF8StringEncoding] withDataMode:GKSendDataReliable error:nil];
+    NSDictionary *dict = @{@"action":action, @"message":message};
+    [self.session sendDataToAllPeers:[dict JSONData] withDataMode:GKSendDataReliable error:nil];
 }
 
 - (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession: (GKSession *)session context:(void *)context
 {
     NSString *receivedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    if (self.delegate) {
+    if ([receivedString isEqualToString:ACTION_DECLARE_SERVER]) {
+
+    } else if (self.delegate) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self.delegate respondsToSelector:@selector(connectionManager:didReceiveMessage:)])
-                [self.delegate connectionManager:self didReceiveMessage:receivedString];
+            
+            if ([self.delegate respondsToSelector:@selector(connectionManager:didReceiveDictionary:)])
+                [self.delegate connectionManager:self didReceiveDictionary:(NSDictionary *) [receivedString objectFromJSONString]];
             else
                 CCLOG(@"sucks");
         });
@@ -80,7 +89,13 @@
     picker.delegate = nil;
     [picker dismiss];
     
+    
     [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf2P]];
+}
+
+- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
+{
+    NSLog(@"I'm client");
 }
 
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
@@ -89,10 +104,10 @@
         NSLog(@"Session state changed : GKPeerStateConnected");
     } else {
         self.session.delegate = nil;
+        
         self.session = nil;
     }
 }
-
 
 
 @end

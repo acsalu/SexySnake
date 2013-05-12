@@ -20,6 +20,10 @@
 
 + (SSSnake *) snakeWithInitialPosition:(CGPoint)position;
 
+// update from other device
+- (void)setDirectionFromRemote:(Direction)direction;
+
+
 - (void)move;
 - (void)eatTarget;
 
