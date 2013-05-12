@@ -13,7 +13,7 @@ enum Direction {
 };
 
 enum Item {
-    SNAKE_HEAD = 0, SNAKE_BODY, TARGET
+    SNAKE_HEAD = 0, SNAKE_BODY, TARGET, BULLET, WALL, EMPTY
 };
 
 typedef enum Direction Direction;

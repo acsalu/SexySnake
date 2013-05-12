@@ -68,9 +68,13 @@
         
         // set SSConnectionManager delegate
         [SSConnectionManager sharedManager].delegate = self;
+        
+        _map = [[SSMap alloc] init];
+        _map.gameLayer = self;
     }
     return self;
 }
+
 
 #pragma mark - Motion Control Methods
 

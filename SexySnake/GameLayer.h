@@ -10,6 +10,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "cocos2d.h"
 #import "SSConnectionManager.h"
+#import "SSMap.h"
 
 @class SSSnake;
 
@@ -20,11 +21,14 @@
 
 + (CCScene *)scene;
 
+
 // Motion Control
 @property (nonatomic, strong) CCLabelTTF *label;
 @property (nonatomic, strong) CMMotionManager *motionManager;
 
 // Game UI
 @property (strong, nonatomic) SSSnake *mySnake;
+@property (strong, nonatomic) SSSnake *clientSnake;
+@property (strong, nonatomic) SSMap *map;
 
 @end

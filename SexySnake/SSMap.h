@@ -8,17 +8,32 @@
 
 #import <Foundation/Foundation.h>
 #import "Const.h"
+#import "cocos2d.h"
+
+
+@class GameLayer;
 
 @interface SSMap : NSObject
 
 @property (nonatomic) NSMutableDictionary *mapData;
+@property (nonatomic) NSMutableArray *mapInfo;
+@property (nonatomic) NSMutableSet *targets;
+@property (nonatomic) NSMutableSet *bullets;
+@property (nonatomic) NSMutableSet *walls;
+@property (nonatomic) CGFloat startX;
+@property (nonatomic) CGFloat startY;
+@property (nonatomic,weak) GameLayer *gameLayer;
 
+- (id)init;
 - (void)printMap;
-- (void)checkEventOfBiting;
-- (void)checkEventOfShooting;
-- (void)checkEventOfBuildingWall;
-- (void)checkEventOfEatingTarget;
-- (void)spawnGeneralTarget;
-- (void)spawnBulletTarget;
+- (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
+                        ClientSnake:(NSMutableArray*) cSnake;
+//- (void)updateClientSnake;
+//- (void)checkEventOfBiting;
+//- (void)checkEventOfShooting;
+//- (void)checkEventOfBuildingWall;
+//- (void)checkEventOfEatingTarget;
+- (void)spawnTarget;
+- (void)spawnBullet;
 
 @end
