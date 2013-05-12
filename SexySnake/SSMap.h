@@ -20,8 +20,9 @@
 
 @property (nonatomic) NSMutableDictionary *mapData;
 @property (nonatomic) NSMutableArray *mapInfo;
-@property (nonatomic) NSMutableSet *targets;
-@property (nonatomic) NSMutableSet *bullets;
+@property (nonatomic) NSMutableArray *targets;
+@property (nonatomic) NSMutableArray *bulletTargets;
+@property (nonatomic) NSMutableArray *bullets;
 @property (nonatomic) NSMutableSet *walls;
 @property (nonatomic) CGFloat startX;
 @property (nonatomic) CGFloat startY;
@@ -35,7 +36,10 @@
 //- (void)checkEventOfShooting;
 
 - (void)spawnTarget;
-- (void)spawnBullet;
+- (void)spawnBulletTarget;
+- (void)removeTargetAt:(Grid*)grid;
+- (void)removeBulletTargetAt:(Grid*)grid;
+- (void)removeBulletAt:(Grid*)grid;
 
 @end
 

@@ -13,7 +13,7 @@ enum Direction {
 };
 
 enum Item {
-    SNAKE_HEAD = 0, SNAKE_BODY, TARGET, BULLET, WALL, EMPTY
+    SNAKE_HEAD = 0, SNAKE_BODY, TARGET, BULLET, WALL, BULLETTARGET, EMPTY
 };
 
 enum Role {
@@ -32,6 +32,7 @@ typedef enum Mode Mode;
 #define MAX_COLS 10
 #define MAX_ROWS 13
 #define GRID_SIZE 30
+#define MAX_INTERVAL 3
 
 
 @interface SSUtility : NSObject
