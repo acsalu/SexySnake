@@ -56,7 +56,23 @@
    }
 
    for(int i=0; i<[sSnake count]; i++){
-      
+       Grid *pos = [sSnake objectAtIndex:i];
+       if (_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+           
+           //TODO:Notifying snake
+           
+           break;
+       }
+   }
+    
+   for(int i=0; i<[cSnake count]; i++){
+       Grid *pos = [cSnake objectAtIndex:i];
+       if(_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+           
+           //TODO:Notifying snake
+           
+           break;
+       }
    }
 
 
@@ -102,7 +118,7 @@
     
     CCSprite *bullet = [CCSprite spriteWithFile:@"bullet.png"];
     [_bullets addObject:bullet];
-    bullet.position = ccp(_startX + MAX_ROWS * GRID_SIZE, _startY + MAX_COLS * GRID_SIZE);
+    bullet.position = ccp(_startX + MAX_COLS * GRID_SIZE, _startY - MAX_ROWS * GRID_SIZE);
     [_gameLayer addChild:bullet];
 
 }
@@ -111,6 +127,16 @@
 @end
 
 @implementation Grid
+
+
+
++ (CGPoint)positionWithGrid:(Grid *)grid
+{
+    CGSize size = [[CCDirector sharedDirector] winSize];
+    CGFloat startX = 20;
+    CGFloat startY = size.height - 80;
+    CGPoint p = ccp(startX + grid.col * GRID_SIZE, startY - grid.row * GRID_SIZE);
+}
 
 - (Grid*)gridWithRow:(int)r Col:(int)c;
 {
