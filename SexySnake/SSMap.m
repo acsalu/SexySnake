@@ -144,12 +144,30 @@
     CGFloat startX = 20;
     CGFloat startY = size.height - 80;
     CGPoint p = ccp(startX + grid.col * GRID_SIZE, startY - grid.row * GRID_SIZE);
+    
+    return p;
 }
 
-- (Grid*)gridWithRow:(int)r Col:(int)c;
++ (Grid*)gridWithRow:(int)r Col:(int)c;
 {
-    _row = r;
-    _col = c;
+    Grid *grid = [[Grid alloc] init];
+    grid.row = r;
+    grid.col = c;
+    return grid;
+}
+
++ (Grid*)gridForDirection:(Direction)direction toGrid:(Grid *)grid
+{
+    switch (direction) {
+        case UP:
+            return [Grid gridWithRow:grid.row - 1 Col:grid.col];
+        case DOWN:
+            return [Grid gridWithRow:grid.row + 1 Col:grid.col];
+        case RIGHT:
+            return [Grid gridWithRow:grid.row Col:grid.col + 1];
+        case LEFT:
+            return [Grid gridWithRow:grid.row Col:grid.col - 1];
+    }
 }
 
 @end

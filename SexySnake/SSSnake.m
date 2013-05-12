@@ -8,11 +8,11 @@
 
 #import "SSSnake.h"
 #import "SSConnectionManager.h"
-
+#import "SSMap.h"
 
 @implementation SSSnake
 
-+ (SSSnake *)snakeWithInitialPosition:(CGPoint)position
++ (SSSnake *)snakeWithInitialGrid:(Grid *)grid
 {
     SSSnake *snake = [SSSnake node];
     
@@ -24,9 +24,9 @@
     snake.components = [NSMutableArray arrayWithCapacity:1];
     snake.components[0] = [CCSprite spriteWithFile:@"snake-head.png"];
     
-    snake.componentPositions = [NSMutableArray arrayWithCapacity:1];
-    snake.componentPositions[0] = [NSValue valueWithCGPoint:position];
-                              
+    snake.grids = [NSMutableArray arrayWithCapacity:1];
+    snake.grids[0] = grid;
+    
     [snake reorganize];
     
     return snake;
@@ -72,21 +72,21 @@
 {
     [self removeAllChildrenWithCleanup:NO];
     for (int i = 0; i < _components.count; ++i) {
-        ((CCSprite *) _components[i]).position = [self positionForComponentAtIndex:i];
+        ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
         [self addChild:_components[i]];
     }
 }
 
 // call this method when moving
-- (void)reformWithNewHeadPosition:(CGPoint)position
+- (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
     for (int i = 1; i < _components.count; ++i) {
-        _componentPositions[i] = _componentPositions[i - 1];
-        ((CCSprite *) _components[i]).position = [self positionForComponentAtIndex:i];
+        _grids[i] = _grids[i - 1];
+        ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
     }
     
-    _componentPositions[0] = [NSValue valueWithCGPoint:position];
-    ((CCSprite *) _components[0]).position = [self positionForComponentAtIndex:0];
+    _grids[0] = newHead;
+    ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
     
 }
 
@@ -94,27 +94,7 @@
 
 - (void)move
 {
-    CGPoint currentHead = [self positionForComponentAtIndex:0];
-    CGPoint newHead;
-    switch (_direction) {
-        case UP:
-//            CCLOG(@"Move UP.");
-            newHead = ccp(currentHead.x, currentHead.y + GRID_SIZE);
-            break;
-        case DOWN:
-//            CCLOG(@"Move DOWN.");
-            newHead = ccp(currentHead.x, currentHead.y - GRID_SIZE);
-            break;
-        case RIGHT:
-//            CCLOG(@"Move RIGHT.");
-            newHead = ccp(currentHead.x + GRID_SIZE, currentHead.y);
-            break;
-        case LEFT:
-//            CCLOG(@"Move LEFT.");
-            newHead = ccp(currentHead.x - GRID_SIZE, currentHead.y);
-            break;
-    }
-    [self reformWithNewHeadPosition:newHead];
+    [self reformWithNewHeadGrid:[Grid gridForDirection:_direction toGrid:_grids[0]]];
 }
 
 - (void)eatTarget
@@ -122,13 +102,6 @@
     
 }
 
-
-#pragma mark - Utility Methods
-
-- (CGPoint)positionForComponentAtIndex:(NSUInteger)i
-{
-    return [((NSValue *) _componentPositions[i]) CGPointValue];
-}
 
 
 @end

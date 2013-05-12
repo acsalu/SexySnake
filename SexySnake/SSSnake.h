@@ -10,15 +10,16 @@
 #import "cocos2d.h"
 #import "Const.h"
 
-@interface SSSnake : CCSprite {
-    
-}
+@class Grid;
+
+@interface SSSnake : CCSprite
 
 @property (nonatomic) Direction direction;
 @property (nonatomic, strong) NSMutableArray *components;
-@property (nonatomic, strong) NSMutableArray *componentPositions;
+@property (nonatomic, strong) NSMutableArray *grids;
 
-+ (SSSnake *) snakeWithInitialPosition:(CGPoint)position;
+
++ (SSSnake *)snakeWithInitialGrid:(Grid *)grid;
 
 // update from other device
 - (void)setDirectionFromRemote:(Direction)direction;
