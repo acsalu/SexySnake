@@ -66,6 +66,7 @@
         
         [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
         [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
         
         // set SSConnectionManager delegate
         [SSConnectionManager sharedManager].delegate = self;
@@ -120,17 +121,29 @@
     [_mySnake move];
 }
 
-
-- (void)updateMapInfo:(ccTime)delta
-{
-
-    
-}
 - (void)updateOtherSnakePosition:(ccTime)delta
 {
     [_otherSnake move];
-
+    
 }
+
+- (void)updateMapInfo:(ccTime)delta
+{
+    [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
+    
+    if (_mySnake.isShoot) {
+        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
+        [_mySnake finishShooting];
+    }
+    
+    if (_otherSnake.isShoot) {
+        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
+        [_otherSnake finishShooting];
+    }
+    
+    [_map updatePositionOfBullet];
+}
+
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

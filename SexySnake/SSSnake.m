@@ -102,6 +102,15 @@
     
 }
 
+- (void)shoot
+{
+    _isShoot = YES;
+}
+
+- (void)finishShooting
+{
+    _isShoot = NO;
+}
 
 
 @end

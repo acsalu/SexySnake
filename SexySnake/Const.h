@@ -33,6 +33,7 @@ typedef enum Mode Mode;
 #define MAX_ROWS 13
 #define GRID_SIZE 30
 #define MAX_INTERVAL 3
+#define BULLET_INTERVAL 1
 
 
 @interface SSUtility : NSObject

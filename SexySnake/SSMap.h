@@ -11,8 +11,6 @@
 #import "cocos2d.h"
 
 
-
-
 @class GameLayer;
 @class Grid;
 
@@ -27,19 +25,21 @@
 @property (nonatomic) CGFloat startX;
 @property (nonatomic) CGFloat startY;
 @property (nonatomic,weak) GameLayer *gameLayer;
+@property (nonatomic) NSMutableArray *bulletDirection;
+@property (nonatomic) NSMutableArray *gridsOfLastFrame;
 
 - (id)init;
 - (void)printMap;
 - (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
                         ClientSnake:(NSMutableArray*) cSnake;
-- (void)snakeShootsAt:(Grid*) grid;
-//- (void)checkEventOfShooting;
-
+- (void)snakeShootsAt:(Grid*) grid
+        WithDireciton:(Direction)direction;
 - (void)spawnTarget;
 - (void)spawnBulletTarget;
 - (void)removeTargetAt:(Grid*)grid;
 - (void)removeBulletTargetAt:(Grid*)grid;
 - (void)removeBulletAt:(Grid*)grid;
+- (void)updatePositionOfBullet;
 
 @end
 
