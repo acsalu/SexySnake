@@ -17,6 +17,9 @@
 @property (nonatomic) Direction direction;
 @property (nonatomic, strong) NSMutableArray *components;
 @property (nonatomic, strong) NSMutableArray *grids;
+@property (nonatomic, assign) BOOL isShoot;
+@property (nonatomic, assign) BOOL isBuilding;
+@property (nonatomic, assign) int numberOfBulletTarget;
 
 
 + (SSSnake *)mySnakeWithInitialGrid:(Grid *)grid;
@@ -28,6 +31,15 @@
 
 - (void)move;
 - (void)eatTarget;
+- (void)eatBulletTarget;
+- (void)getShotAt:(Grid*)grid;
+- (void)getBitAt:(Grid*)grid;
+- (void)hitWall;
+- (void)buildWall;
+- (void)shoot;
+- (void)finishShooting;
+- (void)finishBuilding;
+
 
 
 @end

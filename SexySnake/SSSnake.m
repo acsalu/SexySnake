@@ -127,7 +127,34 @@
     
 }
 
+- (void)eatBulletTarget
+{
+    _numberOfBulletTarget++;
+}
 
+- (void)shoot
+{
+    if (_numberOfBulletTarget > 0) {
+        _isShoot = YES;
+        _numberOfBulletTarget--;
+    }
+}
+
+- (void)finishShooting
+{
+    _isShoot = NO;
+}
+
+- (void)buildWall
+{
+    //After pressing building-wall button
+    _isBuilding = YES;
+}
+
+- (void)finishBuilding
+{
+    _isBuilding = NO;
+}
 
 @end
 

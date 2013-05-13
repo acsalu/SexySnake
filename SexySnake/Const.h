@@ -42,6 +42,7 @@ typedef enum Mode Mode;
 #define CLIENT_COL 10
 
 #define MAX_INTERVAL 3
+#define BULLET_INTERVAL 1
 
 
 @interface SSUtility : NSObject
