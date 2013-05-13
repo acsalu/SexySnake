@@ -40,6 +40,7 @@
 - (void)removeBulletTargetAt:(Grid*)grid;
 - (void)removeBulletAt:(Grid*)grid;
 - (void)updatePositionOfBullet;
+- (void)wallIsBuiltAt:(Grid*)grid;
 
 @end
 

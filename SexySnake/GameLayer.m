@@ -160,6 +160,18 @@
         [_otherSnake finishShooting];
     }
     
+    if (_mySnake.isBuilding) {
+        NSMutableArray *grids = [_mySnake grids];
+        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+        [_mySnake finishBuilding];
+    }
+    
+    if (_otherSnake) {
+        NSMutableArray *grids = [_otherSnake grids];
+        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+        [_otherSnake finishBuilding];
+    }
+    
     [_map updatePositionOfBullet];
 }
 

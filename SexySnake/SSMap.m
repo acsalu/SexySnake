@@ -190,6 +190,8 @@
         CCSprite *bullet = [_bullets objectAtIndex:i];
         if(CGPointEqualToPoint(bullet.position, [Grid positionWithGrid:grid])){
             [_bullets removeObjectAtIndex:i];
+            [_bulletDirection removeObjectAtIndex:i];
+            [_gridsOfLastFrame removeObjectAtIndex:i];
             [_gameLayer removeChild:bullet cleanup:YES];
         }
     }
@@ -220,6 +222,14 @@
 
     }
     
+}
+
+- (void)wallIsBuiltAt:(Grid *)grid
+{
+    _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:WALL];
+    CCSprite *wall = [CCSprite spriteWithFile:@"wall.png"];
+    wall.position = [Grid positionWithGrid:grid];
+    [_gameLayer addChild:wall];
 }
 
 @end

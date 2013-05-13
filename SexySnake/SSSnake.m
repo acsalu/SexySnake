@@ -145,6 +145,11 @@
     _isShoot = NO;
 }
 
+- (void)buildWall
+{
+    //After pressing building-wall button
+    _isBuilding = YES;
+}
 
 - (void)finishBuilding
 {
