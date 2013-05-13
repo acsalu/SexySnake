@@ -156,6 +156,11 @@
     _isBuilding = NO;
 }
 
+- (void)hitWall
+{
+    
+}
+
 @end
 
 

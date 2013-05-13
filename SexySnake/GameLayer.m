@@ -55,18 +55,7 @@
         
         [self createPauseMenu];
         
-        // Create local snake
-        
-        Grid *grid;
-        if ([SSConnectionManager sharedManager].role == SERVER)
-            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
-        else
-            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
-        
-        _mySnake = [SSSnake mySnakeWithInitialGrid:grid];
-        [self addChild:_mySnake];
-        
-        
+                
         // Configure motion manager
         _motionManager = [[CMMotionManager alloc] init];
         _motionManager.deviceMotionUpdateInterval = 30.0 / 60.0;
@@ -75,38 +64,21 @@
             [_motionManager startDeviceMotionUpdates];
         
         [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-        [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-        [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+
         
         // set SSConnectionManager delegate
         [SSConnectionManager sharedManager].delegate = self;
         
+        // set map
         _map = [[SSMap alloc] init];
         _map.gameLayer = self;
         
-        if ([SSConnectionManager sharedManager].role == SERVER)
-            [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
+        // setup counter
+        _counter = 3;
+        [self schedule:@selector(countdown:) interval:1.0f];
         
     }
     return self;
-}
-
-#pragma mark - Setter methods
-
-- (void)setMode:(Mode)mode
-{
-    if (mode == MULTI_PLAYER) {
-        Grid *grid;
-        if ([SSConnectionManager sharedManager].role == SERVER)
-            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
-        else
-            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
-        
-        _otherSnake =  [SSSnake otherSnakeWithInitialGrid:grid];
-        [self addChild:_otherSnake];
-        [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    }
-    _mode = mode;
 }
 
 #pragma mark - Motion control methods
@@ -149,31 +121,31 @@
 
 - (void)updateMapInfo:(ccTime)delta
 {
-    [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
-    
-    if (_mySnake.isShoot) {
-        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
-        [_mySnake finishShooting];
-    }
-    
-    if (_otherSnake.isShoot) {
-        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
-        [_otherSnake finishShooting];
-    }
-    
-    if (_mySnake.isBuilding) {
-        NSMutableArray *grids = [_mySnake grids];
-        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
-        [_mySnake finishBuilding];
-    }
-    
-    if (_otherSnake) {
-        NSMutableArray *grids = [_otherSnake grids];
-        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
-        [_otherSnake finishBuilding];
-    }
-    
-    [_map updatePositionOfBullet];
+//    [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
+//    
+//    if (_mySnake.isShoot) {
+//        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
+//        [_mySnake finishShooting];
+//    }
+//    
+//    if (_otherSnake.isShoot) {
+//        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
+//        [_otherSnake finishShooting];
+//    }
+//    
+//    if (_mySnake.isBuilding) {
+//        NSMutableArray *grids = [_mySnake grids];
+//        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+//        [_mySnake finishBuilding];
+//    }
+//    
+//    if (_otherSnake) {
+//        NSMutableArray *grids = [_otherSnake grids];
+//        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+//        [_otherSnake finishBuilding];
+//    }
+//    
+//    [_map updatePositionOfBullet];
 }
 
 
@@ -202,7 +174,93 @@
     }
 }
 
-#pragma mark - Game flow and control UI methods
+
+#pragma mark - Game flow methods
+
+- (void)countdown:(ccTime)delta
+{
+    if (_counter < 0) {
+        [self removeChild:_countdownSprite cleanup:YES];
+        [self unschedule:@selector(countdown:)];
+//        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"time machine.mp3"];
+        [self startGame];
+    } else {
+        CGSize size = [[CCDirector sharedDirector] winSize];
+        CGPoint center = ccp(size.width / 2, size.height / 2);
+        if (_countdownSprite) [self removeChild:_countdownSprite cleanup:YES];
+        _countdownSprite = [CCSprite spriteWithFile:[NSString stringWithFormat:@"countdown-%d.png", _counter]];
+        _countdownSprite.position = center;
+        [self addChild:_countdownSprite];
+        --_counter;
+    }
+}
+
+- (void)startGame
+{
+    // Create local snake
+    
+    Grid *grid;
+    if ([SSConnectionManager sharedManager].role == SERVER)
+        grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
+    else
+        grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+    
+    _mySnake = [SSSnake mySnakeWithInitialGrid:grid];
+    [self addChild:_mySnake];
+    
+    [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    
+    if (_mode == MULTI_PLAYER) {
+        Grid *grid;
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+        else
+            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
+        
+        _otherSnake =  [SSSnake otherSnakeWithInitialGrid:grid];
+        [self addChild:_otherSnake];
+        
+    }
+        
+        [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    
+    if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
+        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
+
+}
+
+- (void)pauseGame
+{
+    if (!_isPaused) {
+        _isPaused = YES;
+        if (!_pauseLayer) [self createPauseLayer];
+        [self addChild:_pauseLayer];
+        isTouchEnabled_ = NO;
+        [self pauseSchedulerAndActions];
+    }
+}
+
+- (void)resumeGame
+{
+    _isPaused = NO;
+    isTouchEnabled_ = YES;
+    [self removeChild:_pauseLayer cleanup:NO];
+    [self resumeSchedulerAndActions];
+}
+
+- (void)restartGame
+{
+    
+}
+
+- (void)quitGame
+{
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[MainScreenLayer scene] withColor:ccWHITE]];
+}
+
+
+#pragma mark - control UI methods
 
 - (void)createPauseMenu
 {
@@ -234,7 +292,7 @@
     }];
     
     CCMenuItem *restartBtn = [CCMenuItemFont itemWithString:@"Restart" block:^(id sender) {
-        
+
     }];
     
     CCMenuItem *quitBtn = [CCMenuItemFont itemWithString:@"Quit" block:^(id sender) {
@@ -255,28 +313,5 @@
     [_pauseLayer addChild:menu];
 }
 
-- (void)pauseGame
-{
-    if (!_isPaused) {
-        _isPaused = YES;
-        if (!_pauseLayer) [self createPauseLayer];
-        [self addChild:_pauseLayer];
-        isTouchEnabled_ = NO;
-        [self pauseSchedulerAndActions];
-    }
-}
-
-- (void)resumeGame
-{
-    _isPaused = NO;
-    isTouchEnabled_ = YES;
-    [self removeChild:_pauseLayer cleanup:NO];
-    [self resumeSchedulerAndActions];
-}
-
-- (void)quitGame
-{
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[MainScreenLayer scene] withColor:ccWHITE]];
-}
 
 @end

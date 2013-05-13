@@ -266,13 +266,13 @@
             else
                return [Grid gridWithRow:grid.row - 1 Col:grid.col];
         case DOWN:
-            if (grid.row == MAX_ROWS) {
+            if (grid.row == MAX_ROWS - 1) {
                 return nil;
             }
             else
                return [Grid gridWithRow:grid.row + 1 Col:grid.col];
         case RIGHT:
-            if (grid.col == MAX_COLS) {
+            if (grid.col == MAX_COLS - 1) {
                 return nil;
             }
             else
