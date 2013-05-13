@@ -28,7 +28,7 @@
 @property (nonatomic) NSMutableArray *bulletDirection;
 @property (nonatomic) NSMutableArray *gridsOfLastFrame;
 
-- (id)init;
+
 - (void)printMap;
 - (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
                         ClientSnake:(NSMutableArray*) cSnake;

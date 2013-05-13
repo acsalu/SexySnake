@@ -14,6 +14,10 @@
 NSString *const ACTION_HELLO = @"HELLO";
 NSString *const ACTION_CHANGE_DIRECTION = @"CHANGE_DIRECTION";
 
+NSString *const ACTION_PAUSE_GAME = @"PAUSE_GAME";
+NSString *const ACTION_RESUME_GAME = @"RESUME_GAME";
+NSString *const ACTION_RESTART_GAME = @"RESTART_GAME";
+NSString *const ACTION_QUIT_GAME = @"QUIT_GAME";
 
 NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
@@ -103,6 +107,8 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
     if (state == GKPeerStateConnected) {
         NSLog(@"Session state changed : GKPeerStateConnected");
     } else {
+        if (state == GKPeerStateDisconnected) _role = NONE;
+        
         self.session.delegate = nil;
         
         self.session = nil;

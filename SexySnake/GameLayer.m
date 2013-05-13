@@ -9,8 +9,9 @@
 #import "GameLayer.h"
 #import "SSSnake.h"
 #import "SSMap.h"
+#import "MainScreenLayer.h"
 
-#define BASE_UPDATE_INTERVAL 0.5
+#define BASE_UPDATE_INTERVAL 0.3
 
 
 @implementation GameLayer
@@ -51,9 +52,17 @@
         
         [self addChild:_label];
         
+        [self createPauseMenu];
         
         // Create local snake
-        _mySnake = [SSSnake snakeWithInitialGrid:[Grid gridWithRow:3 Col:4]];
+        
+        Grid *grid;
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
+        else
+            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+        
+        _mySnake = [SSSnake mySnakeWithInitialGrid:grid];
         [self addChild:_mySnake];
         
         
@@ -71,8 +80,12 @@
         // set SSConnectionManager delegate
         [SSConnectionManager sharedManager].delegate = self;
         
-//        _map = [[SSMap alloc] init];
-//        _map.gameLayer = self;
+        _map = [[SSMap alloc] init];
+        _map.gameLayer = self;
+        
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
+        
     }
     return self;
 }
@@ -82,7 +95,13 @@
 - (void)setMode:(Mode)mode
 {
     if (mode == MULTI_PLAYER) {
-        _otherSnake =  [SSSnake snakeWithInitialGrid:[Grid gridWithRow:6 Col:8]];
+        Grid *grid;
+        if ([SSConnectionManager sharedManager].role == SERVER)
+            grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+        else
+            grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
+        
+        _otherSnake =  [SSSnake otherSnakeWithInitialGrid:grid];
         [self addChild:_otherSnake];
         [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     }
@@ -161,7 +180,90 @@
     
     if ([action isEqualToString:ACTION_CHANGE_DIRECTION]) {
         [_otherSnake setDirectionFromRemote:[message intValue]];
+        
+    } else if ([action isEqualToString:ACTION_PAUSE_GAME]) {
+        [self pauseGame];
+        
+    } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
+        [self resumeGame];
     }
+}
+
+#pragma mark - Game flow and control UI methods
+
+- (void)createPauseMenu
+{
+    CGSize size = [CCDirector sharedDirector].winSize;
+    CCMenuItem *pauseItem = [CCMenuItemImage itemWithNormalImage:@"pause-button.png"  selectedImage:@"pause-button.png" block:^(id sender) {
+        [self pauseGame];
+        [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
+    }];
+    
+    CCMenu *menu = [CCMenu menuWithItems:pauseItem, nil];
+    menu.position = ccp(size.width - pauseItem.boundingBox.size.width, pauseItem.boundingBox.size.height);
+    [self addChild:menu];
+}
+
+
+- (void)createPauseLayer
+{
+    CGSize size = [CCDirector sharedDirector].winSize;
+    
+    _pauseLayer = [CCLayerColor layerWithColor:ccc4(100, 100, 100, 200)];
+    CCLabelTTF *pauseTitle = [CCLabelTTF labelWithString:@"Pause" fontName:@"Helvetica" fontSize:28];
+    pauseTitle.color = ccc3(255, 255, 255);
+    pauseTitle.position = ccp(size.width / 2, size.height - 100);
+    [_pauseLayer addChild:pauseTitle];
+    
+    CCMenuItem *resumeBtn = [CCMenuItemFont itemWithString:@"Resume" block:^(id sender) {
+        [self resumeGame];
+        [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_RESUME_GAME];
+    }];
+    
+    CCMenuItem *restartBtn = [CCMenuItemFont itemWithString:@"Restart" block:^(id sender) {
+        
+    }];
+    
+    CCMenuItem *quitBtn = [CCMenuItemFont itemWithString:@"Quit" block:^(id sender) {
+        if (_mode == SINGLE_PLAYER) {
+            [self quitGame];
+            
+        } else {
+            // TODO
+            // should ask another player
+        }
+    }];
+        
+    CCMenu *menu = [CCMenu menuWithItems:resumeBtn, restartBtn, quitBtn, nil];
+    
+    [menu alignItemsVerticallyWithPadding:80];
+    menu.position = ccp(size.width / 2, size.height / 2);
+    
+    [_pauseLayer addChild:menu];
+}
+
+- (void)pauseGame
+{
+    if (!_isPaused) {
+        _isPaused = YES;
+        if (!_pauseLayer) [self createPauseLayer];
+        [self addChild:_pauseLayer];
+        isTouchEnabled_ = NO;
+        [self pauseSchedulerAndActions];
+    }
+}
+
+- (void)resumeGame
+{
+    _isPaused = NO;
+    isTouchEnabled_ = YES;
+    [self removeChild:_pauseLayer cleanup:NO];
+    [self resumeSchedulerAndActions];
+}
+
+- (void)quitGame
+{
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[MainScreenLayer scene] withColor:ccWHITE]];
 }
 
 @end

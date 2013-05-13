@@ -24,6 +24,7 @@
 
 // Game Data
 @property (nonatomic) Mode mode;
+@property (nonatomic) BOOL isPaused;
 
 
 // Motion Control
@@ -34,5 +35,6 @@
 @property (strong, nonatomic) SSSnake *mySnake;
 @property (strong, nonatomic) SSMap *map;
 @property (strong, nonatomic) SSSnake *otherSnake;
+@property (strong, nonatomic) CCLayer *pauseLayer;
 
 @end
