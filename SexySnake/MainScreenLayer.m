@@ -7,7 +7,6 @@
 //
 
 #import "MainScreenLayer.h"
-#import "SSConnectionManager.h"
 #import "GameLayer.h"
 
 @implementation MainScreenLayer
@@ -35,22 +34,31 @@
     CCMenuItem *singlePlayerBtn = [CCMenuItemFont itemWithString:@"1P" block:^(id sender) {
         [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf1P]];
     }];
-    
-    CCMenuItem *twoPlayerClientBtn = [CCMenuItemFont itemWithString:@"Client" block:^(id sender) {
-        
-        // (temp )replace scene in connectToDecive
-        [SSConnectionManager sharedManager].role = CLIENT;
-        [[SSConnectionManager sharedManager] connectToDevice];
+
+    CCMenuItem *twoPlayerBtn = [CCMenuItemFont itemWithString:@"2P" block:^(id sender) {
+        SSConnectionManager *manager = [SSConnectionManager sharedManager];
+        manager.mainScreenDelegate = self;
+        [manager connectToDevice];
     }];
     
-    CCMenuItem *twoPlayerServerBtn = [CCMenuItemFont itemWithString:@"Server" block:^(id sender) {
-        
-        // (temp )replace scene in connectToDecive
-        [SSConnectionManager sharedManager].role = SERVER;
-        [[SSConnectionManager sharedManager] connectToDevice];
-    }];
     
-    CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerClientBtn, twoPlayerServerBtn, nil];
+//    CCMenuItem *twoPlayerClientBtn = [CCMenuItemFont itemWithString:@"Client" block:^(id sender) {
+//        
+//        // (temp )replace scene in connectToDecive
+//        [SSConnectionManager sharedManager].role = CLIENT;
+//        [[SSConnectionManager sharedManager] connectToDevice];
+//    }];
+//    
+//    CCMenuItem *twoPlayerServerBtn = [CCMenuItemFont itemWithString:@"Server" block:^(id sender) {
+//        
+//        // (temp )replace scene in connectToDecive
+//        [SSConnectionManager sharedManager].role = SERVER;
+//        [[SSConnectionManager sharedManager] connectToDevice];
+//    }];
+    
+//    CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerClientBtn, twoPlayerServerBtn, nil];
+    
+    CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerBtn, nil];
     
     CGSize size = [[CCDirector sharedDirector] winSize];
     [mainMenu alignItemsHorizontallyWithPadding:80];
@@ -59,5 +67,9 @@
     [self addChild:mainMenu];
 }
 
+- (void)managerDidConnect
+{
+    [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf2P]];
+}
 
 @end

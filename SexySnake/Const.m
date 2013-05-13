@@ -8,6 +8,9 @@
 
 #import "Const.h"
 
+NSString * const JSONKeyAction = @"action";
+NSString * const JSONKeyMessage = @"message";
+
 @implementation SSUtility
 
 @end

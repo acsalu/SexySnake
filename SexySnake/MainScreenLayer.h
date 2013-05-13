@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import <GameKit/GameKit.h>
+#import "SSConnectionManager.h"
 
-@interface MainScreenLayer : CCLayer <GKPeerPickerControllerDelegate, GKSessionDelegate>
+@interface MainScreenLayer : CCLayer <SSConnectionDelegate>
 
 + (CCScene *)scene;
 

@@ -25,6 +25,7 @@
 + (CCScene *)sceneOf2P
 {
     NSLog(@"enter 2P mode");
+    [[SSConnectionManager sharedManager] determineServer];
     return [GameLayer sceneWithMode:MULTI_PLAYER];
 }
 

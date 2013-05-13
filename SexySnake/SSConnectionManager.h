@@ -10,12 +10,14 @@
 #import <GameKit/GameKit.h>
 #import "Const.h"
 
+extern NSString *const ACTION_COINTOSS;
 extern NSString *const ACTION_HELLO;
 extern NSString *const ACTION_CHANGE_DIRECTION;
 extern NSString *const ACTION_PAUSE_GAME;
 extern NSString *const ACTION_RESUME_GAME;
 extern NSString *const ACTION_RESTART_GAME;
 extern NSString *const ACTION_QUIT_GAME;
+
 
 @class SSConnectionManager;
 
@@ -26,15 +28,30 @@ extern NSString *const ACTION_QUIT_GAME;
 
 @end
 
+@protocol SSConnectionDelegate <NSObject>
+
+@required
+- (void)managerDidConnect;
+
+@end
+
+
+
 @interface SSConnectionManager : NSObject <GKPeerPickerControllerDelegate, GKSessionDelegate>
+{
+    NSNumber *gameUniqueID;
+}
 
 @property (strong, nonatomic) GKSession *session;
-@property (weak, nonatomic) id<SSConnectionManagerDelegate> delegate;
 @property (nonatomic) Role role;
+
+@property (weak, nonatomic) id<SSConnectionManagerDelegate> delegate;
+@property (weak, nonatomic) id<SSConnectionDelegate> mainScreenDelegate;
 
 + (SSConnectionManager *)sharedManager;
 
 - (void)connectToDevice;
+- (void)determineServer;
 - (void)sendMessage:(NSString *)message forAction:(NSString *)action;
 
 @end

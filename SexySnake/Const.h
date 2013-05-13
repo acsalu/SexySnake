@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const JSONKeyAction;
+extern NSString * const JSONKeyMessage;
+
 enum Direction {
     UP = 0, RIGHT, DOWN, LEFT
 };

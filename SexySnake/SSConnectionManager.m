@@ -10,6 +10,7 @@
 #import "GameLayer.h"
 #import "JSONKit.h"
 
+NSString *const ACTION_COINTOSS = @"COINTOSS";
 
 NSString *const ACTION_HELLO = @"HELLO";
 NSString *const ACTION_CHANGE_DIRECTION = @"CHANGE_DIRECTION";
@@ -19,7 +20,7 @@ NSString *const ACTION_RESUME_GAME = @"RESUME_GAME";
 NSString *const ACTION_RESTART_GAME = @"RESTART_GAME";
 NSString *const ACTION_QUIT_GAME = @"QUIT_GAME";
 
-NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
+//NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
 @implementation SSConnectionManager 
 
@@ -32,6 +33,15 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
         sharedManager.role = NONE;
     });
     return sharedManager;
+}
+
+- (id)init
+{
+    if (self = [super init]) {
+        NSUUID *vendorID = [[UIDevice currentDevice] identifierForVendor];
+        gameUniqueID = @([vendorID hash]);
+    }
+    return self;
 }
 
 
@@ -48,21 +58,32 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
 - (void)sendMessage:(NSString *)message forAction:(NSString *)action
 {
-//    NSData *testData = [@"Jack Chao ^.<" dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dict = @{@"action":action, @"message":message};
+    NSDictionary *dict = @{JSONKeyAction:action, JSONKeyMessage:message};
     [self.session sendDataToAllPeers:[dict JSONData] withDataMode:GKSendDataReliable error:nil];
 }
 
 - (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession: (GKSession *)session context:(void *)context
 {
     NSString *receivedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    if ([receivedString isEqualToString:ACTION_DECLARE_SERVER]) {
-
+    NSDictionary *dataInDictionary = [receivedString objectFromJSONString];
+    NSLog(@"%@", dataInDictionary);
+    if ([dataInDictionary[JSONKeyAction] isEqualToString:ACTION_COINTOSS]) {
+        // determine which device is server
+        if ([gameUniqueID intValue] > [dataInDictionary[JSONKeyMessage] intValue]) {
+            NSLog(@"I'm server");
+            self.role = SERVER;
+        } else {
+            NSLog(@"I'm client");
+            self.role = CLIENT;
+        }
+//        [self.mainScreenDelegate managerDidConnect];
+//        self.mainScreenDelegate = nil;
+        
     } else if (self.delegate) {
         dispatch_async(dispatch_get_main_queue(), ^{
             
             if ([self.delegate respondsToSelector:@selector(connectionManager:didReceiveDictionary:)])
-                [self.delegate connectionManager:self didReceiveDictionary:(NSDictionary *) [receivedString objectFromJSONString]];
+                [self.delegate connectionManager:self didReceiveDictionary:dataInDictionary];
             else
                 CCLOG(@"sucks");
         });
@@ -86,6 +107,7 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
 - (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session
 {
+    NSLog(@"dfdf");
     session.delegate = self;
     self.session = session;
     [session setDataReceiveHandler:self withContext:nil];
@@ -93,19 +115,23 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
     picker.delegate = nil;
     [picker dismiss];
     
+    [self.mainScreenDelegate managerDidConnect];
+    self.mainScreenDelegate = nil;
     
-    [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf2P]];
 }
 
-- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
-{
-    NSLog(@"I'm client");
-}
+//- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID
+//{
+//    NSLog(@"dfsfdsfdsf");
+//    NSLog(@"I'm client");
+//}
 
 - (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state
 {
     if (state == GKPeerStateConnected) {
         NSLog(@"Session state changed : GKPeerStateConnected");
+//        [self sendMessage:[gameUniqueID stringValue] forAction:ACTION_COINTOSS];
+        
     } else {
         if (state == GKPeerStateDisconnected) _role = NONE;
         
@@ -115,5 +141,9 @@ NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
     }
 }
 
+- (void)determineServer
+{
+    [self sendMessage:[gameUniqueID stringValue] forAction:ACTION_COINTOSS];
+}
 
 @end
