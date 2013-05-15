@@ -11,6 +11,17 @@
 NSString * const JSONKeyAction = @"action";
 NSString * const JSONKeyMessage = @"message";
 
-@implementation SSUtility
+@implementation Const
+
++ (Const *)sharedConst
+{
+    static Const *sharedConst;
+    @synchronized(self) {
+        if (!sharedConst) {
+            sharedConst = [[self alloc] init];
+        }
+    }
+    return sharedConst;
+}
 
 @end
