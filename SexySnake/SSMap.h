@@ -53,7 +53,7 @@
 //Utility
 - (NSArray*)mapToArray;
 + (NSMutableArray*)arrayToMap:(NSArray*)array;
-
+- (void)oneDimensionArrayForMap:(NSMutableArray*)arrayForMap;
 - (void)rerenderMap:(NSMutableArray*)arrayForMap;
 
 @end

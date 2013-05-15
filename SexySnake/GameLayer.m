@@ -258,9 +258,10 @@
         
     }else if ([action isEqualToString:ACTION_SEND_MAP]){
         NSMutableArray *receivedArray = [message objectFromJSONString];
-        NSMutableArray *newMap = [SSMap arrayToMap:receivedArray];
+        //NSMutableArray *newMap = [SSMap arrayToMap:receivedArray];
         if ([SSConnectionManager sharedManager].role == CLIENT) {
-            [_map rerenderMap:newMap];
+            [_map oneDimensionArrayForMap:receivedArray];
+            //[_map rerenderMap:newMap];
         }
     }
 }
