@@ -46,4 +46,7 @@
 //Transmitting data
 - (NSString*)ditionaryToArray:(SSMap*)map;
 
+// Update UI
+- (void)updateShootButton;
+
 @end
