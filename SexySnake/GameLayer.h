@@ -44,4 +44,7 @@
 @property (assign, nonatomic) BOOL startGenBulletTarget;
 
 
+// Update UI
+- (void)updateShootButton;
+
 @end
