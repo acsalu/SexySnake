@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "Const.h"
-#import "GameLayer.h"
+#import "BulletSprite.h"
 
+@class GameLayer;
 @class Grid;
 
-@interface SSSnake : CCSprite
+@interface SSSnake : CCSprite <BulletSpriteDelegate>
 
 @property (weak, nonatomic) GameLayer *gameLayer;
 

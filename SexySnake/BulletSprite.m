@@ -7,6 +7,7 @@
 //
 
 #import "BulletSprite.h"
+#import "GameLayer.h"
 #import "SSSnake.h"
 
 @implementation BulletSprite
@@ -23,12 +24,17 @@
     
 }
 
-- (void)fireAtRate:(ccTime)rate
+- (void)setDelegate:(GameLayer<BulletSpriteDelegate> *)delegate
 {
-//    [self schedule:@selector(updatePosition) interval:1/rate];
-    _rate = rate;
-    [self updatePosition];
+    _delegate = delegate;
+    _mySnake = delegate.mySnake;
+    _otherSnake = delegate.otherSnake;
+    _map = delegate.map;
+}
 
+- (void)fire
+{
+    [self updatePosition];
 }
 
 - (void)updatePosition
@@ -37,26 +43,37 @@
 
     if (nextGrid != nil) {
 
-        Item itemInNextGrid =  [_delegate.map.mapInfo[nextGrid.row][nextGrid.col] intValue];
+        Item itemInNextGrid =  [_map.mapInfo[nextGrid.row][nextGrid.col] intValue];
 
         if (itemInNextGrid == EMPTY) {
-            id movement = [CCMoveTo actionWithDuration:0.01 position:[Grid positionWithGrid:nextGrid]];
+            id movement = [CCMoveTo actionWithDuration:0.05 position:[Grid positionWithGrid:nextGrid]];
             id callback = [CCCallFunc actionWithTarget:self selector:@selector(updatePosition)];
             CCSequence *sequence = [CCSequence actions:movement, callback, nil];
             [self runAction:sequence];
+            
             _positionInGrid = nextGrid;
+            
         } else if (itemInNextGrid == TARGET) {
+            [self removeFromParentAndCleanup:YES];
             // kill target
+            
         } else if (itemInNextGrid == BULLET) {
+            [self removeFromParentAndCleanup:YES];
             // kill bullet
         } else if (itemInNextGrid == WALL) {
+            [self removeFromParentAndCleanup:YES];
             // suicide
         } else if (itemInNextGrid == BULLETTARGET) {
+            [self removeFromParentAndCleanup:YES];
             // kill bullet target
         } else { // snake
-//            [_delegate.mySnake.grids containsObject:nextGrid];
-//            [_delegate.otherSnake.grids containsObject:nextGrid];
-
+            [self removeFromParentAndCleanup:YES];
+            for (Grid *g in _mySnake.grids) {
+                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootAt:g]; }
+            }
+            for (Grid *g in _otherSnake.grids) {
+                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootAt:g]; }
+            }
         }
         
         _delegate.map.mapInfo[_positionInGrid.row][_positionInGrid.col] = [NSNumber numberWithInt:EMPTY];
@@ -68,6 +85,7 @@
     }
     
 }
+
 
 
 @end

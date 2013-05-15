@@ -113,7 +113,6 @@ NSString *const ACTION_RECEIVE_SNAKE_INFO = @"RECEIVE_SNAKE_INFO";
 
 - (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session
 {
-    NSLog(@"dfdf");
     session.delegate = self;
     self.session = session;
     [session setDataReceiveHandler:self withContext:nil];

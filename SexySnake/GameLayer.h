@@ -40,6 +40,7 @@
 @property (strong, nonatomic) SSSnake *otherSnake;
 @property (strong, nonatomic) CCLayer *pauseLayer;
 @property (strong, nonatomic) CCSprite *countdownSprite;
+@property (strong, nonatomic) CCMenuItem *shootItem;
 @property (assign, nonatomic) BOOL startGenerateTarget;
 @property (assign, nonatomic) BOOL startGenBulletTarget;
 
