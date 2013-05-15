@@ -203,7 +203,7 @@
         [_otherSnake finishBuilding];
     }
     
-    [_map updatePositionOfBullet];
+//    [_map updatePositionOfBullet];
 }
 
 
@@ -213,8 +213,8 @@
 
 - (void)connectionManager:(SSConnectionManager *)connectionManager didReceiveDictionary:(NSDictionary *)dictionary
 {
-    NSString *action = dictionary[@"action"];
-    NSString *message = dictionary[@"message"];
+    NSString *action = dictionary[JSONKeyAction];
+    NSString *message = dictionary[JSONKeyMessage];
     CCLOG(@"Receive Message:[%@] %@", action, message);
     
     if ([action isEqualToString:ACTION_CHANGE_DIRECTION]) {
@@ -276,7 +276,7 @@
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
 //    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
-    
+    [self addObserver:self forKeyPath:@"mySnake.numberOfBulletTarget" options:NSKeyValueObservingOptionInitial context:NULL];
     if (_mode == MULTI_PLAYER) {
         Grid *grid;
         if ([SSConnectionManager sharedManager].role == SERVER)
@@ -289,7 +289,7 @@
         
     }
         
-        [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
         [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
@@ -386,7 +386,7 @@
 
 }
 
-- (void)onEnter
+- (void)onExit
 {
     [self removeObserver:self forKeyPath:@"mySnake.numberOfBulletTarget"];
 }

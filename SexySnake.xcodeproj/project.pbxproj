@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F8303A21743C1DD0065CC41 /* BulletSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8303A11743C1DD0065CC41 /* BulletSprite.m */; };
+		0F8311481743DC720071A006 /* bullet-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F8311471743DC720071A006 /* bullet-ipad.png */; };
 		0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */; };
 		0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F11173BD60500E0C838 /* GameLayer.m */; };
 		0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */; };
@@ -224,6 +226,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0F8303A01743C1DC0065CC41 /* BulletSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletSprite.h; sourceTree = "<group>"; };
+		0F8303A11743C1DD0065CC41 /* BulletSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletSprite.m; sourceTree = "<group>"; };
+		0F8311471743DC720071A006 /* bullet-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet-ipad.png"; sourceTree = "<group>"; };
 		0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenLayer.h; sourceTree = "<group>"; };
 		0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenLayer.m; sourceTree = "<group>"; };
 		0FD93F10173BD60500E0C838 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
@@ -714,6 +719,8 @@
 				0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */,
 				0FD93F10173BD60500E0C838 /* GameLayer.h */,
 				0FD93F11173BD60500E0C838 /* GameLayer.m */,
+				0F8303A01743C1DC0065CC41 /* BulletSprite.h */,
+				0F8303A11743C1DD0065CC41 /* BulletSprite.m */,
 				90587125173E50A900B6D31D /* SSSnake.h */,
 				90587126173E50A900B6D31D /* SSSnake.m */,
 				90587135173E765C00B6D31D /* SSMap.h */,
@@ -1280,6 +1287,7 @@
 				90F3D8661743879F00A4103A /* snake-head-green-ipad.png */,
 				90F3D8741743E1CF00A4103A /* pause-button-ipad.png */,
 				9058712E173E596000B6D31D /* target-ipad.png */,
+				0F8311471743DC720071A006 /* bullet-ipad.png */,
 				18F206F41743AF44006DDA81 /* bullet_target-ipad.png */,
 				909488E31741323B0090FA8E /* wall-ipad.png */,
 				909488E5174137700090FA8E /* countdown-0-ipad.png */,
@@ -1400,6 +1408,7 @@
 				90F3D87D1743E66700A4103A /* shoot-button-ipad.png in Resources */,
 				90F3D8801743E9A400A4103A /* shoot-button-disabled-ipad.png in Resources */,
 				90F3D8811743E9A400A4103A /* shoot-button-pressed-ipad.png in Resources */,
+				0F8311481743DC720071A006 /* bullet-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1423,6 +1432,7 @@
 				9058712A173E535D00B6D31D /* Const.m in Sources */,
 				90587137173E765D00B6D31D /* SSMap.m in Sources */,
 				900E5F89173F695400468EBF /* JSONKit.m in Sources */,
+				0F8303A21743C1DD0065CC41 /* BulletSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

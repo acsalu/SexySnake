@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "Const.h"
+#import "GameLayer.h"
 
 @class Grid;
 
 @interface SSSnake : CCSprite
+
+@property (weak, nonatomic) GameLayer *gameLayer;
 
 @property (nonatomic) Direction direction;
 @property (nonatomic, strong) NSMutableArray *components;

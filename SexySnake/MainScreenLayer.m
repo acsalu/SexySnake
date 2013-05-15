@@ -40,24 +40,7 @@
         manager.mainScreenDelegate = self;
         [manager connectToDevice];
     }];
-    
-    
-//    CCMenuItem *twoPlayerClientBtn = [CCMenuItemFont itemWithString:@"Client" block:^(id sender) {
-//        
-//        // (temp )replace scene in connectToDecive
-//        [SSConnectionManager sharedManager].role = CLIENT;
-//        [[SSConnectionManager sharedManager] connectToDevice];
-//    }];
-//    
-//    CCMenuItem *twoPlayerServerBtn = [CCMenuItemFont itemWithString:@"Server" block:^(id sender) {
-//        
-//        // (temp )replace scene in connectToDecive
-//        [SSConnectionManager sharedManager].role = SERVER;
-//        [[SSConnectionManager sharedManager] connectToDevice];
-//    }];
-    
-//    CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerClientBtn, twoPlayerServerBtn, nil];
-    
+      
     CCMenu *mainMenu = [CCMenu menuWithItems:singlePlayerBtn, twoPlayerBtn, nil];
     
     CGSize size = [[CCDirector sharedDirector] winSize];

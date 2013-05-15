@@ -28,7 +28,7 @@
         }
         
         _targets = [[NSMutableArray alloc] init];
-        _bullets = [[NSMutableArray alloc] init];
+//        _bullets = [[NSMutableArray alloc] init];
         _bulletTargets = [[NSMutableArray alloc] init];
         _bulletDirection = [[NSMutableArray alloc] init];
         _gridsOfNextFrame = [[NSMutableArray alloc] init];
@@ -213,6 +213,7 @@
     }
     _mapInfo[grid.row][grid.col] = @(EMPTY);
 }
+
 
 - (void)removeBulletAt:(Grid *)grid
 {

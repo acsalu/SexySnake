@@ -11,6 +11,8 @@
 #import "SSMap.h"
 #import "Const.h"
 
+#import "BulletSprite.h"
+
 @implementation SSSnake
 
 + (SSSnake *)mySnakeWithInitialGrid:(Grid *)grid
@@ -165,10 +167,12 @@
 
 - (void)shoot
 {
-    if (_numberOfBulletTarget > 0) {
-        _isShoot = YES;
-        _numberOfBulletTarget--;
-    }
+    Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
+    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
+    GameLayer *gameLayer = [self parent];
+    bullet.delegate = gameLayer;
+    [[self parent] addChild:bullet];
+    [bullet fireAtRate:0.1];
 }
 
 - (void)finishShooting
