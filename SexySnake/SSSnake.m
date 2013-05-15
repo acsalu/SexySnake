@@ -56,10 +56,18 @@
     return snake;
 }
 
+#pragma mark - Properties
+- (NSUInteger) length
+{
+    return _components.count;
+}
+
+
 #pragma mark - Snake Body Changing
 
 - (void)setDirection:(Direction)direction
 {
+    if (direction == REVERSE_DIRECTION(_direction)) return;
     [self rotateWithDirection:direction];
     
     if (direction != _direction)
@@ -105,9 +113,14 @@
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
     if (newHead) {
-        for (int i = _components.count - 1; i > 0; --i) {
-            _grids[i] = _grids[i - 1];
-            ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+        CCLOG(@"[Snake] head now move to %@", newHead);
+        if (!_hasEaten) {
+            for (int i = _components.count - 1; i > 0; --i) {
+                _grids[i] = _grids[i - 1];
+                ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+            }
+        } else {
+            _hasEaten = NO;
         }
                 
         _grids[0] = newHead;
@@ -124,7 +137,17 @@
 
 - (void)eatTarget
 {
+    CCSprite *body = [CCSprite spriteWithFile:@"snake-body.png"];
+    Grid *grid = [Grid gridWithRow:((Grid *) _grids[0]).row Col:((Grid *) _grids[0]).col];
     
+    CCLOG(@"[Snake] eat target at (%d, %d)", grid.row, grid.col);
+    
+    [_components insertObject:body atIndex:1];
+    [_grids insertObject:grid atIndex:1];
+    
+    [self addChild:body];
+    
+    _hasEaten = YES;
 }
 
 - (void)eatBulletTarget

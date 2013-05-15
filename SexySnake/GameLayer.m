@@ -86,7 +86,8 @@
         
         // setup counter
         _counter = 3;
-        [self schedule:@selector(countdown:) interval:1.0f];
+//        [self schedule:@selector(countdown:) interval:1.0f];
+        [self startGame];
         
     }
     return self;

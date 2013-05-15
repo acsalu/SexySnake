@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#define REVERSE_DIRECTION(d)  -d
+
 extern NSString * const JSONKeyAction;
 extern NSString * const JSONKeyMessage;
 
 enum Direction {
-    UP = 0, RIGHT, DOWN, LEFT
+    UP = 1, DOWN = -1,
+    RIGHT = 2, LEFT = -2
 };
 
 enum Item {
