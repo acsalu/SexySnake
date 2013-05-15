@@ -63,12 +63,14 @@
    }
 
    Grid *sHead = [sSnake objectAtIndex:0];
+   Direction direction = _gameLayer.mySnake.direction;
+   Grid *nextGrid = [Grid gridForDirection:direction toGrid:sHead];
    if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:TARGET]){
        NSLog(@"mySnake eats a target");
        [_gameLayer.mySnake eatTarget];
        [self removeTargetAt:sHead];
    }
-   else if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:WALL]){
+   else if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:WALL]){
        [_gameLayer.mySnake hitWall];
    }
    else if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:BULLETTARGET])
@@ -78,7 +80,9 @@
    }
 
    Grid *cHead = [cSnake objectAtIndex:0];
-   if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:TARGET]){
+   direction = _gameLayer.otherSnake.direction;
+   nextGrid = [Grid gridForDirection:direction toGrid:cHead];
+   if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:TARGET]){
        [_gameLayer.otherSnake eatTarget];
        [self removeTargetAt:cHead];
     
