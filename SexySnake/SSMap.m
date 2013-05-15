@@ -35,7 +35,7 @@
         _walls = [[NSMutableArray alloc] init];
     }
     return  self;
-    NSLog(@"Finish init");
+    //NSLog(@"Finish init");
     
     
 }
@@ -67,7 +67,7 @@
    Direction direction = _gameLayer.mySnake.direction;
    Grid *nextGrid = [Grid gridForDirection:direction toGrid:sHead];
    if([_mapInfo[sHead.row][sHead.col] integerValue] == TARGET){
-       NSLog(@"mySnake eats a target");
+       //NSLog(@"mySnake eats a target");
        [_gameLayer.mySnake eatTarget];
        [self removeTargetAt:sHead];
    }
@@ -141,10 +141,10 @@
         while (true) {
             row = arc4random() % MAX_ROWS;
             col = arc4random() % MAX_COLS;
-            NSLog(@"r:%i, c:%i",row,col);
-            NSLog(@"%@",_mapInfo[row][col]);
+            //NSLog(@"r:%i, c:%i",row,col);
+            //NSLog(@"%@",_mapInfo[row][col]);
             //BOOL isOccupied = NO;
-            NSLog(@"%d",EMPTY);
+            //NSLog(@"%d",EMPTY);
             if ([_mapInfo[row][col] isEqual: [NSNumber numberWithInt:EMPTY]]){
 
                 //isOccupied = YES;
@@ -285,8 +285,8 @@
 - (NSArray*)mapToArray
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    for (int i=0; i<[_mapInfo count]; i++) {
-        for (int j=0; j<[_mapInfo[i] count]; j++) {
+    for (int i=0; i<MAX_ROWS; i++) {
+        for (int j=0; j<MAX_COLS; j++) {
             [array addObject:_mapInfo[i][j]];
         }
     }
@@ -294,7 +294,7 @@
     return array;
 }
 
-- (NSMutableArray*)arrayToMap:(NSArray *)array
++ (NSMutableArray*)arrayToMap:(NSArray *)array
 {
     NSMutableArray *mapArray = [NSMutableArray arrayWithCapacity:MAX_ROWS];
     
@@ -311,29 +311,47 @@
 
 - (void)rerenderMap:(NSMutableArray*)arrayForMap
 {
+
+    for (int i=0; i<[_targets count]; i++) {
+        [_gameLayer removeChild:[_targets objectAtIndex:i] cleanup:YES];
+    }
+    [_targets removeAllObjects];
+    
+    for (int i=0; i<[_bulletTargets count]; i++) {
+        [_gameLayer removeChild:[_bulletTargets objectAtIndex:i] cleanup:YES];
+    }
+    [_bulletTargets removeAllObjects];
+    
+    for (int i=0; i<[_walls count]; i++) {
+        [_gameLayer removeChild:[_walls objectAtIndex:i] cleanup:YES];
+    }
+    [_walls removeAllObjects];
     
     for (int i=0; i<MAX_ROWS; i++) {
         for (int j=0; j<MAX_COLS; j++) {
-            if (_mapInfo[i][j] == [NSNumber numberWithInt:TARGET]) {
-                [self removeTargetAt:[Grid gridWithRow:i Col:j]];
-            }else if(_mapInfo[i][j] == [NSNumber numberWithInt:BULLETTARGET]){
-                [self removeBulletTargetAt:[Grid gridWithRow:i Col:j]];
-            }else if(_mapInfo[i][j] == [NSNumber numberWithInt:WALL]){
-                [self removeWallAt:[Grid gridWithRow:i Col:j]];
-            }
+//            if (_mapInfo[i][j] == [NSNumber numberWithInt:TARGET]) {
+//                [self removeTargetAt:[Grid gridWithRow:i Col:j]];
+//            }else if(_mapInfo[i][j] == [NSNumber numberWithInt:BULLETTARGET]){
+//                [self removeBulletTargetAt:[Grid gridWithRow:i Col:j]];
+//            }else if(_mapInfo[i][j] == [NSNumber numberWithInt:WALL]){
+//                [self removeWallAt:[Grid gridWithRow:i Col:j]];
+//            }
             
-            int object = arrayForMap[i*MAX_COLS+j];
+            int object = [arrayForMap[i][j] integerValue];
             if(object == TARGET){
                 CCSprite *target = [CCSprite spriteWithFile:@"target.png"];
                 [_targets addObject:target];
+                target.position = [Grid positionWithGrid:[Grid gridWithRow:i Col:j]];
                 [_gameLayer addChild:target];
             }else if(object == BULLETTARGET){
                 CCSprite *bullettarget = [CCSprite spriteWithFile:@"bullet_target.png"];
                 [_bulletTargets addObject:bullettarget];
+                bullettarget.position = [Grid positionWithGrid:[Grid gridWithRow:i Col:j]];
                 [_gameLayer addChild:bullettarget];
             }else if(object == WALL){
                 CCSprite *wall = [CCSprite spriteWithFile:@"wall.png"];
                 [_walls addObject:wall];
+                wall.position = [Grid positionWithGrid:[Grid gridWithRow:i Col:j]];
                 [_gameLayer addChild:wall];
             }
         }

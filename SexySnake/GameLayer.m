@@ -144,7 +144,8 @@
     if (_mode == MULTI_PLAYER) {
         if ([SSConnectionManager sharedManager].role == SERVER) {
             [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-            [self schedule:@selector(sendInfoToClient:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendSnakeInfoToClient:) interval:BASE_UPDATE_INTERVAL*5 repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendMapInfoToClinet:) interval:(BASE_UPDATE_INTERVAL)/10 repeat:kCCRepeatForever delay:0.0f];
         }
 //        else{
 //            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
@@ -157,11 +158,8 @@
     
 }
 
-- (void)sendInfoToClient:(ccTime)delta
+- (void)sendSnakeInfoToClient:(ccTime)delta
 {
-    NSArray *mapArray = [_map mapToArray];
-    NSString *mapSent = [mapArray JSONString];
-    [[SSConnectionManager sharedManager] sendMessage:mapSent forAction:ACTION_SEND_MAP];
     NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
     NSString *mySnakeSent = [mySnakeArray JSONString];
     [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SERVER_SNAKE];
@@ -171,10 +169,18 @@
     
 }
 
-- (void)sendInfoToServer:(ccTime)delta
+- (void)sendMapInfoToClinet:(ccTime)delta
 {
-
+    NSArray *mapArray = [_map mapToArray];
+    NSString *mapSent = [mapArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mapSent forAction:ACTION_SEND_MAP];
 }
+
+
+//- (void)sendInfoToServer:(ccTime)delta
+//{
+//
+//}
 
 - (void)updateMapInfo:(ccTime)delta
 {
@@ -251,9 +257,10 @@
         [_mySnake updateSnakeInfo:mySnakeArray];
         
     }else if ([action isEqualToString:ACTION_SEND_MAP]){
-        NSMutableArray *newMapArray = [message objectFromJSONString];
+        NSMutableArray *receivedArray = [message objectFromJSONString];
+        NSMutableArray *newMap = [SSMap arrayToMap:receivedArray];
         if ([SSConnectionManager sharedManager].role == CLIENT) {
-            [_map rerenderMap:newMapArray];
+            [_map rerenderMap:newMap];
         }
     }
 }
