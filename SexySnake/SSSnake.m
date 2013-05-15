@@ -9,6 +9,7 @@
 #import "SSSnake.h"
 #import "SSConnectionManager.h"
 #import "SSMap.h"
+#import "Const.h"
 
 #import "BulletSprite.h"
 
@@ -52,16 +53,25 @@
     
     snake.grids = [NSMutableArray arrayWithCapacity:1];
     snake.grids[0] = grid;
+    snake.direction = UP;
     
     [snake reorganize];
     
     return snake;
 }
 
+#pragma mark - Properties
+- (NSUInteger) length
+{
+    return _components.count;
+}
+
+
 #pragma mark - Snake Body Changing
 
 - (void)setDirection:(Direction)direction
 {
+    if (direction == [Const reverseForDirection:_direction]) return;
     [self rotateWithDirection:direction];
     
     if (direction != _direction)
@@ -106,12 +116,21 @@
 // call this method when moving
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
+    if (_hasLongBia) {
+        _hasLongBia = NO;
+        return;
+    }
     if (newHead) {
-        for (int i = 1; i < _components.count; ++i) {
-            _grids[i] = _grids[i - 1];
-            ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+        CCLOG(@"[Snake] head now move to %@", newHead);
+        if (!_hasEaten) {
+            for (int i = _components.count - 1; i > 0; --i) {
+                _grids[i] = _grids[i - 1];
+                ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+            }
+        } else {
+            _hasEaten = NO;
         }
-        
+                
         _grids[0] = newHead;
         ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
     }
@@ -126,7 +145,17 @@
 
 - (void)eatTarget
 {
+    CCSprite *body = [CCSprite spriteWithFile:@"snake-body.png"];
+    Grid *grid = [Grid gridWithRow:((Grid *) _grids[0]).row Col:((Grid *) _grids[0]).col];
     
+    CCLOG(@"[Snake] eat target at (%d, %d)", grid.row, grid.col);
+    
+    [_components insertObject:body atIndex:1];
+    [_grids insertObject:grid atIndex:1];
+    
+    [self addChild:body];
+    
+    _hasEaten = YES;
 }
 
 - (void)eatBulletTarget
@@ -136,15 +165,12 @@
 
 - (void)shoot
 {
-//    if (_numberOfBulletTarget > 0) {
-//        _isShoot = YES;
-//        _numberOfBulletTarget--;
-//    }
-//    CCSprite *head = _components[0];
-    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:_grids[0] andDirection:_direction];
-    
+    Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
+    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
+    GameLayer *gameLayer = [self parent];
+    bullet.delegate = gameLayer;
     [[self parent] addChild:bullet];
-    [bullet fireAtRate:BULLET_INTERVAL];
+    [bullet fireAtRate:0.1];
 }
 
 - (void)finishShooting
@@ -165,7 +191,13 @@
 
 - (void)hitWall
 {
-    
+    CCLOG(@"[Snake] hit wall at %@", _grids[0]);
+    if (self.length > 1) {
+        [self removeChild:[_components lastObject] cleanup:NO];
+        [_components removeLastObject];
+        [_grids removeLastObject];
+    }
+    _hasLongBia = YES;
 }
 
 @end

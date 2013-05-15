@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 extern NSString * const JSONKeyAction;
 extern NSString * const JSONKeyMessage;
 
 enum Direction {
-    UP = 0, RIGHT, DOWN, LEFT
+    UP = 0, DOWN, RIGHT, LEFT
 };
 
 enum Item {
@@ -32,7 +34,7 @@ typedef enum Item Item;
 typedef enum Role Role;
 typedef enum Mode Mode;
 
-#define MAX_COLS 30
+#define MAX_COLS 29
 #define MAX_ROWS 18
 #define GRID_SIZE 30
 
@@ -50,6 +52,7 @@ typedef enum Mode Mode;
 @interface Const : NSObject
 
 + (Const *)sharedConst;
++ (Direction)reverseForDirection:(Direction)direction;
 
 // upper left corner of the map
 @property (nonatomic, assign) CGFloat mapStartingX;

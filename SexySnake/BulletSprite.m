@@ -7,16 +7,17 @@
 //
 
 #import "BulletSprite.h"
-
+#import "SSSnake.h"
 
 @implementation BulletSprite
 
 + (BulletSprite *)bulletWithPositionInGrid:(Grid *)grid andDirection:(Direction)direction
 {
-    BulletSprite *bullet = [CCSprite spriteWithFile:@""];
+    BulletSprite *bullet = [BulletSprite spriteWithFile:@"bullet.png"];
     bullet.positionInGrid = grid;
     bullet.position = [Grid positionWithGrid:grid];
     bullet.rotation = (direction - 1) * 90;
+    bullet.direction = direction;
     
     return bullet;
     
@@ -24,25 +25,26 @@
 
 - (void)fireAtRate:(ccTime)rate
 {
-    [self schedule:@selector(updatePosition) interval:1/rate];
+//    [self schedule:@selector(updatePosition) interval:1/rate];
+    _rate = rate;
+    [self updatePosition];
+
 }
 
 - (void)updatePosition
 {
     Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_positionInGrid];
-    
+
     if (nextGrid != nil) {
-//        BOOL moveIsOK = [_delegate bullet:self wouldMoveFrom:_positionInGrid To:nextGrid];
 
-//        if (moveIsOK) {
+        Item itemInNextGrid =  [_delegate.map.mapInfo[nextGrid.row][nextGrid.col] intValue];
 
-//        }
-
-        Item itemInNextGrid =  _delegate.map.mapInfo[nextGrid.row][nextGrid.col];
-        if (itemInNextGrid == SNAKE_HEAD) {
-            // let snake die
-        } else if (itemInNextGrid == SNAKE_BODY) {
-            // reduce snake lenth
+        if (itemInNextGrid == EMPTY) {
+            id movement = [CCMoveTo actionWithDuration:0.01 position:[Grid positionWithGrid:nextGrid]];
+            id callback = [CCCallFunc actionWithTarget:self selector:@selector(updatePosition)];
+            CCSequence *sequence = [CCSequence actions:movement, callback, nil];
+            [self runAction:sequence];
+            _positionInGrid = nextGrid;
         } else if (itemInNextGrid == TARGET) {
             // kill target
         } else if (itemInNextGrid == BULLET) {
@@ -51,23 +53,18 @@
             // suicide
         } else if (itemInNextGrid == BULLETTARGET) {
             // kill bullet target
-        } else { // empty
-            // OK GO!
-            id movement = [CCMoveTo actionWithDuration:BULLET_INTERVAL position:[Grid positionWithGrid:nextGrid]];
-            [self runAction:movement];
-            _delegate.map.mapInfo[_positionInGrid.row][_positionInGrid.col] = [NSNumber numberWithInt:EMPTY];
-            _delegate.map.mapInfo[nextGrid.row][nextGrid.col] = [NSNumber numberWithInt:BULLET];
+        } else { // snake
+//            [_delegate.mySnake.grids containsObject:nextGrid];
+//            [_delegate.otherSnake.grids containsObject:nextGrid];
+
         }
+        
+        _delegate.map.mapInfo[_positionInGrid.row][_positionInGrid.col] = [NSNumber numberWithInt:EMPTY];
     }
     else {
         // out of bound
         // i.e : crash to wall
-        
-//        [_gameLayer removeChild:[_bullets objectAtIndex:i] cleanup:YES];
-//        [_gridsOfLastFrame removeObjectAtIndex:i];
-//        [_bulletDirection removeObjectAtIndex:i];
-//        [_bullets removeObjectAtIndex:i];
-//        _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
+        NSLog(@"qq");
     }
     
 }

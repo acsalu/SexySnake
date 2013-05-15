@@ -33,6 +33,8 @@
 
 @property (nonatomic) Direction direction;
 @property (strong, nonatomic) Grid *positionInGrid;
+@property (nonatomic) ccTime rate;
+
 
 + (BulletSprite *)bulletWithPositionInGrid:(Grid *)grid andDirection:(Direction)direction;
 

@@ -26,7 +26,7 @@
 @property (nonatomic) CGFloat startY;
 @property (nonatomic,weak) GameLayer *gameLayer;
 @property (nonatomic) NSMutableArray *bulletDirection;
-@property (nonatomic) NSMutableArray *gridsOfLastFrame;
+@property (nonatomic) NSMutableArray *gridsOfNextFrame;
 
 
 - (void)printMap;
@@ -48,6 +48,10 @@
 
 - (void)updatePositionOfBullet;
 - (void)wallIsBuiltAt:(Grid*)grid;
+
+//Utility
+- (NSArray*)mapToArray;
+- (NSMutableArray*)arrayToMap:(NSArray*)array;
 
 @end
 

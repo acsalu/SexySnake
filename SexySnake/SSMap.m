@@ -30,11 +30,12 @@
         _targets = [[NSMutableArray alloc] init];
 //        _bullets = [[NSMutableArray alloc] init];
         _bulletTargets = [[NSMutableArray alloc] init];
-//        _bulletDirection = [[NSMutableArray alloc] init];
-//        _gridsOfLastFrame = [[NSMutableArray alloc] init];
+        _bulletDirection = [[NSMutableArray alloc] init];
+        _gridsOfNextFrame = [[NSMutableArray alloc] init];
     }
     return  self;
     NSLog(@"Finish init");
+    
     
 }
 
@@ -47,12 +48,10 @@
     }
 }
 
+
 //Update the positions of SeverSnake/Client
 - (void)updatePositionOfServerSnake:(NSMutableArray *)sSnake ClientSnake:(NSMutableArray *)cSnake
 {
-    NSLog(@"Update snake info");
-    NSLog(@"mySnake:%@",sSnake);
-    NSLog(@"otherSnake:%@",cSnake);
     if([cSnake containsObject:[sSnake objectAtIndex:0]]){
         //client snake is bit
         [_gameLayer.otherSnake getBitAt:[sSnake objectAtIndex:0]];
@@ -64,12 +63,14 @@
    }
 
    Grid *sHead = [sSnake objectAtIndex:0];
+   Direction direction = _gameLayer.mySnake.direction;
+   Grid *nextGrid = [Grid gridForDirection:direction toGrid:sHead];
    if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:TARGET]){
        NSLog(@"mySnake eats a target");
        [_gameLayer.mySnake eatTarget];
        [self removeTargetAt:sHead];
    }
-   else if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:WALL]){
+   else if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:WALL]){
        [_gameLayer.mySnake hitWall];
    }
    else if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:BULLETTARGET])
@@ -78,38 +79,42 @@
        [self removeBulletTargetAt:sHead];
    }
 
-   Grid *cHead = [cSnake objectAtIndex:0];
-   if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:TARGET]){
-       [_gameLayer.otherSnake eatTarget];
-       [self removeTargetAt:cHead];
     
-   }
-   else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:WALL]){
-       [_gameLayer.otherSnake hitWall];
-   }
-   else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:BULLETTARGET]){
-       [_gameLayer.otherSnake eatBulletTarget];
-       [self removeBulletTargetAt:cHead];
-   }
+    if (_gameLayer.mode == MULTI_PLAYER) {
+        Grid *cHead = [cSnake objectAtIndex:0];
+        direction = _gameLayer.otherSnake.direction;
+        nextGrid = [Grid gridForDirection:direction toGrid:cHead];
+        if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:TARGET]){
+           [_gameLayer.otherSnake eatTarget];
+           [self removeTargetAt:cHead];
 
-   for(int i=0; i<[sSnake count]; i++){
-       Grid *pos = [sSnake objectAtIndex:i];
-       if (_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
-           [_gameLayer.mySnake getShotAt:pos];
-           [self removeBulletAt:pos];
-           break;
-       }
-   }
-    
-   for(int i=0; i<[cSnake count]; i++){
-       Grid *pos = [cSnake objectAtIndex:i];
-       if(_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
-           [_gameLayer.otherSnake getShotAt:pos];
-           [self removeBulletAt:pos];
-           break;
-       }
-   }
+        }
+        else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:WALL]){
+           [_gameLayer.otherSnake hitWall];
+        }
+        else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:BULLETTARGET]){
+           [_gameLayer.otherSnake eatBulletTarget];
+           [self removeBulletTargetAt:cHead];
+        }
 
+        for(int i=0; i<[sSnake count]; i++){
+           Grid *pos = [sSnake objectAtIndex:i];
+           if (_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+               [_gameLayer.mySnake getShotAt:pos];
+               [self removeBulletAt:pos];
+               break;
+           }
+        }
+
+        for(int i=0; i<[cSnake count]; i++){
+           Grid *pos = [cSnake objectAtIndex:i];
+           if(_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+               [_gameLayer.otherSnake getShotAt:pos];
+               [self removeBulletAt:pos];
+               break;
+           }
+        }
+    }
 
 }
 
@@ -121,13 +126,13 @@
     bullet.position = [Grid positionWithGrid:grid];
     [_gameLayer addChild:bullet];
     [_bulletDirection addObject:[NSNumber numberWithInt:direction]];
+
     
 }
 
 //Generate a new general target
 - (void)spawnTarget
 {
-   NSLog(@"Entering spawnTarget");
     if ([_targets count] < 3) {
         
         int row, col;
@@ -158,7 +163,6 @@
 
 - (void)spawnBulletTarget
 {
-    NSLog(@"Entering spawnBulletTarget");
     if ([_bulletTargets count] < 3) {
         
         int row, col;
@@ -194,6 +198,8 @@
             [_gameLayer removeChild:target cleanup:YES];
         }
     }
+    
+    _mapInfo[grid.row][grid.col] = @(EMPTY);
 }
 
 - (void)removeBulletTargetAt:(Grid *)grid
@@ -205,47 +211,52 @@
             [_gameLayer removeChild:bulletTarget cleanup:YES];
         }
     }
+    _mapInfo[grid.row][grid.col] = @(EMPTY);
 }
 
-//- (void)removeBulletAt:(Grid *)grid
-//{
-//    for (int i=0; i<[_bullets count]; i++) {
-//        CCSprite *bullet = [_bullets objectAtIndex:i];
-//        if(CGPointEqualToPoint(bullet.position, [Grid positionWithGrid:grid])){
-//            [_bullets removeObjectAtIndex:i];
-//            [_bulletDirection removeObjectAtIndex:i];
-//            [_gridsOfLastFrame removeObjectAtIndex:i];
-//            [_gameLayer removeChild:bullet cleanup:YES];
-//        }
-//    }
-//}
 
-//- (void)updatePositionOfBullet
-//{
-//    for (int i=0; i<[_bullets count]; i++) {
-//        Grid *grid = [_gridsOfLastFrame objectAtIndex:i];
-//        Direction d = [_bulletDirection objectAtIndex:i];
-//        Grid *nextGrid = [Grid gridForDirection:d toGrid:grid];
-//        
-//        if (nextGrid != nil) {
-//            id movement = [CCMoveTo actionWithDuration:BULLET_INTERVAL position:[Grid positionWithGrid:grid]];
-//            [[_bullets objectAtIndex:i] runAction:movement];
-//            _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
-//            _mapInfo[nextGrid.row][nextGrid.col] = [NSNumber numberWithInt:BULLET];
-//            [_gridsOfLastFrame replaceObjectAtIndex:i withObject:nextGrid];
-//        }
-//        else{
-//            [_gameLayer removeChild:[_bullets objectAtIndex:i] cleanup:YES];
-//            [_gridsOfLastFrame removeObjectAtIndex:i];
-//            [_bulletDirection removeObjectAtIndex:i];
-//            [_bullets removeObjectAtIndex:i];
-//            _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
-//        }
-//        
-//
-//    }
-//    
-//}
+- (void)removeBulletAt:(Grid *)grid
+{
+    for (int i=0; i<[_bullets count]; i++) {
+        CCSprite *bullet = [_bullets objectAtIndex:i];
+        if(CGPointEqualToPoint(bullet.position, [Grid positionWithGrid:grid])){
+            [_bullets removeObjectAtIndex:i];
+            [_bulletDirection removeObjectAtIndex:i];
+            [_gridsOfNextFrame removeObjectAtIndex:i];
+            [_gameLayer removeChild:bullet cleanup:YES];
+        }
+    }
+}
+
+- (void)updatePositionOfBullet
+{
+    if ([_bullets count] > 0) {
+        
+        for (int i=0; i<[_bullets count]; i++) {
+            Grid *grid = [_gridsOfNextFrame objectAtIndex:i];
+            Direction d = [_bulletDirection objectAtIndex:i];
+            Grid *nextGrid = [Grid gridForDirection:d toGrid:grid];
+            
+            if (nextGrid != nil) {
+                id movement = [CCMoveTo actionWithDuration:BULLET_INTERVAL position:[Grid positionWithGrid:grid]];
+                [[_bullets objectAtIndex:i] runAction:movement];
+                _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
+                _mapInfo[nextGrid.row][nextGrid.col] = [NSNumber numberWithInt:BULLET];
+                [_gridsOfNextFrame replaceObjectAtIndex:i withObject:nextGrid];
+            }
+            else{
+                [_gameLayer removeChild:[_bullets objectAtIndex:i] cleanup:YES];
+                [_gridsOfNextFrame removeObjectAtIndex:i];
+                [_bulletDirection removeObjectAtIndex:i];
+                [_bullets removeObjectAtIndex:i];
+                _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
+            }
+            
+            
+        }
+    }
+    
+}
 
 - (void)wallIsBuiltAt:(Grid *)grid
 {
@@ -253,6 +264,32 @@
     CCSprite *wall = [CCSprite spriteWithFile:@"wall.png"];
     wall.position = [Grid positionWithGrid:grid];
     [_gameLayer addChild:wall];
+}
+
+- (NSArray*)mapToString
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for (int i=0; i<[_mapInfo count]; i++) {
+        for (int j=0; j<[_mapInfo[i] count]; j++) {
+            [array addObject:_mapInfo[i][j]];
+        }
+    }
+    
+    return array;
+}
+
+- (NSMutableArray*)arrayToMap:(NSArray *)array
+{
+    NSMutableArray *mapArray = [NSMutableArray arrayWithCapacity:MAX_ROWS];
+    
+    for (int i = 0; i < MAX_ROWS; ++i) {
+        mapArray[i] = [NSMutableArray arrayWithCapacity:MAX_COLS];
+        for (int j = 0; j < MAX_COLS; ++j) {
+            mapArray[i][j] = [array objectAtIndex:i*MAX_COLS+j];
+        }
+    }
+    
+    return mapArray;
 }
 
 @end
@@ -265,12 +302,9 @@
 {
     CGFloat startX = [[Const sharedConst] mapStartingX];
     CGFloat startY = [[Const sharedConst] mapStartingY];
-    CCLOG(@"grid(%d,%d)", grid.row, grid.col);
     
     CGFloat x = startX + (2 * grid.col + 1) * GRID_SIZE * 0.5 + GRID_WIDTH;
     CGFloat y = startY - (2 * grid.row + 1) * GRID_SIZE * 0.5 - GRID_WIDTH;
-    
-    CCLOG(@"position(%.0f, %.0f)", x, y);   
     
     CGPoint p = ccp(x, y);
     
@@ -313,6 +347,11 @@
             else
                return [Grid gridWithRow:grid.row Col:grid.col - 1];
     }
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"(%d, %d)", _row, _col];
 }
 
 @end

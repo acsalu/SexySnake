@@ -10,6 +10,7 @@
 #import "SSSnake.h"
 #import "SSMap.h"
 #import "MainScreenLayer.h"
+#import "JSONKit.h"
 
 #define BASE_UPDATE_INTERVAL 0.3
 
@@ -74,6 +75,17 @@
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
         
+
+//        if (_mode == MULTI_PLAYER) {
+//            if ([SSConnectionManager sharedManager].role ==  SEEK_CUR) {
+//                [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//            }
+//            else{
+//                
+//            }
+//            
+//        }
+        
         [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
 
         
@@ -84,9 +96,13 @@
         _map = [[SSMap alloc] init];
         _map.gameLayer = self;
         
+        // testing wall
+        [_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
+        
         // setup counter
         _counter = 3;
-        [self schedule:@selector(countdown:) interval:1.0f];
+//        [self schedule:@selector(countdown:) interval:1.0f];
+        [self startGame];
         
     }
     return self;
@@ -130,6 +146,25 @@
     
 }
 
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInView:[touch view]];
+    
+    CCSprite *myHead = _mySnake.components[0];
+    CGFloat xDiff = location.x - myHead.position.x;
+    CGFloat yDiff = location.y - myHead.position.y;
+    
+    if (abs(xDiff) > abs(yDiff)) {
+        if (yDiff > 0) _mySnake.direction = UP;
+        else _mySnake.direction = DOWN;
+    } else {
+        if (xDiff > 0) _mySnake.direction = RIGHT;
+        else _mySnake.direction = LEFT;
+    }
+    
+}
+
 - (void)updateMapInfo:(ccTime)delta
 {
     if (!_startGenerateTarget) {
@@ -138,7 +173,6 @@
     }
     
     if (!_startGenBulletTarget) {
-        NSLog(@"Here");
         _startGenBulletTarget = YES;
         [_map spawnBulletTarget];
     }
@@ -146,13 +180,11 @@
     [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
     
     if (_mySnake.isShoot) {
-        //NSLog(@"mySnake shoots");
         [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
         [_mySnake finishShooting];
     }
     
     if (_otherSnake.isShoot) {
-        //NSLog(@"otherSnake shoots");
         [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
         [_otherSnake finishShooting];
     }
@@ -171,15 +203,11 @@
         [_otherSnake finishBuilding];
     }
     
-    [_map updatePositionOfBullet];
+//    [_map updatePositionOfBullet];
 }
 
 
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    CCLOG(@"Send Hello Message");
-    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend." forAction:ACTION_HELLO];
-}
+
 
 #pragma mark - SSConnectionManager delegate methods
 
@@ -236,7 +264,7 @@
     [self addChild:_mySnake];
     
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     
     if (_mode == MULTI_PLAYER) {
@@ -345,7 +373,9 @@
     menu.position = ccp(size.width / 2, size.height / 2);
     
     [_pauseLayer addChild:menu];
+
 }
+
 
 
 @end
