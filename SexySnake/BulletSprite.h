@@ -14,8 +14,6 @@
 @class BulletSprite;
 @class GameLayer;
 
-//typedef enum {
-//} BulletEvent;
 
 @protocol BulletSpriteDelegate <NSObject>
 
@@ -26,10 +24,10 @@
 @end
 
 
-
 @interface BulletSprite : CCSprite
 
 @property (weak, nonatomic) GameLayer<BulletSpriteDelegate> *delegate;
+@property (weak, nonatomic) SSMap *map;
 
 @property (nonatomic) Direction direction;
 @property (strong, nonatomic) Grid *positionInGrid;
@@ -38,6 +36,6 @@
 
 + (BulletSprite *)bulletWithPositionInGrid:(Grid *)grid andDirection:(Direction)direction;
 
-- (void)fireAtRate:(ccTime)rate;
+- (void)fire;
 
 @end

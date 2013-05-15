@@ -107,7 +107,6 @@ NSString *const ACTION_QUIT_GAME = @"QUIT_GAME";
 
 - (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session
 {
-    NSLog(@"dfdf");
     session.delegate = self;
     self.session = session;
     [session setDataReceiveHandler:self withContext:nil];

@@ -18,17 +18,15 @@
     bullet.position = [Grid positionWithGrid:grid];
     bullet.rotation = (direction - 1) * 90;
     bullet.direction = direction;
+    bullet.map = bullet.delegate.map;
     
     return bullet;
     
 }
 
-- (void)fireAtRate:(ccTime)rate
+- (void)fire
 {
-//    [self schedule:@selector(updatePosition) interval:1/rate];
-    _rate = rate;
     [self updatePosition];
-
 }
 
 - (void)updatePosition
@@ -37,23 +35,31 @@
 
     if (nextGrid != nil) {
 
-        Item itemInNextGrid =  [_delegate.map.mapInfo[nextGrid.row][nextGrid.col] intValue];
+        Item itemInNextGrid =  [_map.mapInfo[nextGrid.row][nextGrid.col] intValue];
 
         if (itemInNextGrid == EMPTY) {
-            id movement = [CCMoveTo actionWithDuration:0.01 position:[Grid positionWithGrid:nextGrid]];
+            id movement = [CCMoveTo actionWithDuration:0.05 position:[Grid positionWithGrid:nextGrid]];
             id callback = [CCCallFunc actionWithTarget:self selector:@selector(updatePosition)];
             CCSequence *sequence = [CCSequence actions:movement, callback, nil];
             [self runAction:sequence];
+            
             _positionInGrid = nextGrid;
+            
         } else if (itemInNextGrid == TARGET) {
+            [self removeFromParentAndCleanup:YES];
             // kill target
+            
         } else if (itemInNextGrid == BULLET) {
+            [self removeFromParentAndCleanup:YES];
             // kill bullet
         } else if (itemInNextGrid == WALL) {
+            [self removeFromParentAndCleanup:YES];
             // suicide
         } else if (itemInNextGrid == BULLETTARGET) {
+            [self removeFromParentAndCleanup:YES];
             // kill bullet target
         } else { // snake
+            [self removeFromParentAndCleanup:YES];
 //            [_delegate.mySnake.grids containsObject:nextGrid];
 //            [_delegate.otherSnake.grids containsObject:nextGrid];
 
@@ -68,6 +74,7 @@
     }
     
 }
+
 
 
 @end
