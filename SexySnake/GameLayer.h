@@ -43,6 +43,7 @@
 @property (strong, nonatomic) CCMenuItem *shootItem;
 @property (assign, nonatomic) BOOL startGenerateTarget;
 @property (assign, nonatomic) BOOL startGenBulletTarget;
+@property (strong, nonatomic) NSArray *scoreLabels;
 
 
 // Update UI

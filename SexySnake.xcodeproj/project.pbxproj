@@ -211,6 +211,7 @@
 		90C41DD6174429220064AB67 /* single-player-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90C41DD5174429220064AB67 /* single-player-ipad.png */; };
 		90C41DDB174432520064AB67 /* main-screen-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90C41DDA174432520064AB67 /* main-screen-ipad.png */; };
 		90C41DDD1744329D0064AB67 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90C41DDC1744329D0064AB67 /* Default-Landscape~ipad.png */; };
+		90C41DDF174446380064AB67 /* amena.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90C41DDE174446380064AB67 /* amena.ttf */; };
 		90F3D8651743879500A4103A /* snake-head-blue-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D8641743879500A4103A /* snake-head-blue-ipad.png */; };
 		90F3D8671743879F00A4103A /* snake-head-green-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D8661743879F00A4103A /* snake-head-green-ipad.png */; };
 		90F3D86E1743AB6900A4103A /* background-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D86C1743AB6900A4103A /* background-ipad.png */; };
@@ -635,6 +636,7 @@
 		90C41DD5174429220064AB67 /* single-player-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "single-player-ipad.png"; sourceTree = "<group>"; };
 		90C41DDA174432520064AB67 /* main-screen-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-screen-ipad.png"; sourceTree = "<group>"; };
 		90C41DDC1744329D0064AB67 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		90C41DDE174446380064AB67 /* amena.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = amena.ttf; sourceTree = "<group>"; };
 		90F3D8641743879500A4103A /* snake-head-blue-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-head-blue-ipad.png"; sourceTree = "<group>"; };
 		90F3D8661743879F00A4103A /* snake-head-green-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-head-green-ipad.png"; sourceTree = "<group>"; };
 		90F3D86C1743AB6900A4103A /* background-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-ipad.png"; sourceTree = "<group>"; };
@@ -1299,6 +1301,7 @@
 		9058712B173E595700B6D31D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				90C41DDE174446380064AB67 /* amena.ttf */,
 				90C41DD9174431720064AB67 /* background */,
 				90C41DC4174426A60064AB67 /* control */,
 				90C41DBE1744033E0064AB67 /* map-ipad.png */,
@@ -1461,6 +1464,7 @@
 				90C41DD6174429220064AB67 /* single-player-ipad.png in Resources */,
 				90C41DDB174432520064AB67 /* main-screen-ipad.png in Resources */,
 				90C41DDD1744329D0064AB67 /* Default-Landscape~ipad.png in Resources */,
+				90C41DDF174446380064AB67 /* amena.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
