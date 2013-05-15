@@ -12,7 +12,6 @@
 #import "MainScreenLayer.h"
 #import "JSONKit.h"
 
-#define BASE_UPDATE_INTERVAL 0.3
 
 @implementation GameLayer
 
@@ -145,7 +144,7 @@
         if ([SSConnectionManager sharedManager].role == SERVER) {
             [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
             [self schedule:@selector(sendSnakeInfoToClient:) interval:BASE_UPDATE_INTERVAL*5 repeat:kCCRepeatForever delay:0.0f];
-            [self schedule:@selector(sendMapInfoToClinet:) interval:(BASE_UPDATE_INTERVAL)/10 repeat:kCCRepeatForever delay:0.0f];
+            //[self schedule:@selector(sendMapInfoToClinet:) interval:(BASE_UPDATE_INTERVAL)/10 repeat:kCCRepeatForever delay:0.0f];
         }
 //        else{
 //            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];

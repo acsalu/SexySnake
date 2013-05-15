@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-
+#define BASE_UPDATE_INTERVAL 0.3
 
 extern NSString * const JSONKeyAction;
 extern NSString * const JSONKeyMessage;
