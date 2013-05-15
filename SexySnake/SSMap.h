@@ -16,7 +16,7 @@
 
 @interface SSMap : NSObject
 
-@property (nonatomic) NSMutableDictionary *mapData;
+//@property (nonatomic) NSMutableDictionary *mapData;
 @property (nonatomic) NSMutableArray *mapInfo;
 @property (nonatomic) NSMutableArray *targets;
 @property (nonatomic) NSMutableArray *bulletTargets;

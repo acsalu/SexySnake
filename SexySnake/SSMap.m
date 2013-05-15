@@ -28,10 +28,10 @@
         }
         
         _targets = [[NSMutableArray alloc] init];
-        _bullets = [[NSMutableArray alloc] init];
+//        _bullets = [[NSMutableArray alloc] init];
         _bulletTargets = [[NSMutableArray alloc] init];
-        _bulletDirection = [[NSMutableArray alloc] init];
-        _gridsOfLastFrame = [[NSMutableArray alloc] init];
+//        _bulletDirection = [[NSMutableArray alloc] init];
+//        _gridsOfLastFrame = [[NSMutableArray alloc] init];
     }
     return  self;
     NSLog(@"Finish init");
@@ -207,45 +207,45 @@
     }
 }
 
-- (void)removeBulletAt:(Grid *)grid
-{
-    for (int i=0; i<[_bullets count]; i++) {
-        CCSprite *bullet = [_bullets objectAtIndex:i];
-        if(CGPointEqualToPoint(bullet.position, [Grid positionWithGrid:grid])){
-            [_bullets removeObjectAtIndex:i];
-            [_bulletDirection removeObjectAtIndex:i];
-            [_gridsOfLastFrame removeObjectAtIndex:i];
-            [_gameLayer removeChild:bullet cleanup:YES];
-        }
-    }
-}
+//- (void)removeBulletAt:(Grid *)grid
+//{
+//    for (int i=0; i<[_bullets count]; i++) {
+//        CCSprite *bullet = [_bullets objectAtIndex:i];
+//        if(CGPointEqualToPoint(bullet.position, [Grid positionWithGrid:grid])){
+//            [_bullets removeObjectAtIndex:i];
+//            [_bulletDirection removeObjectAtIndex:i];
+//            [_gridsOfLastFrame removeObjectAtIndex:i];
+//            [_gameLayer removeChild:bullet cleanup:YES];
+//        }
+//    }
+//}
 
-- (void)updatePositionOfBullet
-{
-    for (int i=0; i<[_bullets count]; i++) {
-        Grid *grid = [_gridsOfLastFrame objectAtIndex:i];
-        Direction d = [_bulletDirection objectAtIndex:i];
-        Grid *nextGrid = [Grid gridForDirection:d toGrid:grid];
-        
-        if (nextGrid != nil) {
-            id movement = [CCMoveTo actionWithDuration:BULLET_INTERVAL position:[Grid positionWithGrid:grid]];
-            [[_bullets objectAtIndex:i] runAction:movement];
-            _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
-            _mapInfo[nextGrid.row][nextGrid.col] = [NSNumber numberWithInt:BULLET];
-            [_gridsOfLastFrame replaceObjectAtIndex:i withObject:nextGrid];
-        }
-        else{
-            [_gameLayer removeChild:[_bullets objectAtIndex:i] cleanup:YES];
-            [_gridsOfLastFrame removeObjectAtIndex:i];
-            [_bulletDirection removeObjectAtIndex:i];
-            [_bullets removeObjectAtIndex:i];
-            _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
-        }
-        
-
-    }
-    
-}
+//- (void)updatePositionOfBullet
+//{
+//    for (int i=0; i<[_bullets count]; i++) {
+//        Grid *grid = [_gridsOfLastFrame objectAtIndex:i];
+//        Direction d = [_bulletDirection objectAtIndex:i];
+//        Grid *nextGrid = [Grid gridForDirection:d toGrid:grid];
+//        
+//        if (nextGrid != nil) {
+//            id movement = [CCMoveTo actionWithDuration:BULLET_INTERVAL position:[Grid positionWithGrid:grid]];
+//            [[_bullets objectAtIndex:i] runAction:movement];
+//            _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
+//            _mapInfo[nextGrid.row][nextGrid.col] = [NSNumber numberWithInt:BULLET];
+//            [_gridsOfLastFrame replaceObjectAtIndex:i withObject:nextGrid];
+//        }
+//        else{
+//            [_gameLayer removeChild:[_bullets objectAtIndex:i] cleanup:YES];
+//            [_gridsOfLastFrame removeObjectAtIndex:i];
+//            [_bulletDirection removeObjectAtIndex:i];
+//            [_bullets removeObjectAtIndex:i];
+//            _mapInfo[grid.row][grid.col] = [NSNumber numberWithInt:EMPTY];
+//        }
+//        
+//
+//    }
+//    
+//}
 
 - (void)wallIsBuiltAt:(Grid *)grid
 {

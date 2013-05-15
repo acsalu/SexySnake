@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F8303A21743C1DD0065CC41 /* BulletSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8303A11743C1DD0065CC41 /* BulletSprite.m */; };
 		0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */; };
 		0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F11173BD60500E0C838 /* GameLayer.m */; };
 		0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */; };
@@ -220,6 +221,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0F8303A01743C1DC0065CC41 /* BulletSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletSprite.h; sourceTree = "<group>"; };
+		0F8303A11743C1DD0065CC41 /* BulletSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletSprite.m; sourceTree = "<group>"; };
 		0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenLayer.h; sourceTree = "<group>"; };
 		0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenLayer.m; sourceTree = "<group>"; };
 		0FD93F10173BD60500E0C838 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
@@ -700,12 +703,14 @@
 				902A72DE173B6F7400745D43 /* IntroLayer.mm */,
 				90587128173E535D00B6D31D /* Const.h */,
 				90587129173E535D00B6D31D /* Const.m */,
-				0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */,
-				0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */,
 				0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */,
 				0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */,
+				0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */,
+				0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */,
 				0FD93F10173BD60500E0C838 /* GameLayer.h */,
 				0FD93F11173BD60500E0C838 /* GameLayer.m */,
+				0F8303A01743C1DC0065CC41 /* BulletSprite.h */,
+				0F8303A11743C1DD0065CC41 /* BulletSprite.m */,
 				90587125173E50A900B6D31D /* SSSnake.h */,
 				90587126173E50A900B6D31D /* SSSnake.m */,
 				90587135173E765C00B6D31D /* SSMap.h */,
@@ -1407,6 +1412,7 @@
 				9058712A173E535D00B6D31D /* Const.m in Sources */,
 				90587137173E765D00B6D31D /* SSMap.m in Sources */,
 				900E5F89173F695400468EBF /* JSONKit.m in Sources */,
+				0F8303A21743C1DD0065CC41 /* BulletSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

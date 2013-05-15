@@ -10,6 +10,8 @@
 #import "SSConnectionManager.h"
 #import "SSMap.h"
 
+#import "BulletSprite.h"
+
 @implementation SSSnake
 
 + (SSSnake *)mySnakeWithInitialGrid:(Grid *)grid
@@ -134,10 +136,15 @@
 
 - (void)shoot
 {
-    if (_numberOfBulletTarget > 0) {
-        _isShoot = YES;
-        _numberOfBulletTarget--;
-    }
+//    if (_numberOfBulletTarget > 0) {
+//        _isShoot = YES;
+//        _numberOfBulletTarget--;
+//    }
+//    CCSprite *head = _components[0];
+    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:_grids[0] andDirection:_direction];
+    
+    [[self parent] addChild:bullet];
+    [bullet fireAtRate:BULLET_INTERVAL];
 }
 
 - (void)finishShooting
