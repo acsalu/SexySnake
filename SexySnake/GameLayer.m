@@ -86,7 +86,7 @@
 //            
 //        }
         
-        [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        [self schedule:@selector(updateDeviceMotion:) interval:0.05f repeat:kCCRepeatForever delay:0.0f];
 
         
         // set SSConnectionManager delegate
