@@ -62,7 +62,7 @@
         
         
         CCSprite *mapSprite = [CCSprite spriteWithFile:@"map.png"];
-        mapSprite.position = ccp(size.width / 2, size.height / 2);
+        mapSprite.position = ccp(size.width / 2 - 50, size.height / 2);
         [self addChild:mapSprite];
         
         [[Const sharedConst] setMapStartingX:mapSprite.position.x - mapSprite.boundingBox.size.width / 2];
@@ -228,6 +228,16 @@
     }
 }
 
+#pragma mark - Observer methods
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"mySnake.numberOfBulletTarget"]) {
+        CCLOG(@"[GameLayer] bullet++");
+        
+    }
+}
+
 
 #pragma mark - Game flow methods
 
@@ -326,7 +336,7 @@
         [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
     }];
     
-    CCMenuItem *shootItem = [CCMenuItemFont itemWithString:@"Shoot" block:^(id sender) {
+    CCMenuItem *shootItem = [CCMenuItemImage itemWithNormalImage:@"shoot-button.png" selectedImage:@"shoot-button.png" block:^(id sender) {
         CCLOG(@"Shoot Button pressed.");
         [_mySnake shoot];
     }];
@@ -374,6 +384,11 @@
     
     [_pauseLayer addChild:menu];
 
+}
+
+- (void)onEnter
+{
+    [self removeObserver:self forKeyPath:@"mySnake.numberOfBulletTarget"];
 }
 
 
