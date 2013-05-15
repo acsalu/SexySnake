@@ -32,7 +32,7 @@ typedef enum Item Item;
 typedef enum Role Role;
 typedef enum Mode Mode;
 
-#define MAX_COLS 30
+#define MAX_COLS 29
 #define MAX_ROWS 18
 #define GRID_SIZE 30
 
