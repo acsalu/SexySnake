@@ -333,7 +333,19 @@
 
 - (void)endGame
 {
+    [self unschedule:@selector(updateMySnakePosition:)];
+    NSString *message;
+    if (_mode == SINGLE_PLAYER) message = @"Yon Win!";
+    else if (_mySnake.length == WIN_SNAKE_LENGTH) message = @"You Win!";
+    else message = @"You Lost...";
     
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Finished!"
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK!"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)pauseGame
@@ -378,6 +390,7 @@
         scoreLabel.color = ccc3(255, 255, 255);
         [self addChild:scoreLabel];
         _scoreLabels = [NSArray arrayWithObject:scoreLabel];
+        
     } else {
         CCLabelTTF *myScoreLabel = [CCLabelTTF labelWithString:@"My Snake: 1" fontName:AmenaFontName fontSize:40];
         myScoreLabel.position = ccp(120, size.height - 60);
@@ -465,5 +478,22 @@
     }
 }
 
+- (void)updateScoreLabelForSnake:(SSSnake *)snake
+{
+    if (snake == _mySnake) {
+        ((CCLabelTTF *) _scoreLabels[0]).string = [NSString stringWithFormat:@"My Snake: %d", _mySnake.length];
+    } else {
+        ((CCLabelTTF *) _scoreLabels[1]).string = [NSString stringWithFormat:@"The Snake: %d", _otherSnake.length];
+    }
+    
+    if (_mySnake.length == WIN_SNAKE_LENGTH || _otherSnake.length == WIN_SNAKE_LENGTH) [self endGame];
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self quitGame];
+}
 
 @end

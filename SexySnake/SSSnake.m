@@ -124,6 +124,7 @@
         [_grids addObject:[Grid gridWithRow:[gridInfo[0] intValue] Col:[gridInfo[1] intValue]]];
     }
     [self reorganize];
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 // call this method when add or remove components
@@ -187,12 +188,14 @@
     [self addChild:body];
     
     _hasEaten = YES;
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)eatBulletTarget
 {
     if (_numberOfBulletTarget < MAX_BULLET_NUM)
         ++self.numberOfBulletTarget;
+    [_gameLayer updateShootButton];
     // update UI
     // play sound effect
 }
@@ -206,6 +209,7 @@
         bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
         [[self parent] addChild:bullet];
         [bullet fire];
+        [_gameLayer updateShootButton];
     }
 }
 
@@ -234,6 +238,7 @@
         [_grids removeLastObject];
     }
     _hasLongBia = YES;
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)getShotAt:(Grid*)grid
@@ -248,6 +253,7 @@
             [_grids removeLastObject];
         }
     }
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)bullet:(BulletSprite *)bullet shootSnakeAt:(Grid *)grid

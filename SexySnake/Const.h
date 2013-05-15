@@ -52,6 +52,7 @@ typedef enum Mode Mode;
 #define GRID_WIDTH 1
 
 #define MAX_BULLET_NUM 5
+#define WIN_SNAKE_LENGTH 10
 
 @interface Const : NSObject
 

@@ -17,7 +17,7 @@
 @class SSSnake;
 
 
-@interface GameLayer : CCLayer <SSConnectionManagerDelegate, BulletSpriteDelegate>
+@interface GameLayer : CCLayer <SSConnectionManagerDelegate, BulletSpriteDelegate, UIAlertViewDelegate>
 
 + (CCScene *)sceneOf1P;
 + (CCScene *)sceneOf2P;
@@ -48,5 +48,6 @@
 
 // Update UI
 - (void)updateShootButton;
+- (void)updateScoreLabelForSnake:(SSSnake *)snake;
 
 @end
