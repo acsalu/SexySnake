@@ -27,7 +27,8 @@
 - (void)bullet:(BulletSprite *)bullet shootAt:(Grid*)grid;
 
 // SSMap
-
+- (void)removeTargetAt:(Grid *)grid;
+- (void)removeBulletTargetAt:(Grid *)grid;
 
 @end
 

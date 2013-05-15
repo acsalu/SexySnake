@@ -56,15 +56,17 @@
         } else if (itemInNextGrid == TARGET) {
             [self removeFromParentAndCleanup:YES];
             // kill target
+            [_map removeTargetAt:nextGrid];
             
         } else if (itemInNextGrid == BULLET) {
-            [self removeFromParentAndCleanup:YES];
+//            [self removeFromParentAndCleanup:YES];
             // kill bullet
         } else if (itemInNextGrid == WALL) {
             [self removeFromParentAndCleanup:YES];
             // suicide
         } else if (itemInNextGrid == BULLETTARGET) {
             [self removeFromParentAndCleanup:YES];
+            [_map removeBulletTargetAt:nextGrid];
             // kill bullet target
         } else { // snake
             [self removeFromParentAndCleanup:YES];
@@ -81,7 +83,7 @@
     else {
         // out of bound
         // i.e : crash to wall
-        NSLog(@"qq");
+        [self removeFromParentAndCleanup:YES];
     }
     
 }

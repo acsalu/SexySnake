@@ -34,13 +34,13 @@ typedef enum Item Item;
 typedef enum Role Role;
 typedef enum Mode Mode;
 
-#define MAX_COLS 29
-#define MAX_ROWS 18
+#define MAX_COLS 28
+#define MAX_ROWS 21
 #define GRID_SIZE 30
 
-#define SERVER_ROW 9
-#define SERVER_COL 10
-#define CLIENT_ROW 9
+#define SERVER_ROW 10
+#define SERVER_COL 9
+#define CLIENT_ROW 10
 #define CLIENT_COL 20
 
 #define MAX_INTERVAL 3

@@ -61,7 +61,7 @@
         
         
         CCSprite *mapSprite = [CCSprite spriteWithFile:@"map.png"];
-        mapSprite.position = ccp(size.width / 2 - 50, size.height / 2);
+        mapSprite.position = ccp(size.width / 2 - 50, size.height / 2 + 20);
         [self addChild:mapSprite];
         
         [[Const sharedConst] setMapStartingX:mapSprite.position.x - mapSprite.boundingBox.size.width / 2];
@@ -367,9 +367,9 @@
     
     _shootItem.isEnabled = NO;
     
-    CCMenu *menu = [CCMenu menuWithItems:_shootItem, pauseItem, nil];
-    menu.position = ccp(size.width - 250, pauseItem.boundingBox.size.height / 2);
-    [menu alignItemsHorizontallyWithPadding:30];
+    CCMenu *menu = [CCMenu menuWithItems:pauseItem, _shootItem, nil];
+    menu.position = ccp(size.width - 70, size.height / 2 + 50);
+    [menu alignItemsVerticallyWithPadding:400];
     [self addChild:menu];
 }
 
