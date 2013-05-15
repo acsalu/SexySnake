@@ -262,6 +262,12 @@
             [_map oneDimensionArrayForMap:receivedArray];
             //[_map rerenderMap:newMap];
         }
+    } else if ([action isEqualToString:ACTION_SHOOT]) {
+        Grid *nextGrid = [Grid gridForDirection:_otherSnake.direction toGrid:_otherSnake.grids[0]];
+        BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_otherSnake.direction];
+        bullet.delegate = self;
+        [self addChild:bullet];
+        [bullet fire];
     }
 }
 
