@@ -86,6 +86,12 @@
     _direction = direction;
 }
 
+- (void)setNumberOfBulletTarget:(int)numberOfBulletTarget
+{
+    _numberOfBulletTarget = numberOfBulletTarget;
+    [_gameLayer updateShootButton];
+}
+
 - (void)rotateWithDirection:(Direction)direction
 {
     switch (direction) {
@@ -160,19 +166,22 @@
 
 - (void)eatBulletTarget
 {
-    _numberOfBulletTarget++;
+    if (_numberOfBulletTarget < MAX_BULLET_NUM)
+        ++self.numberOfBulletTarget;
     // update UI
     // play sound effect
 }
 
 - (void)shoot
 {
-    Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
-    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
-    GameLayer *gameLayer = [self parent];
-    bullet.delegate = gameLayer;
-    [[self parent] addChild:bullet];
-    [bullet fireAtRate:0.1];
+    if (self.numberOfBulletTarget > 0) {
+        --self.numberOfBulletTarget;
+        Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
+        BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
+        bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
+        [[self parent] addChild:bullet];
+        [bullet fire];
+    }
 }
 
 - (void)finishShooting

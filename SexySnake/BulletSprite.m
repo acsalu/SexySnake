@@ -7,6 +7,7 @@
 //
 
 #import "BulletSprite.h"
+#import "GameLayer.h"
 #import "SSSnake.h"
 
 @implementation BulletSprite
@@ -18,10 +19,17 @@
     bullet.position = [Grid positionWithGrid:grid];
     bullet.rotation = (direction - 1) * 90;
     bullet.direction = direction;
-    bullet.map = bullet.delegate.map;
     
     return bullet;
     
+}
+
+- (void)setDelegate:(GameLayer<BulletSpriteDelegate> *)delegate
+{
+    _delegate = delegate;
+    _mySnake = delegate.mySnake;
+    _otherSnake = delegate.otherSnake;
+    _map = delegate.map;
 }
 
 - (void)fire
@@ -60,9 +68,12 @@
             // kill bullet target
         } else { // snake
             [self removeFromParentAndCleanup:YES];
-//            [_delegate.mySnake.grids containsObject:nextGrid];
-//            [_delegate.otherSnake.grids containsObject:nextGrid];
-
+            for (Grid *g in _mySnake.grids) {
+                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootAt:g]; }
+            }
+            for (Grid *g in _otherSnake.grids) {
+                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootAt:g]; }
+            }
         }
         
         _delegate.map.mapInfo[_positionInGrid.row][_positionInGrid.col] = [NSNumber numberWithInt:EMPTY];
