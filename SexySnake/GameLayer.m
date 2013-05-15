@@ -47,6 +47,10 @@
         isTouchEnabled_ = YES;
         
         // Create label for motion data
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+        background.position = ccp(size.width / 2, size.height / 2);
+        [self addChild:background];
+        
         _label = [CCLabelTTF labelWithString:@"Hello World!" fontName:@"Helvetica" fontSize:20];
         _label.position = ccp(size.width / 2, size.height - 40);
         _label.color = ccc3(255, 0, 0);

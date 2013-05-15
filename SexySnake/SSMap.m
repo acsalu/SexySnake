@@ -267,8 +267,8 @@
     CGFloat startY = [[Const sharedConst] mapStartingY];
     CCLOG(@"grid(%d,%d)", grid.row, grid.col);
     
-    CGFloat x = startX + (2 * grid.col + 1) * GRID_SIZE * 0.5;
-    CGFloat y = startY - (2 * grid.row + 1) * GRID_SIZE * 0.5;
+    CGFloat x = startX + (2 * grid.col + 1) * GRID_SIZE * 0.5 + GRID_WIDTH;
+    CGFloat y = startY - (2 * grid.row + 1) * GRID_SIZE * 0.5 - GRID_WIDTH;
     
     CCLOG(@"position(%.0f, %.0f)", x, y);   
     
