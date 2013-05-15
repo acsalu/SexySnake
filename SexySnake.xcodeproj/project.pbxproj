@@ -204,6 +204,7 @@
 		90F3D8671743879F00A4103A /* snake-head-green-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D8661743879F00A4103A /* snake-head-green-ipad.png */; };
 		90F3D86E1743AB6900A4103A /* background-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D86C1743AB6900A4103A /* background-ipad.png */; };
 		90F3D86F1743AB6900A4103A /* map-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D86D1743AB6900A4103A /* map-ipad.png */; };
+		90F3D8711743B67500A4103A /* snake-body-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 90F3D8701743B67500A4103A /* snake-body-ipad.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -612,6 +613,7 @@
 		90F3D8661743879F00A4103A /* snake-head-green-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-head-green-ipad.png"; sourceTree = "<group>"; };
 		90F3D86C1743AB6900A4103A /* background-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-ipad.png"; sourceTree = "<group>"; };
 		90F3D86D1743AB6900A4103A /* map-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-ipad.png"; sourceTree = "<group>"; };
+		90F3D8701743B67500A4103A /* snake-body-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snake-body-ipad.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1265,6 +1267,7 @@
 				90F3D86C1743AB6900A4103A /* background-ipad.png */,
 				90F3D86D1743AB6900A4103A /* map-ipad.png */,
 				90F3D8641743879500A4103A /* snake-head-blue-ipad.png */,
+				90F3D8701743B67500A4103A /* snake-body-ipad.png */,
 				90F3D8661743879F00A4103A /* snake-head-green-ipad.png */,
 				9058712E173E596000B6D31D /* target-ipad.png */,
 				18F206F41743AF44006DDA81 /* bullet_target-ipad.png */,
@@ -1384,6 +1387,7 @@
 				18F206F51743AF44006DDA81 /* bullet_target-ipad.png in Resources */,
 				90F3D86E1743AB6900A4103A /* background-ipad.png in Resources */,
 				90F3D86F1743AB6900A4103A /* map-ipad.png in Resources */,
+				90F3D8711743B67500A4103A /* snake-body-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -105,11 +105,11 @@
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
     if (newHead) {
-        for (int i = 1; i < _components.count; ++i) {
+        for (int i = _components.count - 1; i > 0; --i) {
             _grids[i] = _grids[i - 1];
             ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
         }
-        
+                
         _grids[0] = newHead;
         ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
     }
