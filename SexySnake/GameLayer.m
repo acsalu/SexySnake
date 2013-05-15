@@ -146,10 +146,10 @@
             [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
             [self schedule:@selector(sendInfoToClient:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
         }
-        else{
-            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-            [self schedule:@selector(sendInfoToServer:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-        }
+//        else{
+//            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//            [self schedule:@selector(sendInfoToServer:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//        }
         
     }
     else
