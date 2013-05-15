@@ -44,6 +44,8 @@ typedef enum Mode Mode;
 #define MAX_INTERVAL 3
 #define BULLET_INTERVAL 1
 
+#define MAX_TARGET_NUM 3
+
 
 @interface SSUtility : NSObject
 

@@ -38,5 +38,6 @@
 @property (strong, nonatomic) SSSnake *otherSnake;
 @property (strong, nonatomic) CCLayer *pauseLayer;
 @property (strong, nonatomic) CCSprite *countdownSprite;
+@property (assign, nonatomic) BOOL startGenerateTarget;
 
 @end
