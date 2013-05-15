@@ -14,7 +14,6 @@
 
 #define BASE_UPDATE_INTERVAL 0.3
 
-
 @implementation GameLayer
 
 + (CCScene *)sceneOf1P
@@ -328,12 +327,14 @@
         [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
     }];
     
-    CCMenuItem *shootItem = [CCMenuItemImage itemWithNormalImage:@"shoot-button.png" selectedImage:@"shoot-button.png" block:^(id sender) {
+    _shootItem = [CCMenuItemImage itemWithNormalImage:@"shoot-button.png" selectedImage:@"shoot-button.png" block:^(id sender) {
         CCLOG(@"Shoot Button pressed.");
         [_mySnake shoot];
     }];
     
-    CCMenu *menu = [CCMenu menuWithItems:shootItem, pauseItem, nil];
+    _shootItem.isEnabled = NO;
+    
+    CCMenu *menu = [CCMenu menuWithItems:_shootItem, pauseItem, nil];
     menu.position = ccp(size.width - 250, pauseItem.boundingBox.size.height / 2);
     [menu alignItemsHorizontallyWithPadding:30];
     [self addChild:menu];
@@ -380,7 +381,12 @@
 
 - (void)updateShootButton
 {
-    
+
+    if (_mySnake.numberOfBulletTarget == 0) {
+        _shootItem.isEnabled = NO;
+    } else {
+        _shootItem.isEnabled = YES;
+    }
 }
 
 
