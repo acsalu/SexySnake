@@ -11,6 +11,8 @@
 NSString * const JSONKeyAction = @"action";
 NSString * const JSONKeyMessage = @"message";
 
+NSString * const AmenaFontName = @"amena";
+
 @implementation Const
 
 + (Const *)sharedConst

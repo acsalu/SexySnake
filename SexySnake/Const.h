@@ -13,6 +13,8 @@
 extern NSString * const JSONKeyAction;
 extern NSString * const JSONKeyMessage;
 
+extern NSString * const AmenaFontName;
+
 enum Direction {
     UP = 0, DOWN, RIGHT, LEFT
 };
