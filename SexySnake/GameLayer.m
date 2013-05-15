@@ -86,6 +86,7 @@
         _map = [[SSMap alloc] init];
         _map.gameLayer = self;
         
+
         // testing wall
         [_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
         
@@ -271,6 +272,7 @@
 - (void)startGame
 {
     // Create local snake
+    [self setupInfoExchange];
     
     Grid *grid;
     if ([SSConnectionManager sharedManager].role == SERVER)
@@ -298,12 +300,13 @@
         
         _otherSnake.gameLayer = self;
         
-    }
+    }else
+        [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    
-    if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
-        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
+//    
+//    if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
+//        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
 
 }
 

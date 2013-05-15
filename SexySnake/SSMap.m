@@ -32,6 +32,7 @@
         _bulletTargets = [[NSMutableArray alloc] init];
         _bulletDirection = [[NSMutableArray alloc] init];
         _gridsOfNextFrame = [[NSMutableArray alloc] init];
+        _walls = [[NSMutableArray alloc] init];
     }
     return  self;
     NSLog(@"Finish init");
@@ -65,15 +66,15 @@
    Grid *sHead = [sSnake objectAtIndex:0];
    Direction direction = _gameLayer.mySnake.direction;
    Grid *nextGrid = [Grid gridForDirection:direction toGrid:sHead];
-   if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:TARGET]){
+   if([_mapInfo[sHead.row][sHead.col] integerValue] == TARGET){
        NSLog(@"mySnake eats a target");
        [_gameLayer.mySnake eatTarget];
        [self removeTargetAt:sHead];
    }
-   else if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:WALL]){
+   else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL){
        [_gameLayer.mySnake hitWall];
    }
-   else if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:BULLETTARGET])
+   else if([_mapInfo[sHead.row][sHead.col] integerValue] == BULLETTARGET)
    {
        [_gameLayer.mySnake eatBulletTarget];
        [self removeBulletTargetAt:sHead];
@@ -84,22 +85,22 @@
         Grid *cHead = [cSnake objectAtIndex:0];
         direction = _gameLayer.otherSnake.direction;
         nextGrid = [Grid gridForDirection:direction toGrid:cHead];
-        if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:TARGET]){
+        if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == TARGET){
            [_gameLayer.otherSnake eatTarget];
            [self removeTargetAt:cHead];
 
         }
-        else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:WALL]){
+        else if([_mapInfo[cHead.row][cHead.col] integerValue] == WALL){
            [_gameLayer.otherSnake hitWall];
         }
-        else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:BULLETTARGET]){
+        else if([_mapInfo[cHead.row][cHead.col] integerValue] == BULLETTARGET){
            [_gameLayer.otherSnake eatBulletTarget];
            [self removeBulletTargetAt:cHead];
         }
 
         for(int i=0; i<[sSnake count]; i++){
            Grid *pos = [sSnake objectAtIndex:i];
-           if (_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+           if ([_mapInfo[pos.row][pos.col] integerValue] == BULLET){
                [_gameLayer.mySnake getShotAt:pos];
                [self removeBulletAt:pos];
                break;
@@ -108,7 +109,7 @@
 
         for(int i=0; i<[cSnake count]; i++){
            Grid *pos = [cSnake objectAtIndex:i];
-           if(_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+           if([_mapInfo[pos.row][pos.col] integerValue] == BULLET){
                [_gameLayer.otherSnake getShotAt:pos];
                [self removeBulletAt:pos];
                break;
@@ -141,9 +142,12 @@
             row = arc4random() % MAX_ROWS;
             col = arc4random() % MAX_COLS;
             NSLog(@"r:%i, c:%i",row,col);
-            BOOL isOccupied = NO;
-            if (_mapInfo[row][col] == [NSNumber numberWithInt:EMPTY]){
-                isOccupied = YES;
+            NSLog(@"%@",_mapInfo[row][col]);
+            //BOOL isOccupied = NO;
+            NSLog(@"%d",EMPTY);
+            if ([_mapInfo[row][col] isEqual: [NSNumber numberWithInt:EMPTY]]){
+
+                //isOccupied = YES;
                 _mapInfo[row][col] = [NSNumber numberWithInt:TARGET];
                 break;
             }
@@ -171,7 +175,7 @@
             row = arc4random() % MAX_ROWS;
             col = arc4random() % MAX_COLS;
             //BOOL isOccupied = NO;
-            if (_mapInfo[row][col] == [NSNumber numberWithInt:EMPTY]){
+            if ([_mapInfo[row][col] isEqual:[NSNumber numberWithInt:EMPTY] ]){
                 //isOccupied = YES;
                 _mapInfo[row][col] = [NSNumber numberWithInt:BULLETTARGET];
                 break;
