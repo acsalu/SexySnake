@@ -19,8 +19,9 @@
 
 @protocol BulletSpriteDelegate <NSObject>
 
-@required
+
 - (BOOL)bullet:(BulletSprite *)bullet wouldMoveFrom:(Grid *) originGrid To:(Grid *)currentGrid;
+- (void)bullet:(BulletSprite *)bullet shootAt:(Grid*)grid;
 
 
 @end

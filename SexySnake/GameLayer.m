@@ -228,16 +228,6 @@
     }
 }
 
-#pragma mark - Observer methods
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"mySnake.numberOfBulletTarget"]) {
-        CCLOG(@"[GameLayer] bullet++");
-        
-    }
-}
-
 
 #pragma mark - Game flow methods
 
@@ -275,8 +265,8 @@
     
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
 //    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    
-    [self addObserver:self forKeyPath:@"mySnake.numberOfBulletTarget" options:NSKeyValueObservingOptionInitial context:NULL];
+    _mySnake.gameLayer = self;
+
     if (_mode == MULTI_PLAYER) {
         Grid *grid;
         if ([SSConnectionManager sharedManager].role == SERVER)
@@ -286,6 +276,8 @@
         
         _otherSnake =  [SSSnake otherSnakeWithInitialGrid:grid];
         [self addChild:_otherSnake];
+        
+        _otherSnake.gameLayer = self;
         
     }
         
@@ -386,11 +378,10 @@
 
 }
 
-- (void)onExit
+- (void)updateShootButton
 {
-    [self removeObserver:self forKeyPath:@"mySnake.numberOfBulletTarget"];
+    
 }
-
 
 
 @end

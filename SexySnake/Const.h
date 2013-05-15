@@ -49,6 +49,8 @@ typedef enum Mode Mode;
 
 #define GRID_WIDTH 1
 
+#define MAX_BULLET_NUM 5
+
 @interface Const : NSObject
 
 + (Const *)sharedConst;
