@@ -49,7 +49,7 @@
         // Create label for motion data
         CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         background.position = ccp(size.width / 2, size.height / 2);
-        [self addChild:background];
+//        [self addChild:background];
         
         _label = [CCLabelTTF labelWithString:@"Hello World!" fontName:@"Helvetica" fontSize:20];
         _label.position = ccp(size.width / 2, size.height - 40);
@@ -298,8 +298,14 @@
         [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
     }];
     
-    CCMenu *menu = [CCMenu menuWithItems:pauseItem, nil];
-    menu.position = ccp(size.width - pauseItem.boundingBox.size.width, pauseItem.boundingBox.size.height / 2);
+    CCMenuItem *shootItem = [CCMenuItemFont itemWithString:@"Shoot" block:^(id sender) {
+        CCLOG(@"Shoot Button pressed.");
+        [_mySnake shoot];
+    }];
+    
+    CCMenu *menu = [CCMenu menuWithItems:shootItem, pauseItem, nil];
+    menu.position = ccp(size.width - 250, pauseItem.boundingBox.size.height / 2);
+    [menu alignItemsHorizontallyWithPadding:30];
     [self addChild:menu];
 }
 
