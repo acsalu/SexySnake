@@ -73,17 +73,7 @@
         
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
-        
 
-//        if (_mode == MULTI_PLAYER) {
-//            if ([SSConnectionManager sharedManager].role ==  SEEK_CUR) {
-//                [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-//            }
-//            else{
-//                
-//            }
-//            
-//        }
         
         [self schedule:@selector(updateDeviceMotion:) interval:0.05f repeat:kCCRepeatForever delay:0.0f];
 
@@ -95,6 +85,7 @@
         _map = [[SSMap alloc] init];
         _map.gameLayer = self;
         
+
         // testing wall
         [_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
         
@@ -145,23 +136,43 @@
     
 }
 
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+
+# pragma mark - Update Server/Client Map 
+
+- (void)setupInfoExchange
 {
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView:[touch view]];
-    
-    CCSprite *myHead = _mySnake.components[0];
-    CGFloat xDiff = location.x - myHead.position.x;
-    CGFloat yDiff = location.y - myHead.position.y;
-    
-    if (abs(xDiff) > abs(yDiff)) {
-        if (yDiff > 0) _mySnake.direction = UP;
-        else _mySnake.direction = DOWN;
-    } else {
-        if (xDiff > 0) _mySnake.direction = RIGHT;
-        else _mySnake.direction = LEFT;
+    if (_mode == MULTI_PLAYER) {
+        if ([SSConnectionManager sharedManager].role == SERVER) {
+            [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendInfoToClient:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        }
+        else{
+            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendInfoToServer:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        }
+        
     }
+    else
+        [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
+}
+
+- (void)sendInfoToClient:(ccTime)delta
+{
+    NSArray *mapArray = [_map mapToArray];
+    NSString *mapSent = [mapArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mapSent forAction:ACTION_SEND_MAP];
+    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
+    NSString *mySnakeSent = [mySnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
+    
+}
+
+- (void)sendInfoToServer:(ccTime)delta
+{
+    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
+    NSString *mySnakeSent = [mySnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
 }
 
 - (void)updateMapInfo:(ccTime)delta
@@ -206,6 +217,11 @@
 }
 
 
+- (void)updateClientMap:(ccTime)delta
+{
+    
+}
+
 
 
 #pragma mark - SSConnectionManager delegate methods
@@ -224,6 +240,10 @@
         
     } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
         [self resumeGame];
+    } else if ([action isEqualToString:ACTION_SEND_SNAKE_INFO]) {
+        
+    } else if ([action isEqualToString:ACTION_SEND_MAP]){
+        
     }
 }
 
@@ -251,6 +271,7 @@
 - (void)startGame
 {
     // Create local snake
+    [self setupInfoExchange];
     
     Grid *grid;
     if ([SSConnectionManager sharedManager].role == SERVER)
@@ -278,12 +299,13 @@
         
         _otherSnake.gameLayer = self;
         
-    }
-        
-    [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    }else
+        [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
-    if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
-        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
+    [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//    
+//    if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
+//        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
 
 }
 
