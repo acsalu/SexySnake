@@ -10,7 +10,7 @@
 #import "SSConnectionManager.h"
 #import "SSMap.h"
 #import "Const.h"
-
+#import "GameLayer.h"
 #import "BulletSprite.h"
 
 @implementation SSSnake
@@ -178,9 +178,9 @@
         --self.numberOfBulletTarget;
         Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
         BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
-        bullet.delegate = _gameLayer;
+        bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
         [[self parent] addChild:bullet];
-        [bullet fireAtRate:0.1];
+        [bullet fire];
     }
 }
 

@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "Const.h"
 #import "cocos2d.h"
-
+#import "BulletSprite.h"
 
 @class GameLayer;
 @class Grid;
 
-@interface SSMap : NSObject
+@interface SSMap : NSObject <BulletSpriteDelegate>
 
 //@property (nonatomic) NSMutableDictionary *mapData;
 @property (nonatomic) NSMutableArray *mapInfo;

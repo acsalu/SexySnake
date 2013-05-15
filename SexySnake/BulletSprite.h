@@ -8,29 +8,36 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "SSMap.h"
 #import "Const.h"
 
 @class BulletSprite;
 @class GameLayer;
-
-//typedef enum {
-//} BulletEvent;
+@class SSSnake;
+@class SSMap;
+@class Grid;
 
 @protocol BulletSpriteDelegate <NSObject>
 
 
 - (BOOL)bullet:(BulletSprite *)bullet wouldMoveFrom:(Grid *) originGrid To:(Grid *)currentGrid;
+
+// GameLayer
+
+// SSSnake
 - (void)bullet:(BulletSprite *)bullet shootAt:(Grid*)grid;
+
+// SSMap
 
 
 @end
 
 
-
 @interface BulletSprite : CCSprite
 
 @property (weak, nonatomic) GameLayer<BulletSpriteDelegate> *delegate;
+@property (weak, nonatomic) SSSnake<BulletSpriteDelegate> *mySnake;
+@property (weak, nonatomic) SSSnake<BulletSpriteDelegate> *otherSnake;
+@property (weak, nonatomic) SSMap<BulletSpriteDelegate> *map;
 
 @property (nonatomic) Direction direction;
 @property (strong, nonatomic) Grid *positionInGrid;
@@ -39,6 +46,6 @@
 
 + (BulletSprite *)bulletWithPositionInGrid:(Grid *)grid andDirection:(Direction)direction;
 
-- (void)fireAtRate:(ccTime)rate;
+- (void)fire;
 
 @end
