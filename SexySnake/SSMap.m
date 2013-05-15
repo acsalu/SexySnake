@@ -36,6 +36,7 @@
     return  self;
     NSLog(@"Finish init");
     
+    
 }
 
 - (void)printMap
@@ -46,6 +47,7 @@
         }
     }
 }
+
 
 //Update the positions of SeverSnake/Client
 - (void)updatePositionOfServerSnake:(NSMutableArray *)sSnake ClientSnake:(NSMutableArray *)cSnake
@@ -190,6 +192,8 @@
             [_gameLayer removeChild:target cleanup:YES];
         }
     }
+    
+    _mapInfo[grid.row][grid.col] = @(EMPTY);
 }
 
 - (void)removeBulletTargetAt:(Grid *)grid
@@ -291,12 +295,9 @@
 {
     CGFloat startX = [[Const sharedConst] mapStartingX];
     CGFloat startY = [[Const sharedConst] mapStartingY];
-    CCLOG(@"grid(%d,%d)", grid.row, grid.col);
     
     CGFloat x = startX + (2 * grid.col + 1) * GRID_SIZE * 0.5 + GRID_WIDTH;
     CGFloat y = startY - (2 * grid.row + 1) * GRID_SIZE * 0.5 - GRID_WIDTH;
-    
-    CCLOG(@"position(%.0f, %.0f)", x, y);   
     
     CGPoint p = ccp(x, y);
     
@@ -339,6 +340,11 @@
             else
                return [Grid gridWithRow:grid.row Col:grid.col - 1];
     }
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"(%d, %d)", _row, _col];
 }
 
 @end

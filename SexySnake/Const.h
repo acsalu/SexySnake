@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#define REVERSE_DIRECTION(d)  -d
+
 extern NSString * const JSONKeyAction;
 extern NSString * const JSONKeyMessage;
 
 enum Direction {
-    UP = 0, RIGHT, DOWN, LEFT
+    UP = 1, DOWN = -1,
+    RIGHT = 2, LEFT = -2
 };
 
 enum Item {
@@ -32,7 +35,7 @@ typedef enum Item Item;
 typedef enum Role Role;
 typedef enum Mode Mode;
 
-#define MAX_COLS 30
+#define MAX_COLS 29
 #define MAX_ROWS 18
 #define GRID_SIZE 30
 
