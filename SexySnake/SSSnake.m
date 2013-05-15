@@ -159,6 +159,8 @@
 - (void)eatBulletTarget
 {
     _numberOfBulletTarget++;
+    // update UI
+    // play sound effect
 }
 
 - (void)shoot
@@ -194,6 +196,20 @@
         [_grids removeLastObject];
     }
     _hasLongBia = YES;
+}
+
+- (void)getShotAt:(Grid*)grid
+{
+    NSUInteger hurtIndex = [_grids indexOfObject:grid];
+    CCLOG(@"[Snake] It's hurt at %d", hurtIndex);
+    if (hurtIndex > 0) {
+        // not hurt at head
+        for (NSUInteger i = hurtIndex; i < self.length; ++i) {
+            [self removeChild:[_components lastObject] cleanup:NO];
+            [_components removeLastObject];
+            [_grids removeLastObject];
+        }
+    }
 }
 
 @end
