@@ -10,7 +10,7 @@
 #import "SSConnectionManager.h"
 #import "SSMap.h"
 #import "Const.h"
-
+#import "GameLayer.h"
 #import "BulletSprite.h"
 
 @implementation SSSnake
