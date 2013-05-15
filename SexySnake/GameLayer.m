@@ -91,8 +91,8 @@
         
         // setup counter
         _counter = 3;
-//        [self schedule:@selector(countdown:) interval:1.0f];
-        [self startGame];
+        [self schedule:@selector(countdown:) interval:1.0f];
+//        [self startGame];
         
     }
     return self;
@@ -164,15 +164,16 @@
     [[SSConnectionManager sharedManager] sendMessage:mapSent forAction:ACTION_SEND_MAP];
     NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
     NSString *mySnakeSent = [mySnakeArray JSONString];
-    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
+    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SERVER_SNAKE];
+    NSArray *otherSnakeArray = [Grid arrayForGrids:_otherSnake.grids];
+    NSString *otherSnakeSent = [otherSnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:otherSnakeSent forAction:ACTION_SEND_CLIENT_SNAKE];
     
 }
 
 - (void)sendInfoToServer:(ccTime)delta
 {
-    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
-    NSString *mySnakeSent = [mySnakeArray JSONString];
-    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
+
 }
 
 - (void)updateMapInfo:(ccTime)delta
@@ -217,10 +218,10 @@
 }
 
 
-- (void)updateClientMap:(ccTime)delta
-{
-    
-}
+//- (void)updateClientMap:(ccTime)delta
+//{
+//    
+//}
 
 
 
@@ -240,10 +241,20 @@
         
     } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
         [self resumeGame];
-    } else if ([action isEqualToString:ACTION_SEND_SNAKE_INFO]) {
         
-    } else if ([action isEqualToString:ACTION_SEND_MAP]){
+    } else if ([action isEqualToString:ACTION_SEND_SERVER_SNAKE]) {
+        NSMutableArray *otherSankeArray = [message objectFromJSONString];
+        [_otherSnake updateSnakeInfo:otherSankeArray];
         
+    }else if ([action isEqualToString:ACTION_SEND_CLIENT_SNAKE]) {
+        NSMutableArray *mySnakeArray = [message objectFromJSONString];
+        [_mySnake updateSnakeInfo:mySnakeArray];
+        
+    }else if ([action isEqualToString:ACTION_SEND_MAP]){
+        NSMutableArray *newMapArray = [message objectFromJSONString];
+        if ([SSConnectionManager sharedManager].role == CLIENT) {
+            [_map rerenderMap:newMapArray];
+        }
     }
 }
 

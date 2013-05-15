@@ -282,7 +282,7 @@
     [_walls addObject:wall];
 }
 
-- (NSArray*)mapToString
+- (NSArray*)mapToArray
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (int i=0; i<[_mapInfo count]; i++) {
