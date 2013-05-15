@@ -144,7 +144,7 @@
         return;
     }
     if (newHead) {
-        CCLOG(@"[Snake] head now move to %@", newHead);
+        //CCLOG(@"[Snake] head now move to %@", newHead);
         if (!_hasEaten) {
             for (int i = _components.count - 1; i > 0; --i) {
                 _grids[i] = _grids[i - 1];
@@ -171,7 +171,7 @@
     CCSprite *body = [CCSprite spriteWithFile:@"snake-body.png"];
     Grid *grid = [Grid gridWithRow:((Grid *) _grids[0]).row Col:((Grid *) _grids[0]).col];
     
-    CCLOG(@"[Snake] eat target at (%d, %d)", grid.row, grid.col);
+    //CCLOG(@"[Snake] eat target at (%d, %d)", grid.row, grid.col);
     
     [_components insertObject:body atIndex:1];
     [_grids insertObject:grid atIndex:1];
@@ -219,7 +219,7 @@
 
 - (void)hitWall
 {
-    CCLOG(@"[Snake] hit wall at %@", _grids[0]);
+    //CCLOG(@"[Snake] hit wall at %@", _grids[0]);
     if (self.length > 1) {
         [self removeChild:[_components lastObject] cleanup:NO];
         [_components removeLastObject];
@@ -231,7 +231,7 @@
 - (void)getShotAt:(Grid*)grid
 {
     NSUInteger hurtIndex = [_grids indexOfObject:grid];
-    CCLOG(@"[Snake] It's hurt at %d", hurtIndex);
+    //CCLOG(@"[Snake] It's hurt at %d", hurtIndex);
     if (hurtIndex > 0) {
         // not hurt at head
         for (NSUInteger i = hurtIndex; i < self.length; ++i) {
