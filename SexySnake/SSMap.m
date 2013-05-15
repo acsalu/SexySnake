@@ -158,26 +158,30 @@
 
 - (void)spawnBulletTarget
 {
-    int row, col;
-    
-    while (true) {
-        row = arc4random() % MAX_ROWS;
-        col = arc4random() % MAX_COLS;
-        //BOOL isOccupied = NO;
-        if (_mapInfo[row][col] != [NSNumber numberWithInt:EMPTY]){
-            //isOccupied = YES;
-            _mapInfo[row][col] = [NSNumber numberWithInt:BULLETTARGET];
-            break;
+    NSLog(@"Entering spawnBulletTarget");
+    if ([_bulletTargets count] < 3) {
+        
+        int row, col;
+        
+        while (true) {
+            row = arc4random() % MAX_ROWS;
+            col = arc4random() % MAX_COLS;
+            //BOOL isOccupied = NO;
+            if (_mapInfo[row][col] == [NSNumber numberWithInt:EMPTY]){
+                //isOccupied = YES;
+                _mapInfo[row][col] = [NSNumber numberWithInt:BULLETTARGET];
+                break;
+            }
         }
+        
+        CCSprite *bulletTarget = [CCSprite spriteWithFile:@"bullet_target.png"];
+        [_bulletTargets addObject:bulletTarget];
+        Grid *grid = [Grid gridWithRow:row Col:col];
+        bulletTarget.position = [Grid positionWithGrid:grid];
+        [_gameLayer addChild:bulletTarget];
     }
     
-    CCSprite *bulletTarget = [CCSprite spriteWithFile:@"bullet_target.png"];
-    [_bulletTargets addObject:bulletTarget];
-    bulletTarget.position = ccp(_startX + col * GRID_SIZE, _startY - row * GRID_SIZE);
-    [_gameLayer addChild:bulletTarget];
-    
-    int delay = (arc4random() % 2)*5;
-    [self performSelector:@selector(spawnBulletTarget:) withObject:nil afterDelay:delay];
+    [self performSelector:@selector(spawnBulletTarget) withObject:nil afterDelay:3];
 
 }
 

@@ -10,6 +10,7 @@
 		0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */; };
 		0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F11173BD60500E0C838 /* GameLayer.m */; };
 		0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */; };
+		18F206F51743AF44006DDA81 /* bullet_target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F206F41743AF44006DDA81 /* bullet_target-ipad.png */; };
 		900E5F89173F695400468EBF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 900E5F88173F695400468EBF /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		902A70BB173B6F7000745D43 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902A70BA173B6F7000745D43 /* QuartzCore.framework */; };
 		902A70BD173B6F7000745D43 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902A70BC173B6F7000745D43 /* OpenGLES.framework */; };
@@ -224,6 +225,7 @@
 		0FD93F11173BD60500E0C838 /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
 		0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSConnectionManager.h; sourceTree = "<group>"; };
 		0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSConnectionManager.m; sourceTree = "<group>"; };
+		18F206F41743AF44006DDA81 /* bullet_target-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet_target-ipad.png"; sourceTree = "<group>"; };
 		900E5F87173F695400468EBF /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		900E5F88173F695400468EBF /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		902A70B7173B6F7000745D43 /* SexySnake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SexySnake.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1262,6 +1264,7 @@
 				90F3D8661743879F00A4103A /* snake-head-green-ipad.png */,
 				90F3D862174386B000A4103A /* map-ipad.png */,
 				9058712E173E596000B6D31D /* target-ipad.png */,
+				18F206F41743AF44006DDA81 /* bullet_target-ipad.png */,
 				90B016A5173FF442007B4D4E /* pause-button-ipad.png */,
 				909488E31741323B0090FA8E /* wall-ipad.png */,
 				909488E5174137700090FA8E /* countdown-0-ipad.png */,
@@ -1376,6 +1379,7 @@
 				90F3D863174386B000A4103A /* map-ipad.png in Resources */,
 				90F3D8651743879500A4103A /* snake-head-blue-ipad.png in Resources */,
 				90F3D8671743879F00A4103A /* snake-head-green-ipad.png in Resources */,
+				18F206F51743AF44006DDA81 /* bullet_target-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

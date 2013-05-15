@@ -132,29 +132,36 @@
         _startGenerateTarget = YES;
         [_map spawnTarget];
     }
+    
+    if (!_startGenBulletTarget) {
+        NSLog(@"Here");
+        _startGenBulletTarget = YES;
+        [_map spawnBulletTarget];
+    }
+    
     [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
     
     if (_mySnake.isShoot) {
-        NSLog(@"mySnake shoots");
+        //NSLog(@"mySnake shoots");
         [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
         [_mySnake finishShooting];
     }
     
     if (_otherSnake.isShoot) {
-        NSLog(@"otherSnake shoots");
+        //NSLog(@"otherSnake shoots");
         [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
         [_otherSnake finishShooting];
     }
     
     if (_mySnake.isBuilding) {
-        NSLog(@"mySnake builds");
+        //NSLog(@"mySnake builds");
         NSMutableArray *grids = [_mySnake grids];
         [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
         [_mySnake finishBuilding];
     }
     
     if (_otherSnake.isBuilding) {
-        NSLog(@"otherSnake builds");
+        //NSLog(@"otherSnake builds");
         NSMutableArray *grids = [_otherSnake grids];
         [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
         [_otherSnake finishBuilding];
