@@ -22,6 +22,11 @@
 - (id)init
 {
     if (self = [super init]) {
+        CCSprite *background = [CCSprite spriteWithFile:@"main-screen.png"];
+        background.position = ccp([CCDirector sharedDirector].winSize.width / 2, [CCDirector sharedDirector].winSize.height / 2);
+        [self addChild:background];
+
+        
         [self createMenu];
     }
     return self;
@@ -30,6 +35,7 @@
 - (void)createMenu
 {
     [CCMenuItemFont setFontSize:80];
+    
     
     CCMenuItem *singlePlayerBtn = [CCMenuItemImage itemWithNormalImage:@"single-player.png"
                                                          selectedImage:@"single-player-pressed.png" block:^(id sender) {
@@ -48,7 +54,7 @@
     
     CGSize size = [[CCDirector sharedDirector] winSize];
     [mainMenu alignItemsHorizontallyWithPadding:80];
-    mainMenu.position = ccp(size.width/2, size.height/2 - 100);
+    mainMenu.position = ccp(size.width/2, size.height/2 - 200);
     
     [self addChild:mainMenu];
 }
