@@ -131,14 +131,22 @@
         if (!_hasEaten) {
             for (int i = _components.count - 1; i > 0; --i) {
                 _grids[i] = _grids[i - 1];
-                ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+//                ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
+                CGPoint p = [Grid positionWithGrid:_grids[i-1]];
+                id move = [CCMoveTo actionWithDuration:BASE_UPDATE_INTERVAL position:p];
+                move = [CCEaseInOut actionWithAction:move rate:2.0];
+                [(CCSprite *)_components[i] runAction:move];
             }
         } else {
             _hasEaten = NO;
         }
                 
         _grids[0] = newHead;
-        ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
+        CGPoint p = [Grid positionWithGrid:newHead];
+//        ((CCSprite *) _components[0]).position = [Grid positionWithGrid:_grids[0]];
+        id move = [CCMoveTo actionWithDuration:BASE_UPDATE_INTERVAL position:p];
+//        move = [CCEaseInOut actionWithAction:move rate:2.0];
+        [(CCSprite *)_components[0] runAction:move];
     }
 }
 
@@ -223,6 +231,21 @@
             [_grids removeLastObject];
         }
     }
+}
+
+- (void)bullet:(BulletSprite *)bullet shootSnakeAt:(Grid *)grid
+{
+    CCSprite *lightRing = [CCSprite spriteWithFile:@"destroyedeffect.png"];
+    lightRing.position = [Grid positionWithGrid:grid];
+    [_gameLayer addChild:lightRing];
+    
+    id callback = [CCCallFuncND actionWithTarget:_gameLayer selector:@selector(removeChild:cleanup:) data:YES];
+    id scaleAction = [CCScaleTo actionWithDuration:0.2 scale:1.3];
+    id easeScaleAction = [CCEaseInOut actionWithAction:scaleAction rate:2];
+    CCSequence *sequence = [CCSequence actions:easeScaleAction, callback, nil];
+    [lightRing runAction:sequence];
+    
+    [self getShotAt:grid];
 }
 
 @end

@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		0F8303A21743C1DD0065CC41 /* BulletSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F8303A11743C1DD0065CC41 /* BulletSprite.m */; };
 		0F8311481743DC720071A006 /* bullet-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0F8311471743DC720071A006 /* bullet-ipad.png */; };
+		0FB0949E17440AA200DAFC33 /* bullet2-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB0949D17440AA200DAFC33 /* bullet2-ipad.png */; };
+		0FB094A017440BD300DAFC33 /* bullet3-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB0949F17440BD300DAFC33 /* bullet3-ipad.png */; };
+		0FB094A217440CC100DAFC33 /* bullet4-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB094A117440CC100DAFC33 /* bullet4-ipad.png */; };
+		0FB094A41744244000DAFC33 /* destroyedeffect.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB094A31744244000DAFC33 /* destroyedeffect.png */; };
 		0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */; };
 		0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F11173BD60500E0C838 /* GameLayer.m */; };
 		0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */; };
@@ -229,6 +233,10 @@
 		0F8303A01743C1DC0065CC41 /* BulletSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletSprite.h; sourceTree = "<group>"; };
 		0F8303A11743C1DD0065CC41 /* BulletSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletSprite.m; sourceTree = "<group>"; };
 		0F8311471743DC720071A006 /* bullet-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet-ipad.png"; sourceTree = "<group>"; };
+		0FB0949D17440AA200DAFC33 /* bullet2-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet2-ipad.png"; sourceTree = "<group>"; };
+		0FB0949F17440BD300DAFC33 /* bullet3-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet3-ipad.png"; sourceTree = "<group>"; };
+		0FB094A117440CC100DAFC33 /* bullet4-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet4-ipad.png"; sourceTree = "<group>"; };
+		0FB094A31744244000DAFC33 /* destroyedeffect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = destroyedeffect.png; sourceTree = "<group>"; };
 		0FD93F0D173BCE7800E0C838 /* MainScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenLayer.h; sourceTree = "<group>"; };
 		0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenLayer.m; sourceTree = "<group>"; };
 		0FD93F10173BD60500E0C838 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
@@ -735,6 +743,10 @@
 		902A70CD173B6F7000745D43 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0FB094A31744244000DAFC33 /* destroyedeffect.png */,
+				0FB0949D17440AA200DAFC33 /* bullet2-ipad.png */,
+				0FB0949F17440BD300DAFC33 /* bullet3-ipad.png */,
+				0FB094A117440CC100DAFC33 /* bullet4-ipad.png */,
 				9058712B173E595700B6D31D /* UI */,
 				902A70CE173B6F7000745D43 /* Default.png */,
 				902A70D0173B6F7000745D43 /* Default-Landscape~ipad.png */,
@@ -1409,6 +1421,10 @@
 				90F3D8811743E9A400A4103A /* shoot-button-pressed-ipad.png in Resources */,
 				0F8311481743DC720071A006 /* bullet-ipad.png in Resources */,
 				90C41DBF1744033E0064AB67 /* map-ipad.png in Resources */,
+				0FB0949E17440AA200DAFC33 /* bullet2-ipad.png in Resources */,
+				0FB094A017440BD300DAFC33 /* bullet3-ipad.png in Resources */,
+				0FB094A217440CC100DAFC33 /* bullet4-ipad.png in Resources */,
+				0FB094A41744244000DAFC33 /* destroyedeffect.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

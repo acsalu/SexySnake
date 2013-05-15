@@ -12,7 +12,6 @@
 #import "MainScreenLayer.h"
 #import "JSONKit.h"
 
-#define BASE_UPDATE_INTERVAL 0.3
 
 @implementation GameLayer
 
