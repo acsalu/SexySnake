@@ -14,7 +14,7 @@
 
 + (BulletSprite *)bulletWithPositionInGrid:(Grid *)grid andDirection:(Direction)direction
 {
-    BulletSprite *bullet = [BulletSprite spriteWithFile:@"bullet.png"];
+    BulletSprite *bullet = [BulletSprite spriteWithFile:@"bullet4.png"];
     bullet.positionInGrid = grid;
     bullet.position = [Grid positionWithGrid:grid];
     bullet.rotation = (direction - 1) * 90;
@@ -46,7 +46,7 @@
         Item itemInNextGrid =  [_map.mapInfo[nextGrid.row][nextGrid.col] intValue];
 
         if (itemInNextGrid == EMPTY) {
-            id movement = [CCMoveTo actionWithDuration:0.05 position:[Grid positionWithGrid:nextGrid]];
+            id movement = [CCMoveTo actionWithDuration:0.03 position:[Grid positionWithGrid:nextGrid]];
             id callback = [CCCallFunc actionWithTarget:self selector:@selector(updatePosition)];
             CCSequence *sequence = [CCSequence actions:movement, callback, nil];
             [self runAction:sequence];
@@ -71,14 +71,14 @@
         } else { // snake
             [self removeFromParentAndCleanup:YES];
             for (Grid *g in _mySnake.grids) {
-                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootAt:g]; }
+                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootSnakeAt:g]; }
             }
             for (Grid *g in _otherSnake.grids) {
-                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootAt:g]; }
+                if ([g isEqual:nextGrid]) { [_mySnake bullet:self shootSnakeAt:g]; }
             }
         }
         
-        _delegate.map.mapInfo[_positionInGrid.row][_positionInGrid.col] = [NSNumber numberWithInt:EMPTY];
+        _map.mapInfo[_positionInGrid.row][_positionInGrid.col] = [NSNumber numberWithInt:EMPTY];
     }
     else {
         // out of bound

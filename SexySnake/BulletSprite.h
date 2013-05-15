@@ -24,7 +24,7 @@
 // GameLayer
 
 // SSSnake
-- (void)bullet:(BulletSprite *)bullet shootAt:(Grid*)grid;
+- (void)bullet:(BulletSprite *)bullet shootSnakeAt:(Grid*)grid;
 
 // SSMap
 - (void)removeTargetAt:(Grid *)grid;
