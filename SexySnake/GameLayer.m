@@ -55,6 +55,13 @@
         
         [self createPauseMenu];
         
+        
+        CCSprite *mapSprite = [CCSprite spriteWithFile:@"map.png"];
+        mapSprite.position = ccp(size.width / 2, size.height / 2);
+        [self addChild:mapSprite];
+        
+        [[Const sharedConst] setMapStartingX:mapSprite.position.x - mapSprite.boundingBox.size.width / 2];
+        [[Const sharedConst] setMapStartingY:mapSprite.position.y + mapSprite.boundingBox.size.height / 2];
                 
         // Configure motion manager
         _motionManager = [[CMMotionManager alloc] init];
@@ -212,12 +219,14 @@
         grid = [Grid gridWithRow:SERVER_ROW Col:SERVER_COL];
     else
         grid = [Grid gridWithRow:CLIENT_ROW Col:CLIENT_COL];
+
     
     _mySnake = [SSSnake mySnakeWithInitialGrid:grid];
     [self addChild:_mySnake];
     
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    
     
     if (_mode == MULTI_PLAYER) {
         Grid *grid;
@@ -279,7 +288,7 @@
     }];
     
     CCMenu *menu = [CCMenu menuWithItems:pauseItem, nil];
-    menu.position = ccp(size.width - pauseItem.boundingBox.size.width, pauseItem.boundingBox.size.height);
+    menu.position = ccp(size.width - pauseItem.boundingBox.size.width, pauseItem.boundingBox.size.height / 2);
     [self addChild:menu];
 }
 

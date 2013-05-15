@@ -259,10 +259,16 @@
 
 + (CGPoint)positionWithGrid:(Grid *)grid
 {
-    CGSize size = [[CCDirector sharedDirector] winSize];
-    CGFloat startX = 80;
-    CGFloat startY = size.height - 80;
-    CGPoint p = ccp(startX + grid.col * GRID_SIZE, startY - grid.row * GRID_SIZE);
+    CGFloat startX = [[Const sharedConst] mapStartingX];
+    CGFloat startY = [[Const sharedConst] mapStartingY];
+    CCLOG(@"grid(%d,%d)", grid.row, grid.col);
+    
+    CGFloat x = startX + (2 * grid.col + 1) * GRID_SIZE * 0.5;
+    CGFloat y = startY - (2 * grid.row + 1) * GRID_SIZE * 0.5;
+    
+    CCLOG(@"position(%.0f, %.0f)", x, y);   
+    
+    CGPoint p = ccp(x, y);
     
     return p;
 }
