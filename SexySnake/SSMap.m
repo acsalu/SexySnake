@@ -342,7 +342,7 @@
     
     for (int i=0; i<[arrayForMap count]; i++){
         NSMutableArray *array = [arrayForMap objectAtIndex:i];
-        //NSLog(@"array:%@",array);
+        NSLog(@"array:%@",array);
         if ([array[2] integerValue] == TARGET) {
             CCSprite *target = [CCSprite spriteWithFile:@"target.png"];
             [_targets addObject:target];
