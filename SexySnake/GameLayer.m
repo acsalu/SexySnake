@@ -76,17 +76,17 @@
             [_motionManager startDeviceMotionUpdates];
         
 
-        if (_mode == MULTI_PLAYER) {
-            if ([SSConnectionManager sharedManager].role ==  SEEK_CUR) {
-                [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-            }
-            else{
-                
-            }
-            
-        }
+//        if (_mode == MULTI_PLAYER) {
+//            if ([SSConnectionManager sharedManager].role ==  SEEK_CUR) {
+//                [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//            }
+//            else{
+//                
+//            }
+//            
+//        }
         
-        //[self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
 
         
         // set SSConnectionManager delegate
@@ -264,7 +264,7 @@
     [self addChild:_mySnake];
     
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     
     if (_mode == MULTI_PLAYER) {

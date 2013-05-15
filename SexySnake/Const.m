@@ -24,4 +24,14 @@ NSString * const JSONKeyMessage = @"message";
     return sharedConst;
 }
 
++ (Direction)reverseForDirection:(Direction)direction
+{
+    switch (direction) {
+        case UP: return DOWN;
+        case DOWN: return UP;
+        case RIGHT: return LEFT;
+        case LEFT: return RIGHT;
+    }
+}
+
 @end

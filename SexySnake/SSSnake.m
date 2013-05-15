@@ -9,6 +9,7 @@
 #import "SSSnake.h"
 #import "SSConnectionManager.h"
 #import "SSMap.h"
+#import "Const.h"
 
 @implementation SSSnake
 
@@ -50,6 +51,7 @@
     
     snake.grids = [NSMutableArray arrayWithCapacity:1];
     snake.grids[0] = grid;
+    snake.direction = UP;
     
     [snake reorganize];
     
@@ -67,7 +69,7 @@
 
 - (void)setDirection:(Direction)direction
 {
-    if (direction == REVERSE_DIRECTION(_direction)) return;
+    if (direction == [Const reverseForDirection:_direction]) return;
     [self rotateWithDirection:direction];
     
     if (direction != _direction)
@@ -112,7 +114,10 @@
 // call this method when moving
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
-    if (_hasLongBia) return;
+    if (_hasLongBia) {
+        _hasLongBia = NO;
+        return;
+    }
     if (newHead) {
         CCLOG(@"[Snake] head now move to %@", newHead);
         if (!_hasEaten) {
@@ -183,9 +188,11 @@
 - (void)hitWall
 {
     CCLOG(@"[Snake] hit wall at %@", _grids[0]);
-    [self removeChild:[_components lastObject] cleanup:NO];
-    [_components removeLastObject];
-    [_grids removeLastObject];
+    if (self.length > 1) {
+        [self removeChild:[_components lastObject] cleanup:NO];
+        [_components removeLastObject];
+        [_grids removeLastObject];
+    }
     _hasLongBia = YES;
 }
 

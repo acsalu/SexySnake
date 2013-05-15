@@ -79,40 +79,42 @@
        [self removeBulletTargetAt:sHead];
    }
 
-   Grid *cHead = [cSnake objectAtIndex:0];
-   direction = _gameLayer.otherSnake.direction;
-   nextGrid = [Grid gridForDirection:direction toGrid:cHead];
-   if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:TARGET]){
-       [_gameLayer.otherSnake eatTarget];
-       [self removeTargetAt:cHead];
     
-   }
-   else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:WALL]){
-       [_gameLayer.otherSnake hitWall];
-   }
-   else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:BULLETTARGET]){
-       [_gameLayer.otherSnake eatBulletTarget];
-       [self removeBulletTargetAt:cHead];
-   }
+    if (_gameLayer.mode == MULTI_PLAYER) {
+        Grid *cHead = [cSnake objectAtIndex:0];
+        direction = _gameLayer.otherSnake.direction;
+        nextGrid = [Grid gridForDirection:direction toGrid:cHead];
+        if(_mapInfo[nextGrid.row][nextGrid.col] == [NSNumber numberWithInt:TARGET]){
+           [_gameLayer.otherSnake eatTarget];
+           [self removeTargetAt:cHead];
 
-   for(int i=0; i<[sSnake count]; i++){
-       Grid *pos = [sSnake objectAtIndex:i];
-       if (_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
-           [_gameLayer.mySnake getShotAt:pos];
-           [self removeBulletAt:pos];
-           break;
-       }
-   }
-    
-   for(int i=0; i<[cSnake count]; i++){
-       Grid *pos = [cSnake objectAtIndex:i];
-       if(_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
-           [_gameLayer.otherSnake getShotAt:pos];
-           [self removeBulletAt:pos];
-           break;
-       }
-   }
+        }
+        else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:WALL]){
+           [_gameLayer.otherSnake hitWall];
+        }
+        else if(_mapInfo[cHead.row][cHead.col] == [NSNumber numberWithInt:BULLETTARGET]){
+           [_gameLayer.otherSnake eatBulletTarget];
+           [self removeBulletTargetAt:cHead];
+        }
 
+        for(int i=0; i<[sSnake count]; i++){
+           Grid *pos = [sSnake objectAtIndex:i];
+           if (_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+               [_gameLayer.mySnake getShotAt:pos];
+               [self removeBulletAt:pos];
+               break;
+           }
+        }
+
+        for(int i=0; i<[cSnake count]; i++){
+           Grid *pos = [cSnake objectAtIndex:i];
+           if(_mapInfo[pos.row][pos.col] == [NSNumber numberWithInt:BULLET]){
+               [_gameLayer.otherSnake getShotAt:pos];
+               [self removeBulletAt:pos];
+               break;
+           }
+        }
+    }
 
 }
 
