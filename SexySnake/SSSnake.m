@@ -9,6 +9,9 @@
 #import "SSSnake.h"
 #import "SSConnectionManager.h"
 #import "SSMap.h"
+#import "Const.h"
+
+#import "BulletSprite.h"
 
 @implementation SSSnake
 
@@ -50,6 +53,7 @@
     
     snake.grids = [NSMutableArray arrayWithCapacity:1];
     snake.grids[0] = grid;
+    snake.direction = UP;
     
     [snake reorganize];
     
@@ -67,7 +71,7 @@
 
 - (void)setDirection:(Direction)direction
 {
-    if (direction == REVERSE_DIRECTION(_direction)) return;
+    if (direction == [Const reverseForDirection:_direction]) return;
     [self rotateWithDirection:direction];
     
     if (direction != _direction)
@@ -80,6 +84,12 @@
 {
     [self rotateWithDirection:direction];
     _direction = direction;
+}
+
+- (void)setNumberOfBulletTarget:(int)numberOfBulletTarget
+{
+    _numberOfBulletTarget = numberOfBulletTarget;
+    [_gameLayer updateShootButton];
 }
 
 - (void)rotateWithDirection:(Direction)direction
@@ -112,6 +122,10 @@
 // call this method when moving
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
+    if (_hasLongBia) {
+        _hasLongBia = NO;
+        return;
+    }
     if (newHead) {
         CCLOG(@"[Snake] head now move to %@", newHead);
         if (!_hasEaten) {
@@ -152,14 +166,21 @@
 
 - (void)eatBulletTarget
 {
-    _numberOfBulletTarget++;
+    if (_numberOfBulletTarget < MAX_BULLET_NUM)
+        ++self.numberOfBulletTarget;
+    // update UI
+    // play sound effect
 }
 
 - (void)shoot
 {
-    if (_numberOfBulletTarget > 0) {
-        _isShoot = YES;
-        _numberOfBulletTarget--;
+    if (self.numberOfBulletTarget > 0) {
+        --self.numberOfBulletTarget;
+        Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
+        BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
+        bullet.delegate = _gameLayer;
+        [[self parent] addChild:bullet];
+        [bullet fireAtRate:0.1];
     }
 }
 
@@ -181,7 +202,27 @@
 
 - (void)hitWall
 {
-    
+    CCLOG(@"[Snake] hit wall at %@", _grids[0]);
+    if (self.length > 1) {
+        [self removeChild:[_components lastObject] cleanup:NO];
+        [_components removeLastObject];
+        [_grids removeLastObject];
+    }
+    _hasLongBia = YES;
+}
+
+- (void)getShotAt:(Grid*)grid
+{
+    NSUInteger hurtIndex = [_grids indexOfObject:grid];
+    CCLOG(@"[Snake] It's hurt at %d", hurtIndex);
+    if (hurtIndex > 0) {
+        // not hurt at head
+        for (NSUInteger i = hurtIndex; i < self.length; ++i) {
+            [self removeChild:[_components lastObject] cleanup:NO];
+            [_components removeLastObject];
+            [_grids removeLastObject];
+        }
+    }
 }
 
 @end

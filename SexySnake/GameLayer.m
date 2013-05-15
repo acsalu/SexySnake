@@ -62,7 +62,7 @@
         
         
         CCSprite *mapSprite = [CCSprite spriteWithFile:@"map.png"];
-        mapSprite.position = ccp(size.width / 2, size.height / 2);
+        mapSprite.position = ccp(size.width / 2 - 50, size.height / 2);
         [self addChild:mapSprite];
         
         [[Const sharedConst] setMapStartingX:mapSprite.position.x - mapSprite.boundingBox.size.width / 2];
@@ -75,6 +75,8 @@
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
 
+        
+        [self schedule:@selector(updateDeviceMotion:) interval:0.05f repeat:kCCRepeatForever delay:0.0f];
 
         
         // set SSConnectionManager delegate
@@ -83,6 +85,9 @@
         // set map
         _map = [[SSMap alloc] init];
         _map.gameLayer = self;
+        
+        // testing wall
+        [_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
         
         // setup counter
         _counter = 3;
@@ -131,11 +136,6 @@
     
 }
 
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    CCLOG(@"Send Hello Message");
-    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend." forAction:ACTION_HELLO];
-}
 
 # pragma mark - Update Server/Client Map 
 
@@ -213,8 +213,9 @@
         [_otherSnake finishBuilding];
     }
     
-    [_map updatePositionOfBullet];
+//    [_map updatePositionOfBullet];
 }
+
 
 - (void)updateClientMap:(ccTime)delta
 {
@@ -227,8 +228,8 @@
 
 - (void)connectionManager:(SSConnectionManager *)connectionManager didReceiveDictionary:(NSDictionary *)dictionary
 {
-    NSString *action = dictionary[@"action"];
-    NSString *message = dictionary[@"message"];
+    NSString *action = dictionary[JSONKeyAction];
+    NSString *message = dictionary[JSONKeyMessage];
     CCLOG(@"Receive Message:[%@] %@", action, message);
     
     if ([action isEqualToString:ACTION_CHANGE_DIRECTION]) {
@@ -282,9 +283,9 @@
     [self addChild:_mySnake];
     
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-    
-    
+//    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    _mySnake.gameLayer = self;
+
     if (_mode == MULTI_PLAYER) {
         Grid *grid;
         if ([SSConnectionManager sharedManager].role == SERVER)
@@ -295,9 +296,11 @@
         _otherSnake =  [SSSnake otherSnakeWithInitialGrid:grid];
         [self addChild:_otherSnake];
         
+        _otherSnake.gameLayer = self;
+        
     }
     
-        [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
         [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
@@ -344,7 +347,7 @@
         [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
     }];
     
-    CCMenuItem *shootItem = [CCMenuItemFont itemWithString:@"Shoot" block:^(id sender) {
+    CCMenuItem *shootItem = [CCMenuItemImage itemWithNormalImage:@"shoot-button.png" selectedImage:@"shoot-button.png" block:^(id sender) {
         CCLOG(@"Shoot Button pressed.");
         [_mySnake shoot];
     }];
@@ -394,6 +397,10 @@
 
 }
 
+- (void)updateShootButton
+{
+    
+}
 
 
 @end

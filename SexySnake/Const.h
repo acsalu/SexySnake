@@ -8,14 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#define REVERSE_DIRECTION(d)  -d
+
 
 extern NSString * const JSONKeyAction;
 extern NSString * const JSONKeyMessage;
 
 enum Direction {
-    UP = 1, DOWN = -1,
-    RIGHT = 2, LEFT = -2
+    UP = 0, DOWN, RIGHT, LEFT
 };
 
 enum Item {
@@ -50,9 +49,12 @@ typedef enum Mode Mode;
 
 #define GRID_WIDTH 1
 
+#define MAX_BULLET_NUM 5
+
 @interface Const : NSObject
 
 + (Const *)sharedConst;
++ (Direction)reverseForDirection:(Direction)direction;
 
 // upper left corner of the map
 @property (nonatomic, assign) CGFloat mapStartingX;

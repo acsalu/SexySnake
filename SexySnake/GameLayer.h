@@ -12,10 +12,12 @@
 #import "SSConnectionManager.h"
 #import "SSMap.h"
 #import "Const.h"
+#import "BulletSprite.h"
 
 @class SSSnake;
 
-@interface GameLayer : CCLayer <SSConnectionManagerDelegate>
+
+@interface GameLayer : CCLayer <SSConnectionManagerDelegate, BulletSpriteDelegate>
 
 + (CCScene *)sceneOf1P;
 + (CCScene *)sceneOf2P;
