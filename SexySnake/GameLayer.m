@@ -132,31 +132,39 @@
 
 - (void)updateMapInfo:(ccTime)delta
 {
-//    [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
-//    
-//    if (_mySnake.isShoot) {
-//        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
-//        [_mySnake finishShooting];
-//    }
-//    
-//    if (_otherSnake.isShoot) {
-//        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
-//        [_otherSnake finishShooting];
-//    }
-//    
-//    if (_mySnake.isBuilding) {
-//        NSMutableArray *grids = [_mySnake grids];
-//        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
-//        [_mySnake finishBuilding];
-//    }
-//    
-//    if (_otherSnake) {
-//        NSMutableArray *grids = [_otherSnake grids];
-//        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
-//        [_otherSnake finishBuilding];
-//    }
-//    
-//    [_map updatePositionOfBullet];
+    if (!_startGenerateTarget) {
+        _startGenerateTarget = YES;
+        [_map spawnTarget];
+    }
+    [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
+    
+    if (_mySnake.isShoot) {
+        NSLog(@"mySnake shoots");
+        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
+        [_mySnake finishShooting];
+    }
+    
+    if (_otherSnake.isShoot) {
+        NSLog(@"otherSnake shoots");
+        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
+        [_otherSnake finishShooting];
+    }
+    
+    if (_mySnake.isBuilding) {
+        NSLog(@"mySnake builds");
+        NSMutableArray *grids = [_mySnake grids];
+        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+        [_mySnake finishBuilding];
+    }
+    
+    if (_otherSnake.isBuilding) {
+        NSLog(@"otherSnake builds");
+        NSMutableArray *grids = [_otherSnake grids];
+        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+        [_otherSnake finishBuilding];
+    }
+    
+    [_map updatePositionOfBullet];
 }
 
 
@@ -221,7 +229,7 @@
     [self addChild:_mySnake];
     
     [self schedule:@selector(updateMySnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-//    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     
     if (_mode == MULTI_PLAYER) {

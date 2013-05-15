@@ -44,6 +44,7 @@ typedef enum Mode Mode;
 #define MAX_INTERVAL 3
 #define BULLET_INTERVAL 1
 
+
 #define GRID_WIDTH 1
 
 @interface Const : NSObject

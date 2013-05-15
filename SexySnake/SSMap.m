@@ -34,13 +34,25 @@
         _gridsOfLastFrame = [[NSMutableArray alloc] init];
     }
     return  self;
+    NSLog(@"Finish init");
     
 }
 
+- (void)printMap
+{
+    for (int i=0; i<[_mapInfo count]; i++) {
+        for (int j=0; i<[_mapInfo[i] count]; j++) {
+            NSLog(@"%@",_mapInfo[i]);
+        }
+    }
+}
 
 //Update the positions of SeverSnake/Client
 - (void)updatePositionOfServerSnake:(NSMutableArray *)sSnake ClientSnake:(NSMutableArray *)cSnake
 {
+    NSLog(@"Update snake info");
+    NSLog(@"mySnake:%@",sSnake);
+    NSLog(@"otherSnake:%@",cSnake);
     if([cSnake containsObject:[sSnake objectAtIndex:0]]){
         //client snake is bit
         [_gameLayer.otherSnake getBitAt:[sSnake objectAtIndex:0]];
@@ -53,6 +65,7 @@
 
    Grid *sHead = [sSnake objectAtIndex:0];
    if(_mapInfo[sHead.row][sHead.col] == [NSNumber numberWithInt:TARGET]){
+       NSLog(@"mySnake eats a target");
        [_gameLayer.mySnake eatTarget];
        [self removeTargetAt:sHead];
    }
@@ -114,26 +127,32 @@
 //Generate a new general target
 - (void)spawnTarget
 {
-    int row, col;
-    
-    while (true) {
-        row = arc4random() % MAX_ROWS;
-        col = arc4random() % MAX_COLS;
-        BOOL isOccupied = NO;
-        if (_mapInfo[row][col] != [NSNumber numberWithInt:EMPTY]){
-            isOccupied = YES;
-            _mapInfo[row][col] = [NSNumber numberWithInt:TARGET];
-            break;
+   NSLog(@"Entering spawnTarget");
+    if ([_targets count] < 3) {
+        
+        int row, col;
+        
+        while (true) {
+            row = arc4random() % MAX_ROWS;
+            col = arc4random() % MAX_COLS;
+            NSLog(@"r:%i, c:%i",row,col);
+            BOOL isOccupied = NO;
+            if (_mapInfo[row][col] == [NSNumber numberWithInt:EMPTY]){
+                isOccupied = YES;
+                _mapInfo[row][col] = [NSNumber numberWithInt:TARGET];
+                break;
+            }
         }
+        
+        
+        CCSprite *target = [CCSprite spriteWithFile:@"target.png"];
+        [_targets addObject:target];
+        Grid *grid = [Grid gridWithRow:row Col:col];
+        target.position = [Grid positionWithGrid:grid];
+        [_gameLayer addChild:target];
     }
-    
-    CCSprite *target = [CCSprite spriteWithFile:@"target.png"];
-    [_targets addObject:target];
-    target.position = ccp(_startX + col * GRID_SIZE, _startY + row * GRID_SIZE);
-    [_gameLayer addChild:target];
-    
-    int delay = arc4random() % 3;
-    [self performSelector:@selector(spawnTarget:) withObject:nil afterDelay:delay];
+
+   [self performSelector:@selector(spawnTarget) withObject:nil afterDelay:2];
     
 }
 
@@ -144,9 +163,9 @@
     while (true) {
         row = arc4random() % MAX_ROWS;
         col = arc4random() % MAX_COLS;
-        BOOL isOccupied = NO;
+        //BOOL isOccupied = NO;
         if (_mapInfo[row][col] != [NSNumber numberWithInt:EMPTY]){
-            isOccupied = YES;
+            //isOccupied = YES;
             _mapInfo[row][col] = [NSNumber numberWithInt:BULLETTARGET];
             break;
         }
@@ -157,7 +176,7 @@
     bulletTarget.position = ccp(_startX + col * GRID_SIZE, _startY - row * GRID_SIZE);
     [_gameLayer addChild:bulletTarget];
     
-    int delay = arc4random() % 3;
+    int delay = (arc4random() % 2)*5;
     [self performSelector:@selector(spawnBulletTarget:) withObject:nil afterDelay:delay];
 
 }
