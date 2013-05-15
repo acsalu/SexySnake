@@ -10,6 +10,7 @@
 #import "SSSnake.h"
 #import "SSMap.h"
 #import "MainScreenLayer.h"
+#import "JSONKit.h"
 
 #define BASE_UPDATE_INTERVAL 0.3
 
@@ -138,7 +139,6 @@
     }
     
     if (!_startGenBulletTarget) {
-        NSLog(@"Here");
         _startGenBulletTarget = YES;
         [_map spawnBulletTarget];
     }
@@ -146,13 +146,11 @@
     [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
     
     if (_mySnake.isShoot) {
-        //NSLog(@"mySnake shoots");
         [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
         [_mySnake finishShooting];
     }
     
     if (_otherSnake.isShoot) {
-        //NSLog(@"otherSnake shoots");
         [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
         [_otherSnake finishShooting];
     }
@@ -345,7 +343,9 @@
     menu.position = ccp(size.width / 2, size.height / 2);
     
     [_pauseLayer addChild:menu];
+
 }
+
 
 
 @end

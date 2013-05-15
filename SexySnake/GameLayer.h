@@ -41,4 +41,7 @@
 @property (assign, nonatomic) BOOL startGenerateTarget;
 @property (assign, nonatomic) BOOL startGenBulletTarget;
 
+//Transmitting data
+- (NSString*)ditionaryToArray:(SSMap*)map;
+
 @end
