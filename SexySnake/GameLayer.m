@@ -74,19 +74,7 @@
         
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
-        
 
-        if (_mode == MULTI_PLAYER) {
-            if ([SSConnectionManager sharedManager].role ==  SEEK_CUR) {
-                [self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-            }
-            else{
-                
-            }
-            
-        }
-        
-        //[self schedule:@selector(updateDeviceMotion:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
 
         
         // set SSConnectionManager delegate
@@ -143,6 +131,50 @@
     
 }
 
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CCLOG(@"Send Hello Message");
+    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend." forAction:ACTION_HELLO];
+}
+
+# pragma mark - Update Server/Client Map 
+
+- (void)setupInfoExchange
+{
+    if (_mode == MULTI_PLAYER) {
+        if ([SSConnectionManager sharedManager].role == SERVER) {
+            [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendInfoToClient:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        }
+        else{
+            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendInfoToServer:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+        }
+        
+    }
+    else
+        [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+    
+}
+
+- (void)sendInfoToClient:(ccTime)delta
+{
+    NSArray *mapArray = [_map mapToArray];
+    NSString *mapSent = [mapArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mapSent forAction:ACTION_SEND_MAP];
+    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
+    NSString *mySnakeSent = [mySnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
+    
+}
+
+- (void)sendInfoToServer:(ccTime)delta
+{
+    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
+    NSString *mySnakeSent = [mySnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
+}
+
 - (void)updateMapInfo:(ccTime)delta
 {
     if (!_startGenerateTarget) {
@@ -184,12 +216,12 @@
     [_map updatePositionOfBullet];
 }
 
-
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)updateClientMap:(ccTime)delta
 {
-    CCLOG(@"Send Hello Message");
-    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend." forAction:ACTION_HELLO];
+    
 }
+
+
 
 #pragma mark - SSConnectionManager delegate methods
 
@@ -207,6 +239,10 @@
         
     } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
         [self resumeGame];
+    } else if ([action isEqualToString:ACTION_SEND_SNAKE_INFO]) {
+        
+    } else if ([action isEqualToString:ACTION_SEND_MAP]){
+        
     }
 }
 
@@ -260,7 +296,7 @@
         [self addChild:_otherSnake];
         
     }
-        
+    
         [self schedule:@selector(updateOtherSnakePosition:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
     
     if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)

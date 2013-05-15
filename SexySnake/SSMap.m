@@ -225,6 +225,17 @@
     }
 }
 
+- (void)removeWallAt:(Grid *)grid
+{
+    for (int i=0; i<[_walls count]; i++) {
+        CCSprite *wall = [_walls objectAtIndex:i];
+        if (CGPointEqualToPoint(wall.position, [Grid positionWithGrid:grid])) {
+            [_walls removeObjectAtIndex:i];
+            [_gameLayer removeChild:wall cleanup:YES];
+        }
+    }
+}
+
 - (void)updatePositionOfBullet
 {
     if ([_bullets count] > 0) {
@@ -261,6 +272,7 @@
     CCSprite *wall = [CCSprite spriteWithFile:@"wall.png"];
     wall.position = [Grid positionWithGrid:grid];
     [_gameLayer addChild:wall];
+    [_walls addObject:wall];
 }
 
 - (NSArray*)mapToString
@@ -287,6 +299,38 @@
     }
     
     return mapArray;
+}
+
+
+- (void)rerenderMap:(NSMutableArray*)arrayForMap
+{
+    
+    for (int i=0; i<MAX_ROWS; i++) {
+        for (int j=0; j<MAX_COLS; j++) {
+            if (_mapInfo[i][j] == [NSNumber numberWithInt:TARGET]) {
+                [self removeTargetAt:[Grid gridWithRow:i Col:j]];
+            }else if(_mapInfo[i][j] == [NSNumber numberWithInt:BULLETTARGET]){
+                [self removeBulletTargetAt:[Grid gridWithRow:i Col:j]];
+            }else if(_mapInfo[i][j] == [NSNumber numberWithInt:WALL]){
+                [self removeWallAt:[Grid gridWithRow:i Col:j]];
+            }
+            
+            int object = arrayForMap[i*MAX_COLS+j];
+            if(object == TARGET){
+                CCSprite *target = [CCSprite spriteWithFile:@"target.png"];
+                [_targets addObject:target];
+                [_gameLayer addChild:target];
+            }else if(object == BULLETTARGET){
+                CCSprite *bullettarget = [CCSprite spriteWithFile:@"bullet_target.png"];
+                [_bulletTargets addObject:bullettarget];
+                [_gameLayer addChild:bullettarget];
+            }else if(object == WALL){
+                CCSprite *wall = [CCSprite spriteWithFile:@"wall.png"];
+                [_walls addObject:wall];
+                [_gameLayer addChild:wall];
+            }
+        }
+    }
 }
 
 @end
@@ -351,4 +395,18 @@
     return [NSString stringWithFormat:@"(%d, %d)", _row, _col];
 }
 
++ (NSArray*)arrayForGrids:(NSArray *)gridArray
+{
+    NSInteger length = [gridArray count];
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:length];
+    
+    for (int i=0; i<length; i++) {
+        array[i] = [NSMutableArray arrayWithCapacity:2];
+        Grid *grid = gridArray[i];
+        array[i][0] = @(grid.row);
+        array[i][1] = @(grid.col);
+    }
+    
+    return array;
+}
 @end

@@ -29,6 +29,7 @@
 // update from other device
 - (void)setDirectionFromRemote:(Direction)direction;
 
+- (void)updateSnakeInfo:(NSMutableArray*) bodyArray;
 
 - (void)move;
 - (void)eatTarget;

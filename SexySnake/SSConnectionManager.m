@@ -20,6 +20,12 @@ NSString *const ACTION_RESUME_GAME = @"RESUME_GAME";
 NSString *const ACTION_RESTART_GAME = @"RESTART_GAME";
 NSString *const ACTION_QUIT_GAME = @"QUIT_GAME";
 
+NSString *const ACTION_SEND_MAP = @"SEND_MAP";
+NSString *const ACTION_RECEIVE_MAP = @"RECEIVE_MAP";
+
+NSString *const ACTION_SEND_SNAKE_INFO = @"SEND_SNAKE_INFO";
+NSString *const ACTION_RECEIVE_SNAKE_INFO = @"RECEIVE_SNAKE_INFO";
+
 //NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
 @implementation SSConnectionManager 
