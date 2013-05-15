@@ -357,8 +357,8 @@
     _shootItem.isEnabled = NO;
     
     CCMenu *menu = [CCMenu menuWithItems:pauseItem, _shootItem, nil];
-    menu.position = ccp(size.width - 70, size.height - 150);
-    [menu alignItemsVerticallyWithPadding:30];
+    menu.position = ccp(size.width - 70, size.height / 2 + 50);
+    [menu alignItemsVerticallyWithPadding:400];
     [self addChild:menu];
 }
 
