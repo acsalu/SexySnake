@@ -31,11 +31,14 @@
 {
     [CCMenuItemFont setFontSize:80];
     
-    CCMenuItem *singlePlayerBtn = [CCMenuItemFont itemWithString:@"1P" block:^(id sender) {
-        [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf1P]];
-    }];
+    CCMenuItem *singlePlayerBtn = [CCMenuItemImage itemWithNormalImage:@"single-player.png"
+                                                         selectedImage:@"single-player-pressed.png" block:^(id sender) {
+                                                             [[CCDirector sharedDirector] replaceScene:[GameLayer sceneOf1P]];
+                                                         }];
 
-    CCMenuItem *twoPlayerBtn = [CCMenuItemFont itemWithString:@"2P" block:^(id sender) {
+
+    CCMenuItem *twoPlayerBtn = [CCMenuItemImage itemWithNormalImage:@"multi-player.png"
+                                                      selectedImage:@"multi-player-pressed.png" block:^(id sender) {
         SSConnectionManager *manager = [SSConnectionManager sharedManager];
         manager.mainScreenDelegate = self;
         [manager connectToDevice];
@@ -45,7 +48,7 @@
     
     CGSize size = [[CCDirector sharedDirector] winSize];
     [mainMenu alignItemsHorizontallyWithPadding:80];
-    mainMenu.position = ccp(size.width/2, size.height/2);
+    mainMenu.position = ccp(size.width/2, size.height/2 - 100);
     
     [self addChild:mainMenu];
 }
