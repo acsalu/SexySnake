@@ -109,10 +109,27 @@
     }
 }
 
+- (void)updateSnakeInfo:(NSMutableArray*) bodyArray
+{
+    _grids = [NSMutableArray array];
+    NSUInteger temp = self.length;
+    if (temp < bodyArray.count) {
+        for (int i = temp; i < bodyArray.count; ++i)
+            [_components addObject:[CCSprite spriteWithFile:@"snake-body.png"]];
+    } else if (temp > bodyArray.count) {
+        for (int i = bodyArray.count; i < temp; ++i)
+            [_components removeLastObject];
+    }
+    for (NSArray *gridInfo in bodyArray) {
+        [_grids addObject:[Grid gridWithRow:[gridInfo[0] intValue] Col:[gridInfo[1] intValue]]];
+    }
+    [self reorganize];
+}
+
 // call this method when add or remove components
 - (void)reorganize
 {
-    [self removeAllChildrenWithCleanup:NO];
+    [self removeAllChildrenWithCleanup:YES];
     for (int i = 0; i < _components.count; ++i) {
         ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
         [self addChild:_components[i]];
