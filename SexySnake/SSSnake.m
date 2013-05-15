@@ -109,10 +109,27 @@
     }
 }
 
+- (void)updateSnakeInfo:(NSMutableArray*) bodyArray
+{
+    _grids = [NSMutableArray array];
+    NSUInteger temp = self.length;
+    if (temp < bodyArray.count) {
+        for (int i = temp; i < bodyArray.count; ++i)
+            [_components addObject:[CCSprite spriteWithFile:@"snake-body.png"]];
+    } else if (temp > bodyArray.count) {
+        for (int i = bodyArray.count; i < temp; ++i)
+            [_components removeLastObject];
+    }
+    for (NSArray *gridInfo in bodyArray) {
+        [_grids addObject:[Grid gridWithRow:[gridInfo[0] intValue] Col:[gridInfo[1] intValue]]];
+    }
+    [self reorganize];
+}
+
 // call this method when add or remove components
 - (void)reorganize
 {
-    [self removeAllChildrenWithCleanup:NO];
+    [self removeAllChildrenWithCleanup:YES];
     for (int i = 0; i < _components.count; ++i) {
         ((CCSprite *) _components[i]).position = [Grid positionWithGrid:_grids[i]];
         [self addChild:_components[i]];
@@ -127,7 +144,7 @@
         return;
     }
     if (newHead) {
-        CCLOG(@"[Snake] head now move to %@", newHead);
+        //CCLOG(@"[Snake] head now move to %@", newHead);
         if (!_hasEaten) {
             for (int i = _components.count - 1; i > 0; --i) {
                 _grids[i] = _grids[i - 1];
@@ -162,7 +179,7 @@
     CCSprite *body = [CCSprite spriteWithFile:@"snake-body.png"];
     Grid *grid = [Grid gridWithRow:((Grid *) _grids[0]).row Col:((Grid *) _grids[0]).col];
     
-    CCLOG(@"[Snake] eat target at (%d, %d)", grid.row, grid.col);
+    //CCLOG(@"[Snake] eat target at (%d, %d)", grid.row, grid.col);
     
     [_components insertObject:body atIndex:1];
     [_grids insertObject:grid atIndex:1];
@@ -210,7 +227,7 @@
 
 - (void)hitWall
 {
-    CCLOG(@"[Snake] hit wall at %@", _grids[0]);
+    //CCLOG(@"[Snake] hit wall at %@", _grids[0]);
     if (self.length > 1) {
         [self removeChild:[_components lastObject] cleanup:NO];
         [_components removeLastObject];
@@ -222,7 +239,7 @@
 - (void)getShotAt:(Grid*)grid
 {
     NSUInteger hurtIndex = [_grids indexOfObject:grid];
-    CCLOG(@"[Snake] It's hurt at %d", hurtIndex);
+    //CCLOG(@"[Snake] It's hurt at %d", hurtIndex);
     if (hurtIndex > 0) {
         // not hurt at head
         for (NSUInteger i = hurtIndex; i < self.length; ++i) {
@@ -235,6 +252,8 @@
 
 - (void)bullet:(BulletSprite *)bullet shootSnakeAt:(Grid *)grid
 {
+    NSLog(@"hit snake!!!");
+    
     CCSprite *lightRing = [CCSprite spriteWithFile:@"destroyedeffect.png"];
     lightRing.position = [Grid positionWithGrid:grid];
     [_gameLayer addChild:lightRing];

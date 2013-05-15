@@ -90,8 +90,8 @@
         
         // setup counter
         _counter = 3;
-//        [self schedule:@selector(countdown:) interval:1.0f];
-        [self startGame];
+        [self schedule:@selector(countdown:) interval:1.0f];
+//        [self startGame];
         
     }
     return self;
@@ -143,12 +143,13 @@
     if (_mode == MULTI_PLAYER) {
         if ([SSConnectionManager sharedManager].role == SERVER) {
             [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-            [self schedule:@selector(sendInfoToClient:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendSnakeInfoToClient:) interval:BASE_UPDATE_INTERVAL*5 repeat:kCCRepeatForever delay:0.0f];
+            //[self schedule:@selector(sendMapInfoToClinet:) interval:(BASE_UPDATE_INTERVAL)/10 repeat:kCCRepeatForever delay:0.0f];
         }
-        else{
-            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-            [self schedule:@selector(sendInfoToServer:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
-        }
+//        else{
+//            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//            [self schedule:@selector(sendInfoToServer:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
+//        }
         
     }
     else
@@ -156,23 +157,29 @@
     
 }
 
-- (void)sendInfoToClient:(ccTime)delta
+- (void)sendSnakeInfoToClient:(ccTime)delta
+{
+    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
+    NSString *mySnakeSent = [mySnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SERVER_SNAKE];
+    NSArray *otherSnakeArray = [Grid arrayForGrids:_otherSnake.grids];
+    NSString *otherSnakeSent = [otherSnakeArray JSONString];
+    [[SSConnectionManager sharedManager] sendMessage:otherSnakeSent forAction:ACTION_SEND_CLIENT_SNAKE];
+    
+}
+
+- (void)sendMapInfoToClinet:(ccTime)delta
 {
     NSArray *mapArray = [_map mapToArray];
     NSString *mapSent = [mapArray JSONString];
     [[SSConnectionManager sharedManager] sendMessage:mapSent forAction:ACTION_SEND_MAP];
-    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
-    NSString *mySnakeSent = [mySnakeArray JSONString];
-    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
-    
 }
 
-- (void)sendInfoToServer:(ccTime)delta
-{
-    NSArray *mySnakeArray = [Grid arrayForGrids:_mySnake.grids];
-    NSString *mySnakeSent = [mySnakeArray JSONString];
-    [[SSConnectionManager sharedManager] sendMessage:mySnakeSent forAction:ACTION_SEND_SNAKE_INFO];
-}
+
+//- (void)sendInfoToServer:(ccTime)delta
+//{
+//
+//}
 
 - (void)updateMapInfo:(ccTime)delta
 {
@@ -216,10 +223,10 @@
 }
 
 
-- (void)updateClientMap:(ccTime)delta
-{
-    
-}
+//- (void)updateClientMap:(ccTime)delta
+//{
+//    
+//}
 
 
 
@@ -239,10 +246,21 @@
         
     } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
         [self resumeGame];
-    } else if ([action isEqualToString:ACTION_SEND_SNAKE_INFO]) {
         
-    } else if ([action isEqualToString:ACTION_SEND_MAP]){
+    } else if ([action isEqualToString:ACTION_SEND_SERVER_SNAKE]) {
+        NSMutableArray *otherSankeArray = [message objectFromJSONString];
+        [_otherSnake updateSnakeInfo:otherSankeArray];
         
+    }else if ([action isEqualToString:ACTION_SEND_CLIENT_SNAKE]) {
+        NSMutableArray *mySnakeArray = [message objectFromJSONString];
+        [_mySnake updateSnakeInfo:mySnakeArray];
+        
+    }else if ([action isEqualToString:ACTION_SEND_MAP]){
+        NSMutableArray *receivedArray = [message objectFromJSONString];
+        NSMutableArray *newMap = [SSMap arrayToMap:receivedArray];
+        if ([SSConnectionManager sharedManager].role == CLIENT) {
+            [_map rerenderMap:newMap];
+        }
     }
 }
 
@@ -356,8 +374,8 @@
     _shootItem.isEnabled = NO;
     
     CCMenu *menu = [CCMenu menuWithItems:pauseItem, _shootItem, nil];
-    menu.position = ccp(size.width - 70, size.height - 150);
-    [menu alignItemsVerticallyWithPadding:30];
+    menu.position = ccp(size.width - 70, size.height / 2 + 50);
+    [menu alignItemsVerticallyWithPadding:400];
     [self addChild:menu];
 }
 
