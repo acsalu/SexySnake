@@ -30,15 +30,22 @@
 
 
 - (void)printMap;
+
+//Update snake's motion
 - (void)updatePositionOfServerSnake:(NSMutableArray*) sSnake
                         ClientSnake:(NSMutableArray*) cSnake;
 - (void)snakeShootsAt:(Grid*) grid
         WithDireciton:(Direction)direction;
+
+//Generate new objects
 - (void)spawnTarget;
 - (void)spawnBulletTarget;
+
+//Remove objects
 - (void)removeTargetAt:(Grid*)grid;
 - (void)removeBulletTargetAt:(Grid*)grid;
 - (void)removeBulletAt:(Grid*)grid;
+
 - (void)updatePositionOfBullet;
 - (void)wallIsBuiltAt:(Grid*)grid;
 
