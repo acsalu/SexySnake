@@ -50,11 +50,11 @@
         background.position = ccp(size.width / 2, size.height / 2);
 //        [self addChild:background];
         
-        _label = [CCLabelTTF labelWithString:@"Hello World!" fontName:@"Helvetica" fontSize:20];
-        _label.position = ccp(size.width / 2, size.height - 40);
-        _label.color = ccc3(255, 0, 0);
+//        _label = [CCLabelTTF labelWithString:@"Hello World!" fontName:@"Helvetica" fontSize:20];
+//        _label.position = ccp(size.width / 2, size.height - 40);
+//        _label.color = ccc3(255, 0, 0);
         
-        [self addChild:_label];
+//        [self addChild:_label];
         
         [self createPauseMenu];
         
@@ -109,8 +109,8 @@
     float pitch = currentAttitude.pitch;
     float yaw = currentAttitude.yaw;
     
-    [_label setString:[NSString stringWithFormat:@"roll:%.2f  pitch:%.2f  yaw:%.2f",
-                       CC_RADIANS_TO_DEGREES(roll), CC_RADIANS_TO_DEGREES(pitch), CC_RADIANS_TO_DEGREES(yaw)]];
+//    [_label setString:[NSString stringWithFormat:@"roll:%.2f  pitch:%.2f  yaw:%.2f",
+//                       CC_RADIANS_TO_DEGREES(roll), CC_RADIANS_TO_DEGREES(pitch), CC_RADIANS_TO_DEGREES(yaw)]];
     
     float componentX = - CC_RADIANS_TO_DEGREES(pitch) * 20;
     float componentY = - CC_RADIANS_TO_DEGREES(roll) * 20;
