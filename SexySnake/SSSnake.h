@@ -22,6 +22,7 @@
 @property (nonatomic, assign) BOOL isBuilding;
 @property (nonatomic, assign) int numberOfBulletTarget;
 @property (nonatomic, assign) BOOL hasEaten;
+@property (nonatomic, assign) BOOL hasLongBia;
 
 + (SSSnake *)mySnakeWithInitialGrid:(Grid *)grid;
 + (SSSnake *)otherSnakeWithInitialGrid:(Grid *)grid;

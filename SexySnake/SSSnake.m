@@ -112,6 +112,7 @@
 // call this method when moving
 - (void)reformWithNewHeadGrid:(Grid *)newHead;
 {
+    if (_hasLongBia) return;
     if (newHead) {
         CCLOG(@"[Snake] head now move to %@", newHead);
         if (!_hasEaten) {
@@ -181,7 +182,11 @@
 
 - (void)hitWall
 {
-    
+    CCLOG(@"[Snake] hit wall at %@", _grids[0]);
+    [self removeChild:[_components lastObject] cleanup:NO];
+    [_components removeLastObject];
+    [_grids removeLastObject];
+    _hasLongBia = YES;
 }
 
 @end

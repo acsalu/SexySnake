@@ -84,6 +84,9 @@
         _map = [[SSMap alloc] init];
         _map.gameLayer = self;
         
+        // testing wall
+        [_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
+        
         // setup counter
         _counter = 3;
 //        [self schedule:@selector(countdown:) interval:1.0f];
@@ -128,6 +131,25 @@
 - (void)updateOtherSnakePosition:(ccTime)delta
 {
     [_otherSnake move];
+    
+}
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [touch locationInView:[touch view]];
+    
+    CCSprite *myHead = _mySnake.components[0];
+    CGFloat xDiff = location.x - myHead.position.x;
+    CGFloat yDiff = location.y - myHead.position.y;
+    
+    if (abs(xDiff) > abs(yDiff)) {
+        if (yDiff > 0) _mySnake.direction = UP;
+        else _mySnake.direction = DOWN;
+    } else {
+        if (xDiff > 0) _mySnake.direction = RIGHT;
+        else _mySnake.direction = LEFT;
+    }
     
 }
 
@@ -176,11 +198,7 @@
 }
 
 
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    CCLOG(@"Send Hello Message");
-    [[SSConnectionManager sharedManager] sendMessage:@"Hello from your friend." forAction:ACTION_HELLO];
-}
+
 
 #pragma mark - SSConnectionManager delegate methods
 
