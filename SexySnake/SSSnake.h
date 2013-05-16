@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSMutableArray *components;
 @property (nonatomic, strong) NSMutableArray *grids;
 @property (nonatomic, assign, readonly) NSUInteger length;
-@property (nonatomic, assign) BOOL isShoot;
+//@property (nonatomic, assign) BOOL isShoot;
 @property (nonatomic, assign) BOOL isBuilding;
 @property (nonatomic, assign) int numberOfBulletTarget;
 @property (nonatomic, assign) BOOL hasEaten;
@@ -45,7 +45,7 @@
 - (void)hitWall;
 - (void)buildWall;
 - (void)shoot;
-- (void)finishShooting;
+//- (void)finishShooting;
 - (void)finishBuilding;
 
 

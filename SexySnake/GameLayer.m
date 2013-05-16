@@ -67,7 +67,7 @@
                 
         // Configure motion manager
         _motionManager = [[CMMotionManager alloc] init];
-        _motionManager.deviceMotionUpdateInterval = 30.0 / 60.0;
+        _motionManager.deviceMotionUpdateInterval = 15.0 / 60.0;
         
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
@@ -194,15 +194,15 @@
     
     [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
     
-    if (_mySnake.isShoot) {
-        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
-        [_mySnake finishShooting];
-    }
-    
-    if (_otherSnake.isShoot) {
-        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
-        [_otherSnake finishShooting];
-    }
+//    if (_mySnake.isShoot) {
+//        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
+//        [_mySnake finishShooting];
+//    }
+//    
+//    if (_otherSnake.isShoot) {
+//        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
+//        [_otherSnake finishShooting];
+//    }
     
     if (_mySnake.isBuilding) {
         //NSLog(@"mySnake builds");
@@ -338,7 +338,7 @@
 
 - (void)endGame
 {
-    [self unschedule:@selector(updateMySnakePosition:)];
+    [self unscheduleAllSelectors];
     NSString *message;
     if (_mode == SINGLE_PLAYER) message = @"Yon Win!";
     else if (_mySnake.length == WIN_SNAKE_LENGTH) message = @"You Win!";
