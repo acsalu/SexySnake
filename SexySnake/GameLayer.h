@@ -13,6 +13,7 @@
 #import "SSMap.h"
 #import "Const.h"
 #import "BulletSprite.h"
+#import "SimpleAudioEngine.h"
 
 
 #import "SimpleAudioEngine.h"
