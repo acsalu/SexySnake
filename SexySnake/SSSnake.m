@@ -124,6 +124,13 @@
         [_grids addObject:[Grid gridWithRow:[gridInfo[0] intValue] Col:[gridInfo[1] intValue]]];
     }
     [self reorganize];
+    
+    
+    
+    
+    
+    
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 // call this method when add or remove components
@@ -164,6 +171,17 @@
         id move = [CCMoveTo actionWithDuration:BASE_UPDATE_INTERVAL position:p];
 //        move = [CCEaseInOut actionWithAction:move rate:2.0];
         [(CCSprite *)_components[0] runAction:move];
+        
+        for (NSUInteger i = 1; i < _grids.count; ++i) {
+            Grid *head = _grids[0];
+            Grid *body = _grids[i];
+            if (head.row == body.row && body.col == body.col) {
+                [self getBitAtIndex:i];
+                break;
+            }
+        }
+        
+        
     }
 }
 
@@ -187,27 +205,30 @@
     [self addChild:body];
     
     _hasEaten = YES;
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)eatBulletTarget
 {
     if (_numberOfBulletTarget < MAX_BULLET_NUM)
         ++self.numberOfBulletTarget;
+    [_gameLayer updateShootButton];
     // update UI
     // play sound effect
 }
 
 - (void)shoot
 {
-    if (self.numberOfBulletTarget > 0) {
-        --self.numberOfBulletTarget;
-        Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
-        BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
-        bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
-        [[self parent] addChild:bullet];
-        [bullet fire];
-        [[SimpleAudioEngine sharedEngine] playEffect:@"gunshot.mp3"];
-    }
+    --self.numberOfBulletTarget;
+    Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
+    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
+    bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
+    [[self parent] addChild:bullet];
+    [bullet fire];
+    
+    [[SSConnectionManager sharedManager] sendMessage:@"shoot" forAction:ACTION_SHOOT];
+    
+    [_gameLayer updateShootButton];
 }
 
 - (void)finishShooting
@@ -219,6 +240,7 @@
 {
     //After pressing building-wall button
     _isBuilding = YES;
+    
 }
 
 - (void)finishBuilding
@@ -235,6 +257,7 @@
         [_grids removeLastObject];
     }
     _hasLongBia = YES;
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)getShotAt:(Grid*)grid
@@ -249,6 +272,7 @@
             [_grids removeLastObject];
         }
     }
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)bullet:(BulletSprite *)bullet shootSnakeAt:(Grid *)grid
@@ -260,12 +284,33 @@
     [_gameLayer addChild:lightRing];
     
     id callback = [CCCallFuncND actionWithTarget:_gameLayer selector:@selector(removeChild:cleanup:) data:YES];
-    id scaleAction = [CCScaleTo actionWithDuration:0.2 scale:1.3];
+    id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:3];
     id easeScaleAction = [CCEaseInOut actionWithAction:scaleAction rate:2];
     CCSequence *sequence = [CCSequence actions:easeScaleAction, callback, nil];
     [lightRing runAction:sequence];
     
     [self getShotAt:grid];
+}
+
+- (void)getBitAt:(Grid *)grid
+{
+    for (NSUInteger i = 1; i < _grids.count; ++i) {
+        if (grid.row == ((Grid *) _grids[i]).row && grid.col == ((Grid *) _grids[i]).col) {
+            [self getBitAtIndex:i];
+            break;
+        }
+    }
+}
+
+- (void)getBitAtIndex:(NSUInteger)index
+{
+    for (NSUInteger i = _grids.count - 1; i < index; --i) {
+        [_gameLayer.map wallIsBuiltAt:_grids[i]];
+        [_grids removeLastObject];
+        CCSprite *last = _components[i];
+        [last removeFromParentAndCleanup:YES];
+        [_components removeLastObject];
+    }
 }
 
 @end

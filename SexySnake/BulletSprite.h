@@ -29,6 +29,7 @@
 // SSMap
 - (void)removeTargetAt:(Grid *)grid;
 - (void)removeBulletTargetAt:(Grid *)grid;
+- (void)removeWallAt:(Grid *)grid;
 
 @end
 

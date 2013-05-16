@@ -15,10 +15,12 @@
 #import "BulletSprite.h"
 #import "SimpleAudioEngine.h"
 
+
+#import "SimpleAudioEngine.h"
 @class SSSnake;
 
 
-@interface GameLayer : CCLayer <SSConnectionManagerDelegate, BulletSpriteDelegate>
+@interface GameLayer : CCLayer <SSConnectionManagerDelegate, BulletSpriteDelegate, UIAlertViewDelegate>
 
 + (CCScene *)sceneOf1P;
 + (CCScene *)sceneOf2P;
@@ -42,6 +44,9 @@
 @property (strong, nonatomic) CCLayer *pauseLayer;
 @property (strong, nonatomic) CCSprite *countdownSprite;
 @property (strong, nonatomic) CCMenuItem *shootItem;
+@property (strong, nonatomic) CCMenuItem *shootItemDisabled;
+@property (strong, nonatomic) CCMenuItem *wallItem;
+@property (strong, nonatomic) CCMenuItem *wallItemDisabled;
 @property (assign, nonatomic) BOOL startGenerateTarget;
 @property (assign, nonatomic) BOOL startGenBulletTarget;
 @property (strong, nonatomic) NSArray *scoreLabels;
@@ -49,5 +54,6 @@
 
 // Update UI
 - (void)updateShootButton;
+- (void)updateScoreLabelForSnake:(SSSnake *)snake;
 
 @end

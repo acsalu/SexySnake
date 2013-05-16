@@ -42,6 +42,7 @@
 - (void)eatBulletTarget;
 - (void)getShotAt:(Grid*)grid;
 - (void)getBitAt:(Grid*)grid;
+- (void)getBitAtIndex:(NSUInteger)index;
 - (void)hitWall;
 - (void)buildWall;
 - (void)shoot;

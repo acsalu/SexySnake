@@ -40,7 +40,6 @@
 - (id)init
 {
     if ((self = [super init])) {
-        
         CGSize size = [[CCDirector sharedDirector] winSize];
         
         isTouchEnabled_ = YES;
@@ -268,6 +267,12 @@
             [_map oneDimensionArrayForMap:receivedArray];
             //[_map rerenderMap:newMap];
         }
+    } else if ([action isEqualToString:ACTION_SHOOT]) {
+        Grid *nextGrid = [Grid gridForDirection:_otherSnake.direction toGrid:_otherSnake.grids[0]];
+        BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_otherSnake.direction];
+        bullet.delegate = self;
+        [self addChild:bullet];
+        [bullet fire];
     }
 }
 
@@ -340,7 +345,19 @@
 
 - (void)endGame
 {
+    [self unschedule:@selector(updateMySnakePosition:)];
+    NSString *message;
+    if (_mode == SINGLE_PLAYER) message = @"Yon Win!";
+    else if (_mySnake.length == WIN_SNAKE_LENGTH) message = @"You Win!";
+    else message = @"You Lost...";
     
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Finished!"
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK!"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)pauseGame
@@ -385,6 +402,7 @@
         scoreLabel.color = ccc3(255, 255, 255);
         [self addChild:scoreLabel];
         _scoreLabels = [NSArray arrayWithObject:scoreLabel];
+        
     } else {
         CCLabelTTF *myScoreLabel = [CCLabelTTF labelWithString:@"My Snake: 1" fontName:AmenaFontName fontSize:40];
         myScoreLabel.position = ccp(120, size.height - 60);
@@ -409,17 +427,38 @@
         [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_PAUSE_GAME];
     }];
     
-    _shootItem = [CCMenuItemImage itemWithNormalImage:@"shoot-button.png" selectedImage:@"shoot-button.png" block:^(id sender) {
+    _shootItem = [CCMenuItemImage itemWithNormalImage:@"shoot-button.png" selectedImage:@"shoot-button-pressed.png" block:^(id sender) {
         CCLOG(@"Shoot Button pressed.");
         [_mySnake shoot];
     }];
     
-    _shootItem.isEnabled = NO;
+    _shootItemDisabled = [CCMenuItemImage itemWithNormalImage:@"shoot-button-disabled.png" selectedImage:@"shoot-button-disabled.png"];
     
-    CCMenu *menu = [CCMenu menuWithItems:pauseItem, _shootItem, nil];
-    menu.position = ccp(size.width - 70, size.height / 2 + 50);
-    [menu alignItemsVerticallyWithPadding:400];
+    
+    _wallItem = [CCMenuItemImage itemWithNormalImage:@"build-wall-button.png" selectedImage:@"build-wall-button-pressed.png" block:^(id sender) {
+        CCLOG(@"Build Wall Button pressed.");
+        [_mySnake buildWall];
+    }];
+    
+    _wallItemDisabled = [CCMenuItemImage itemWithNormalImage:@"build-wall-button-disabled.png" selectedImage:@"build-wall-button-disabled.png"];
+
+    [self updateShootButton];
+    [self updateScoreLabelForSnake:_mySnake];
+    
+    CCMenu *menu = [CCMenu menuWithItems:pauseItem, nil];
+    menu.position = ccp(size.width - 70, size.height - 60);
     [self addChild:menu];
+    
+    
+    
+    
+    CCMenu *shootMenu = [CCMenu menuWithItems:_shootItemDisabled, _shootItem, nil];
+    shootMenu.position = ccp(size.width - 70, 210);
+    CCMenu *wallMenu = [CCMenu  menuWithItems:_wallItemDisabled, _wallItem, nil];
+    wallMenu.position = ccp(size.width - 70, 100);
+//    [weaponMenu alignItemsVerticallyWithPadding:20];
+    [self addChild:shootMenu];
+    [self addChild:wallMenu];
 }
 
 
@@ -465,12 +504,33 @@
 - (void)updateShootButton
 {
 
-    if (_mySnake.numberOfBulletTarget == 0) {
-        _shootItem.isEnabled = NO;
+    if (_mySnake && _mySnake.numberOfBulletTarget == 0) {
+        _shootItem.visible = YES;
+        _shootItemDisabled.visible = NO;
     } else {
-        _shootItem.isEnabled = YES;
+        _shootItemDisabled.visible = YES;
+        _shootItem.visible = NO;
     }
 }
 
+- (void)updateScoreLabelForSnake:(SSSnake *)snake
+{
+    if (snake == _mySnake) {
+        ((CCLabelTTF *) _scoreLabels[0]).string = [NSString stringWithFormat:@"My Snake: %d", _mySnake.length];
+        _wallItem.visible = (_mySnake.length > 1);
+        _wallItemDisabled.visible = !_wallItem.visible;
+    } else {
+        ((CCLabelTTF *) _scoreLabels[1]).string = [NSString stringWithFormat:@"The Snake: %d", _otherSnake.length];
+    }
+    
+    if (_mySnake.length == WIN_SNAKE_LENGTH || _otherSnake.length == WIN_SNAKE_LENGTH) [self endGame];
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self quitGame];
+}
 
 @end

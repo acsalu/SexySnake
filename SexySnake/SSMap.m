@@ -15,6 +15,7 @@
 - (id)init
 {
     if ((self = [super init])) {
+        
         CGSize size = [[CCDirector sharedDirector] winSize];
         _startX = 20;
         _startY = size.height - 80;
@@ -244,6 +245,16 @@
         if (CGPointEqualToPoint(wall.position, [Grid positionWithGrid:grid])) {
             [_walls removeObjectAtIndex:i];
             [_gameLayer removeChild:wall cleanup:YES];
+            
+            CCSprite *lightRing = [CCSprite spriteWithFile:@"destroyedeffect.png"];
+            lightRing.position = [Grid positionWithGrid:grid];
+            [_gameLayer addChild:lightRing];
+            
+            id callback = [CCCallFuncND actionWithTarget:_gameLayer selector:@selector(removeChild:cleanup:) data:YES];
+            id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:3];
+            id easeScaleAction = [CCEaseInOut actionWithAction:scaleAction rate:2];
+            CCSequence *sequence = [CCSequence actions:easeScaleAction, callback, nil];
+            [lightRing runAction:sequence];
         }
     }
 }
