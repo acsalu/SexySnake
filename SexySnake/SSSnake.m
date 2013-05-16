@@ -206,6 +206,7 @@
         bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
         [[self parent] addChild:bullet];
         [bullet fire];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"gunshot.mp3"];
     }
 }
 

@@ -10,6 +10,7 @@
 #import "Const.h"
 #import "cocos2d.h"
 #import "BulletSprite.h"
+#import "SimpleAudioEngine.h"
 
 @class GameLayer;
 @class Grid;

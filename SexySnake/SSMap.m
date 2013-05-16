@@ -70,7 +70,8 @@
        //NSLog(@"mySnake eats a target");
        [_gameLayer.mySnake eatTarget];
        [self removeTargetAt:sHead];
-   }
+       [[SimpleAudioEngine sharedEngine] playEffect:@"tritone.mp3" pitch:1.0f pan:1.0f gain:1.0f];
+    }
    else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL){
        [_gameLayer.mySnake hitWall];
    }
@@ -78,6 +79,7 @@
    {
        [_gameLayer.mySnake eatBulletTarget];
        [self removeBulletTargetAt:sHead];
+       [[SimpleAudioEngine sharedEngine] playEffect:@"tritone.mp3"];
    }
 
     
@@ -86,11 +88,11 @@
         direction = _gameLayer.otherSnake.direction;
         nextGrid = [Grid gridForDirection:direction toGrid:cHead];
         if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == TARGET){
-            NSLog(@"otherSnake eats a target at (%@)", nextGrid);
+            //NSLog(@"otherSnake eats a target at (%@)", nextGrid);
            [_gameLayer.otherSnake eatTarget];
            [self removeTargetAt:nextGrid];
-
-
+           [[SimpleAudioEngine sharedEngine] playEffect:@"tritone.mp3"];
+     
         }
         else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL){
            [_gameLayer.otherSnake hitWall];
@@ -98,6 +100,7 @@
         else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == BULLETTARGET){
            [_gameLayer.otherSnake eatBulletTarget];
            [self removeBulletTargetAt:nextGrid];
+           [[SimpleAudioEngine sharedEngine] playEffect:@"tritone.mp3"];
         }
 
         for(int i=0; i<[sSnake count]; i++){

@@ -16,6 +16,11 @@
 		0FD93F0F173BCE7800E0C838 /* MainScreenLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F0E173BCE7800E0C838 /* MainScreenLayer.m */; };
 		0FD93F12173BD60500E0C838 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F11173BD60500E0C838 /* GameLayer.m */; };
 		0FD93F15173BD83E00E0C838 /* SSConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */; };
+		183E21DE17447678004888EA /* background.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 183E21DD17447678004888EA /* background.mp3 */; };
+		183E21E017447CE6004888EA /* tritone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 183E21DF17447CE6004888EA /* tritone.mp3 */; };
+		183E21E217447F8B004888EA /* gunshot.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 183E21E117447F8B004888EA /* gunshot.mp3 */; };
+		18CF8A3617446F160018E037 /* space_travel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 18CF8A3517446F160018E037 /* space_travel.mp3 */; };
+		18CF8A38174470910018E037 /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 18CF8A37174470910018E037 /* countdown.mp3 */; };
 		18F206F51743AF44006DDA81 /* bullet_target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F206F41743AF44006DDA81 /* bullet_target-ipad.png */; };
 		900E5F89173F695400468EBF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 900E5F88173F695400468EBF /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		902A70BB173B6F7000745D43 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902A70BA173B6F7000745D43 /* QuartzCore.framework */; };
@@ -249,6 +254,11 @@
 		0FD93F11173BD60500E0C838 /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
 		0FD93F13173BD83E00E0C838 /* SSConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSConnectionManager.h; sourceTree = "<group>"; };
 		0FD93F14173BD83E00E0C838 /* SSConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSConnectionManager.m; sourceTree = "<group>"; };
+		183E21DD17447678004888EA /* background.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background.mp3; sourceTree = "<group>"; };
+		183E21DF17447CE6004888EA /* tritone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tritone.mp3; sourceTree = "<group>"; };
+		183E21E117447F8B004888EA /* gunshot.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gunshot.mp3; sourceTree = "<group>"; };
+		18CF8A3517446F160018E037 /* space_travel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = space_travel.mp3; sourceTree = "<group>"; };
+		18CF8A37174470910018E037 /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
 		18F206F41743AF44006DDA81 /* bullet_target-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bullet_target-ipad.png"; sourceTree = "<group>"; };
 		900E5F87173F695400468EBF /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		900E5F88173F695400468EBF /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
@@ -677,6 +687,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18CF8A3217446ECA0018E037 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				183E21E117447F8B004888EA /* gunshot.mp3 */,
+				183E21DF17447CE6004888EA /* tritone.mp3 */,
+				183E21DD17447678004888EA /* background.mp3 */,
+				18CF8A37174470910018E037 /* countdown.mp3 */,
+				18CF8A3517446F160018E037 /* space_travel.mp3 */,
+			);
+			name = Sound;
+			sourceTree = "<group>";
+		};
 		900E5F8A173F695700468EBF /* JSONKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -755,6 +777,7 @@
 		902A70CD173B6F7000745D43 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				18CF8A3217446ECA0018E037 /* Sound */,
 				0FB094A31744244000DAFC33 /* destroyedeffect.png */,
 				0FB0949D17440AA200DAFC33 /* bullet2-ipad.png */,
 				0FB0949F17440BD300DAFC33 /* bullet3-ipad.png */,
@@ -1465,6 +1488,11 @@
 				90C41DDB174432520064AB67 /* main-screen-ipad.png in Resources */,
 				90C41DDD1744329D0064AB67 /* Default-Landscape~ipad.png in Resources */,
 				90C41DDF174446380064AB67 /* amena.ttf in Resources */,
+				18CF8A3617446F160018E037 /* space_travel.mp3 in Resources */,
+				18CF8A38174470910018E037 /* countdown.mp3 in Resources */,
+				183E21DE17447678004888EA /* background.mp3 in Resources */,
+				183E21E017447CE6004888EA /* tritone.mp3 in Resources */,
+				183E21E217447F8B004888EA /* gunshot.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

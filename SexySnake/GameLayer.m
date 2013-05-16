@@ -90,7 +90,10 @@
         
         // setup counter
         _counter = 3;
-        [self schedule:@selector(countdown:) interval:1.0f];
+        
+        [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"countdown.mp3"];
+        [self schedule:@selector(countdown:) interval:1.0f repeat:4 delay:2.0f];
 //        [self startGame];
         
     }
@@ -273,6 +276,7 @@
 
 - (void)countdown:(ccTime)delta
 {
+    //[[SimpleAudioEngine sharedEngine] playEffect:@"countdown.mp3"];
     if (_counter < 0) {
         [self removeChild:_countdownSprite cleanup:YES];
         [self unschedule:@selector(countdown:)];
@@ -291,6 +295,8 @@
 
 - (void)startGame
 {
+    //[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+    //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"space_travel.mp3"];
     // Create local snake
     [self setupInfoExchange];
     
@@ -329,6 +335,7 @@
 //        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
 
     [self createScoreLabels];
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background.mp3"];
 }
 
 - (void)endGame
