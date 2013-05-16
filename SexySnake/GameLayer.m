@@ -85,7 +85,7 @@
         
 
         // testing wall
-        [_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
+        //[_map wallIsBuiltAt:[Grid gridWithRow:0 Col:0]];
         
         // setup counter
         _counter = 3;
