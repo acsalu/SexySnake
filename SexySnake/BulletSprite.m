@@ -110,6 +110,7 @@
                 [_map removeBulletTargetAt:nextGrid];
             
         } else {
+            [self removeFromParentAndCleanup:YES];
             NSLog(@"fuck");
 
         }

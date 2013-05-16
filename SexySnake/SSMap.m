@@ -73,7 +73,7 @@
        [self removeTargetAt:sHead];
        [[SimpleAudioEngine sharedEngine] playEffect:@"tritone.mp3" pitch:1.0f pan:1.0f gain:1.0f];
     }
-   else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL){
+   else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL || [_mapInfo[nextGrid.row][nextGrid.col] integerValue] == BOUND){
        [_gameLayer.mySnake hitWall];
    }
    else if([_mapInfo[sHead.row][sHead.col] integerValue] == BULLETTARGET)
@@ -95,7 +95,7 @@
            [[SimpleAudioEngine sharedEngine] playEffect:@"tritone.mp3"];
      
         }
-        else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL){
+        else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == WALL || [_mapInfo[nextGrid.row][nextGrid.col] integerValue] == BOUND){
            [_gameLayer.otherSnake hitWall];
         }
         else if([_mapInfo[nextGrid.row][nextGrid.col] integerValue] == BULLETTARGET){
