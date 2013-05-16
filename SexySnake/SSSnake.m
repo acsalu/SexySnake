@@ -124,6 +124,12 @@
         [_grids addObject:[Grid gridWithRow:[gridInfo[0] intValue] Col:[gridInfo[1] intValue]]];
     }
     [self reorganize];
+    
+    
+    
+    
+    
+    
     [_gameLayer updateScoreLabelForSnake:self];
 }
 
@@ -165,6 +171,17 @@
         id move = [CCMoveTo actionWithDuration:BASE_UPDATE_INTERVAL position:p];
 //        move = [CCEaseInOut actionWithAction:move rate:2.0];
         [(CCSprite *)_components[0] runAction:move];
+        
+        for (NSUInteger i = 1; i < _grids.count; ++i) {
+            Grid *head = _grids[0];
+            Grid *body = _grids[i];
+            if (head.row == body.row && body.col == body.col) {
+                [self getBitAtIndex:i];
+                break;
+            }
+        }
+        
+        
     }
 }
 
@@ -223,6 +240,7 @@
 {
     //After pressing building-wall button
     _isBuilding = YES;
+    
 }
 
 - (void)finishBuilding
@@ -272,6 +290,27 @@
     [lightRing runAction:sequence];
     
     [self getShotAt:grid];
+}
+
+- (void)getBitAt:(Grid *)grid
+{
+    for (NSUInteger i = 1; i < _grids.count; ++i) {
+        if (grid.row == ((Grid *) _grids[i]).row && grid.col == ((Grid *) _grids[i]).col) {
+            [self getBitAtIndex:i];
+            break;
+        }
+    }
+}
+
+- (void)getBitAtIndex:(NSUInteger)index
+{
+    for (NSUInteger i = _grids.count - 1; i < index; --i) {
+        [_gameLayer.map wallIsBuiltAt:_grids[i]];
+        [_grids removeLastObject];
+        CCSprite *last = _components[i];
+        [last removeFromParentAndCleanup:YES];
+        [_components removeLastObject];
+    }
 }
 
 @end
