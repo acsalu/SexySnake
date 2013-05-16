@@ -41,6 +41,9 @@
 @property (strong, nonatomic) CCLayer *pauseLayer;
 @property (strong, nonatomic) CCSprite *countdownSprite;
 @property (strong, nonatomic) CCMenuItem *shootItem;
+@property (strong, nonatomic) CCMenuItem *shootItemDisabled;
+@property (strong, nonatomic) CCMenuItem *wallItem;
+@property (strong, nonatomic) CCMenuItem *wallItemDisabled;
 @property (assign, nonatomic) BOOL startGenerateTarget;
 @property (assign, nonatomic) BOOL startGenBulletTarget;
 @property (strong, nonatomic) NSArray *scoreLabels;
