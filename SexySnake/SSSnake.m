@@ -124,6 +124,7 @@
         [_grids addObject:[Grid gridWithRow:[gridInfo[0] intValue] Col:[gridInfo[1] intValue]]];
     }
     [self reorganize];
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 // call this method when add or remove components
@@ -187,18 +188,21 @@
     [self addChild:body];
     
     _hasEaten = YES;
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)eatBulletTarget
 {
     if (_numberOfBulletTarget < MAX_BULLET_NUM)
         ++self.numberOfBulletTarget;
+    [_gameLayer updateShootButton];
     // update UI
     // play sound effect
 }
 
 - (void)shoot
 {
+    --self.numberOfBulletTarget;
     Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
     BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
     bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
@@ -206,6 +210,8 @@
     [bullet fire];
     
     [[SSConnectionManager sharedManager] sendMessage:@"shoot" forAction:ACTION_SHOOT];
+    
+    [_gameLayer updateShootButton];
 }
 
 - (void)finishShooting
@@ -233,6 +239,7 @@
         [_grids removeLastObject];
     }
     _hasLongBia = YES;
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)getShotAt:(Grid*)grid
@@ -247,6 +254,7 @@
             [_grids removeLastObject];
         }
     }
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 - (void)bullet:(BulletSprite *)bullet shootSnakeAt:(Grid *)grid
@@ -258,7 +266,7 @@
     [_gameLayer addChild:lightRing];
     
     id callback = [CCCallFuncND actionWithTarget:_gameLayer selector:@selector(removeChild:cleanup:) data:YES];
-    id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:1.5];
+    id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:3];
     id easeScaleAction = [CCEaseInOut actionWithAction:scaleAction rate:2];
     CCSequence *sequence = [CCSequence actions:easeScaleAction, callback, nil];
     [lightRing runAction:sequence];

@@ -40,7 +40,6 @@
 - (id)init
 {
     if ((self = [super init])) {
-        
         CGSize size = [[CCDirector sharedDirector] winSize];
         
         isTouchEnabled_ = YES;
@@ -60,7 +59,7 @@
         
         
         CCSprite *mapSprite = [CCSprite spriteWithFile:@"map.png"];
-        mapSprite.position = ccp(size.width / 2 - 50, size.height / 2 + 20);
+        mapSprite.position = ccp(size.width / 2 - 50, size.height / 2 - 40 );
         [self addChild:mapSprite];
         
         [[Const sharedConst] setMapStartingX:mapSprite.position.x - mapSprite.boundingBox.size.width / 2];
@@ -144,7 +143,7 @@
         if ([SSConnectionManager sharedManager].role == SERVER) {
             [self schedule:@selector(updateMapInfo:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
             [self schedule:@selector(sendSnakeInfoToClient:) interval:BASE_UPDATE_INTERVAL*5 repeat:kCCRepeatForever delay:0.0f];
-            //[self schedule:@selector(sendMapInfoToClinet:) interval:(BASE_UPDATE_INTERVAL)/10 repeat:kCCRepeatForever delay:0.0f];
+            [self schedule:@selector(sendMapInfoToClinet:) interval:(BASE_UPDATE_INTERVAL)/10 repeat:kCCRepeatForever delay:0.0f];
         }
 //        else{
 //            [self schedule:@selector(updateClientMap:) interval:BASE_UPDATE_INTERVAL repeat:kCCRepeatForever delay:0.0f];
@@ -247,15 +246,18 @@
     } else if ([action isEqualToString:ACTION_RESUME_GAME]) {
         [self resumeGame];
         
+    } else if ([action isEqualToString:ACTION_QUIT_GAME]) {
+        [self quitGame];
+        
     } else if ([action isEqualToString:ACTION_SEND_SERVER_SNAKE]) {
         NSMutableArray *otherSankeArray = [message objectFromJSONString];
         [_otherSnake updateSnakeInfo:otherSankeArray];
         
-    }else if ([action isEqualToString:ACTION_SEND_CLIENT_SNAKE]) {
+    } else if ([action isEqualToString:ACTION_SEND_CLIENT_SNAKE]) {
         NSMutableArray *mySnakeArray = [message objectFromJSONString];
         [_mySnake updateSnakeInfo:mySnakeArray];
         
-    }else if ([action isEqualToString:ACTION_SEND_MAP]){
+    } else if ([action isEqualToString:ACTION_SEND_MAP]){
         NSMutableArray *receivedArray = [message objectFromJSONString];
         //NSMutableArray *newMap = [SSMap arrayToMap:receivedArray];
         if ([SSConnectionManager sharedManager].role == CLIENT) {
@@ -331,6 +333,24 @@
 //    if ([SSConnectionManager sharedManager].role == SERVER || [SSConnectionManager sharedManager].role == NONE)
 //        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
 
+    [self createScoreLabels];
+}
+
+- (void)endGame
+{
+    [self unschedule:@selector(updateMySnakePosition:)];
+    NSString *message;
+    if (_mode == SINGLE_PLAYER) message = @"Yon Win!";
+    else if (_mySnake.length == WIN_SNAKE_LENGTH) message = @"You Win!";
+    else message = @"You Lost...";
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Finished!"
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK!"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)pauseGame
@@ -364,6 +384,33 @@
 
 
 #pragma mark - control UI methods
+
+- (void)createScoreLabels
+{
+    CGSize size = [CCDirector sharedDirector].winSize;
+    
+    if (_mode == SINGLE_PLAYER) {
+        CCLabelTTF *scoreLabel = [CCLabelTTF labelWithString:@"My Snake: 1" fontName:AmenaFontName fontSize:40];
+        scoreLabel.position = ccp(120, size.height - 60);
+        scoreLabel.color = ccc3(255, 255, 255);
+        [self addChild:scoreLabel];
+        _scoreLabels = [NSArray arrayWithObject:scoreLabel];
+        
+    } else {
+        CCLabelTTF *myScoreLabel = [CCLabelTTF labelWithString:@"My Snake: 1" fontName:AmenaFontName fontSize:40];
+        myScoreLabel.position = ccp(120, size.height - 60);
+        myScoreLabel.color = ccc3(255, 255, 255);
+        
+        CCLabelTTF *otherScoreLabel = [CCLabelTTF labelWithString:@"That Snake: 1" fontName:AmenaFontName fontSize:40];
+        otherScoreLabel.position = ccp(120, size.height - 60);
+        otherScoreLabel.color = ccc3(255, 255, 255);
+        
+        [self addChild:myScoreLabel];
+        [self addChild:otherScoreLabel];
+        
+        _scoreLabels = [NSArray arrayWithObjects:myScoreLabel, otherScoreLabel, nil];
+    }
+}
 
 - (void)createPauseMenu
 {
@@ -409,10 +456,11 @@
     CCMenuItem *quitBtn = [CCMenuItemFont itemWithString:@"Quit" block:^(id sender) {
         if (_mode == SINGLE_PLAYER) {
             [self quitGame];
-            
         } else {
             // TODO
             // should ask another player
+            [self quitGame];
+            [[SSConnectionManager sharedManager] sendMessage:@"" forAction:ACTION_QUIT_GAME];
         }
     }];
         
@@ -435,5 +483,22 @@
     }
 }
 
+- (void)updateScoreLabelForSnake:(SSSnake *)snake
+{
+    if (snake == _mySnake) {
+        ((CCLabelTTF *) _scoreLabels[0]).string = [NSString stringWithFormat:@"My Snake: %d", _mySnake.length];
+    } else {
+        ((CCLabelTTF *) _scoreLabels[1]).string = [NSString stringWithFormat:@"The Snake: %d", _otherSnake.length];
+    }
+    
+    if (_mySnake.length == WIN_SNAKE_LENGTH || _otherSnake.length == WIN_SNAKE_LENGTH) [self endGame];
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self quitGame];
+}
 
 @end

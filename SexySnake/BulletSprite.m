@@ -46,19 +46,21 @@
     if (nextGrid != nil) {
 
         Item itemInNextGrid =  [_map.mapInfo[nextGrid.row][nextGrid.col] intValue];
-
+        NSLog(@"nextgrid is %u", itemInNextGrid);
         if (itemInNextGrid == EMPTY) {
             
             for (Grid *g in _mySnake.grids) {
-                if ([g isEqual:nextGrid]) {
+                if ((g.row == nextGrid.row) && (g.col == nextGrid.col)) {
                     [self removeFromParentAndCleanup:YES];
                     if ([SSConnectionManager sharedManager].role == SERVER)
                         [_mySnake bullet:self shootSnakeAt:g];
                     return;
                 }
             }
+            NSLog(@"next grid : %@", nextGrid);
             for (Grid *g in _otherSnake.grids) {
-                if ([g isEqual:nextGrid]) {
+                NSLog(@"snake grid : %@", g);
+                if ((g.row == nextGrid.row) && (g.col == nextGrid.col)) {
                     [self removeFromParentAndCleanup:YES];
                     if ([SSConnectionManager sharedManager].role == SERVER)
                         [_otherSnake bullet:self shootSnakeAt:g];

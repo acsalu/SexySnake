@@ -15,6 +15,7 @@
 - (id)init
 {
     if ((self = [super init])) {
+        
         CGSize size = [[CCDirector sharedDirector] winSize];
         _startX = 20;
         _startY = size.height - 80;
@@ -247,7 +248,7 @@
             [_gameLayer addChild:lightRing];
             
             id callback = [CCCallFuncND actionWithTarget:_gameLayer selector:@selector(removeChild:cleanup:) data:YES];
-            id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:1.5];
+            id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:3];
             id easeScaleAction = [CCEaseInOut actionWithAction:scaleAction rate:2];
             CCSequence *sequence = [CCSequence actions:easeScaleAction, callback, nil];
             [lightRing runAction:sequence];
@@ -352,7 +353,7 @@
     
     for (int i=0; i<[arrayForMap count]; i++){
         NSMutableArray *array = [arrayForMap objectAtIndex:i];
-        //NSLog(@"array:%@",array);
+        NSLog(@"array:%@",array);
         if ([array[2] integerValue] == TARGET) {
             CCSprite *target = [CCSprite spriteWithFile:@"target.png"];
             [_targets addObject:target];
