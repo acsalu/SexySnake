@@ -22,6 +22,7 @@ extern NSString *const ACTION_RECEIVE_MAP;
 extern NSString *const ACTION_SEND_SERVER_SNAKE;
 extern NSString *const ACTION_SEND_CLIENT_SNAKE;
 extern NSString *const ACTION_RECEIVE_SNAKE_INFO;
+extern NSString *const ACTION_SHOOT;
 
 
 @class SSConnectionManager;

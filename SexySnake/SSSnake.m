@@ -219,15 +219,16 @@
 
 - (void)shoot
 {
-    if (self.numberOfBulletTarget > 0) {
-        --self.numberOfBulletTarget;
-        Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
-        BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
-        bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
-        [[self parent] addChild:bullet];
-        [bullet fire];
-        [_gameLayer updateShootButton];
-    }
+    --self.numberOfBulletTarget;
+    Grid *nextGrid = [Grid gridForDirection:_direction toGrid:_grids[0]];
+    BulletSprite *bullet = [BulletSprite bulletWithPositionInGrid:nextGrid andDirection:_direction];
+    bullet.delegate = (GameLayer<BulletSpriteDelegate> *)_gameLayer;
+    [[self parent] addChild:bullet];
+    [bullet fire];
+    
+    [[SSConnectionManager sharedManager] sendMessage:@"shoot" forAction:ACTION_SHOOT];
+    
+    [_gameLayer updateShootButton];
 }
 
 - (void)finishShooting
@@ -283,7 +284,7 @@
     [_gameLayer addChild:lightRing];
     
     id callback = [CCCallFuncND actionWithTarget:_gameLayer selector:@selector(removeChild:cleanup:) data:YES];
-    id scaleAction = [CCScaleTo actionWithDuration:0.2 scale:1.3];
+    id scaleAction = [CCScaleTo actionWithDuration:0.3 scale:3];
     id easeScaleAction = [CCEaseInOut actionWithAction:scaleAction rate:2];
     CCSequence *sequence = [CCSequence actions:easeScaleAction, callback, nil];
     [lightRing runAction:sequence];

@@ -14,6 +14,8 @@
 #import "Const.h"
 #import "BulletSprite.h"
 
+
+#import "SimpleAudioEngine.h"
 @class SSSnake;
 
 
