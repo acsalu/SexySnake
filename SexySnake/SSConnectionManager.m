@@ -28,6 +28,7 @@ NSString *const ACTION_SEND_CLIENT_SNAKE = @"SEND_CLIENT_SNAKE";
 NSString *const ACTION_RECEIVE_SNAKE_INFO = @"RECEIVE_SNAKE_INFO";
 
 NSString *const ACTION_SHOOT = @"SHOOT";
+NSString *const ACTION_BUILDWALL = @"BUILDWALL";
 
 //NSString *const ACTION_DECLARE_SERVER = @"DECLARE_SERVER";
 
@@ -75,7 +76,7 @@ NSString *const ACTION_SHOOT = @"SHOOT";
 {
     NSString *receivedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *dataInDictionary = [receivedString objectFromJSONString];
-    NSLog(@"%@", dataInDictionary);
+//    NSLog(@"%@", dataInDictionary);
     if ([dataInDictionary[JSONKeyAction] isEqualToString:ACTION_COINTOSS]) {
         // determine which device is server
         if ([gameUniqueID intValue] > [dataInDictionary[JSONKeyMessage] intValue]) {

@@ -67,7 +67,7 @@
                 
         // Configure motion manager
         _motionManager = [[CMMotionManager alloc] init];
-        _motionManager.deviceMotionUpdateInterval = 30.0 / 60.0;
+        _motionManager.deviceMotionUpdateInterval = 15.0 / 60.0;
         
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
@@ -89,7 +89,10 @@
         
         // setup counter
         _counter = 3;
-        [self schedule:@selector(countdown:) interval:1.0f];
+        
+        [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"countdown.mp3"];
+        [self schedule:@selector(countdown:) interval:1.0f repeat:4 delay:2.0f];
 //        [self startGame];
         
         _bigBullets = [NSMutableArray array];
@@ -196,15 +199,15 @@
     
     [_map updatePositionOfServerSnake:_mySnake.grids ClientSnake:_otherSnake.grids];
     
-    if (_mySnake.isShoot) {
-        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
-        [_mySnake finishShooting];
-    }
-    
-    if (_otherSnake.isShoot) {
-        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
-        [_otherSnake finishShooting];
-    }
+//    if (_mySnake.isShoot) {
+//        [_map snakeShootsAt:[[_mySnake grids] objectAtIndex:0] WithDireciton:_mySnake.direction];
+//        [_mySnake finishShooting];
+//    }
+//    
+//    if (_otherSnake.isShoot) {
+//        [_map snakeShootsAt:[[_otherSnake grids] objectAtIndex:0] WithDireciton:_otherSnake.direction];
+//        [_otherSnake finishShooting];
+//    }
     
     if (_mySnake.isBuilding) {
         //NSLog(@"mySnake builds");
@@ -259,7 +262,7 @@
         NSMutableArray *mySnakeArray = [message objectFromJSONString];
         [_mySnake updateSnakeInfo:mySnakeArray];
         
-    } else if ([action isEqualToString:ACTION_SEND_MAP]){
+    } else if ([action isEqualToString:ACTION_SEND_MAP]){ 
         NSMutableArray *receivedArray = [message objectFromJSONString];
         //NSMutableArray *newMap = [SSMap arrayToMap:receivedArray];
         if ([SSConnectionManager sharedManager].role == CLIENT) {
@@ -272,6 +275,8 @@
         bullet.delegate = self;
         [self addChild:bullet];
         [bullet fire];
+    } else if ([action isEqualToString:ACTION_BUILDWALL]) {
+        [_otherSnake buildWall];
     }
 }
 
@@ -280,6 +285,7 @@
 
 - (void)countdown:(ccTime)delta
 {
+    //[[SimpleAudioEngine sharedEngine] playEffect:@"countdown.mp3"];
     if (_counter < 0) {
         [self removeChild:_countdownSprite cleanup:YES];
         [self unschedule:@selector(countdown:)];
@@ -298,6 +304,8 @@
 
 - (void)startGame
 {
+    //[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+    //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"space_travel.mp3"];
     // Create local snake
     [self setupInfoExchange];
     
@@ -336,11 +344,12 @@
 //        [self schedule:@selector(updateMapInfo:) interval:0.1f repeat:kCCRepeatForever delay:0.0f];
 
     [self createScoreLabels];
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background.mp3"];
 }
 
 - (void)endGame
 {
-    [self unschedule:@selector(updateMySnakePosition:)];
+    [self unscheduleAllSelectors];
     NSString *message;
     if (_mode == SINGLE_PLAYER) message = @"Yon Win!";
     else if (_mySnake.length == WIN_SNAKE_LENGTH) message = @"You Win!";

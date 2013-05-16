@@ -38,7 +38,8 @@
 -(void) onEnter
 {
 	[super onEnter];
-
+ 
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"space_travel.mp3"];
 	// ask director for the window size
 	CGSize size = [[CCDirector sharedDirector] winSize];
 
