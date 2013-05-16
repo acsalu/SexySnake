@@ -456,9 +456,9 @@
     
     
     
-    CCMenu *shootMenu = [CCMenu menuWithItems:_shootItemDisabled, _shootItem, nil];
+    CCMenu *shootMenu = [CCMenu menuWithItems:_shootItem, nil];
     shootMenu.position = ccp(size.width - 70, 210);
-    CCMenu *wallMenu = [CCMenu  menuWithItems:_wallItemDisabled, _wallItem, nil];
+    CCMenu *wallMenu = [CCMenu  menuWithItems:_wallItem, nil];
     wallMenu.position = ccp(size.width - 70, 100);
 //    [weaponMenu alignItemsVerticallyWithPadding:20];
     [self addChild:shootMenu];
@@ -523,36 +523,46 @@
 - (void)updateShootButton
 {
     if (!_mySnake) {
-        _shootItem.visible = NO;
-        _shootItemDisabled.visible = YES;
+        _shootItem.isEnabled = NO;
         return;
     }
-    
-    if (_mySnake.numberOfBulletTarget == 0) {
-        _shootItem.visible = NO;
-        _shootItemDisabled.visible = YES;
+    if (_mySnake && _mySnake.numberOfBulletTarget > 0) {
+        _shootItem.isEnabled = YES;
     } else {
-        _shootItemDisabled.visible = NO;
-        _shootItem.visible = YES;
+        _shootItem.isEnabled = NO;
     }
-    
-    for (NSUInteger i = 0; i < MAX_BULLET_NUM; ++i) {
-        if (i >= _mySnake.numberOfBulletTarget) {
-            [_bigBullets[i][0] setVisible:NO];
-            [_bigBullets[i][1] setVisible:YES];
-        } else {
-            [_bigBullets[i][0] setVisible:YES];
-            [_bigBullets[i][1] setVisible:NO];
-        }
-    }
+//{
+//    if (!_mySnake) {
+//        _shootItem.visible = NO;
+////        _shootItemDisabled.visible = YES;
+//        return;
+//    }
+//    
+//    if (_mySnake.numberOfBulletTarget == 0) {
+//        _shootItem.visible = NO;
+////        _shootItemDisabled.visible = YES;
+//    } else {
+//        _shootItemDisabled.visible = NO;
+//        _shootItem.visible = YES;
+//    }
+//    
+//    for (NSUInteger i = 0; i < MAX_BULLET_NUM; ++i) {
+//        if (i >= _mySnake.numberOfBulletTarget) {
+//            ((CCSprite *) _bigBullets[i][0]).visible = NO;
+//            ((CCSprite *) _bigBullets[i][1]).visible = YES;
+//        } else {
+//            ((CCSprite *) _bigBullets[i][0]).visible = NO;
+//            ((CCSprite *) _bigBullets[i][1]).visible = YES;
+//        }
+//    }
 }
 
 - (void)updateScoreLabelForSnake:(SSSnake *)snake
 {
     if (snake == _mySnake) {
         ((CCLabelTTF *) _scoreLabels[0]).string = [NSString stringWithFormat:@"My Snake: %d", _mySnake.length];
-        _wallItem.visible = (_mySnake.length > 1);
-        _wallItemDisabled.visible = !_wallItem.visible;
+        _wallItem.isEnabled = (_mySnake.length > 1);
+//        _wallItemDisabled.visible = !_wallItem.visible;
     } else {
         ((CCLabelTTF *) _scoreLabels[1]).string = [NSString stringWithFormat:@"The Snake: %d", _otherSnake.length];
     }
