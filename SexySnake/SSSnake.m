@@ -319,6 +319,7 @@
         [last removeFromParentAndCleanup:YES];
         [_components removeLastObject];
     }
+    [_gameLayer updateScoreLabelForSnake:self];
 }
 
 @end
