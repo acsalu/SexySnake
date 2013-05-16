@@ -244,6 +244,10 @@
 {
     //After pressing building-wall button
     _isBuilding = YES;
+        
+    [self getBitAtIndex:[_grids count]-1];
+    if ([SSConnectionManager sharedManager].role == CLIENT)
+        [[SSConnectionManager sharedManager] sendMessage:@"buildwall" forAction:ACTION_BUILDWALL];
     
 }
 
@@ -308,7 +312,7 @@
 
 - (void)getBitAtIndex:(NSUInteger)index
 {
-    for (NSUInteger i = _grids.count - 1; i > index; --i) {
+    for (NSUInteger i = _grids.count - 1; i >= index; --i) {
         [_gameLayer.map wallIsBuiltAt:_grids[i]];
         [_grids removeLastObject];
         CCSprite *last = _components[i];
