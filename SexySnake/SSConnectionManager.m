@@ -76,7 +76,7 @@ NSString *const ACTION_BUILDWALL = @"BUILDWALL";
 {
     NSString *receivedString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary *dataInDictionary = [receivedString objectFromJSONString];
-    NSLog(@"%@", dataInDictionary);
+//    NSLog(@"%@", dataInDictionary);
     if ([dataInDictionary[JSONKeyAction] isEqualToString:ACTION_COINTOSS]) {
         // determine which device is server
         if ([gameUniqueID intValue] > [dataInDictionary[JSONKeyMessage] intValue]) {

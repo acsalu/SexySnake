@@ -240,7 +240,7 @@
 {
     NSString *action = dictionary[JSONKeyAction];
     NSString *message = dictionary[JSONKeyMessage];
-    CCLOG(@"Receive Message:[%@] %@", action, message);
+//    CCLOG(@"Receive Message:[%@] %@", action, message);
     
     if ([action isEqualToString:ACTION_CHANGE_DIRECTION]) {
         [_otherSnake setDirectionFromRemote:[message intValue]];
@@ -261,6 +261,7 @@
     } else if ([action isEqualToString:ACTION_SEND_CLIENT_SNAKE]) {
         NSMutableArray *mySnakeArray = [message objectFromJSONString];
         [_mySnake updateSnakeInfo:mySnakeArray];
+        [self updateShootButton];
         
     } else if ([action isEqualToString:ACTION_SEND_MAP]){ 
         NSMutableArray *receivedArray = [message objectFromJSONString];
