@@ -92,6 +92,8 @@
         [self schedule:@selector(countdown:) interval:1.0f];
 //        [self startGame];
         
+        _bigBullets = [NSMutableArray array];
+        
     }
     return self;
 }
@@ -402,7 +404,7 @@
         myScoreLabel.color = ccc3(255, 255, 255);
         
         CCLabelTTF *otherScoreLabel = [CCLabelTTF labelWithString:@"That Snake: 1" fontName:AmenaFontName fontSize:40];
-        otherScoreLabel.position = ccp(120, size.height - 60);
+        otherScoreLabel.position = ccp(240, size.height - 60);
         otherScoreLabel.color = ccc3(255, 255, 255);
         
         [self addChild:myScoreLabel];
@@ -435,7 +437,7 @@
     
     _wallItemDisabled = [CCMenuItemImage itemWithNormalImage:@"build-wall-button-disabled.png" selectedImage:@"build-wall-button-disabled.png"];
 
-    [self updateShootButton];
+ 
     [self updateScoreLabelForSnake:_mySnake];
     
     CCMenu *menu = [CCMenu menuWithItems:pauseItem, nil];
@@ -452,6 +454,19 @@
 //    [weaponMenu alignItemsVerticallyWithPadding:20];
     [self addChild:shootMenu];
     [self addChild:wallMenu];
+    
+    for (int i = 0; i < MAX_BULLET_NUM; ++i) {
+        CCSprite *normal = [CCSprite spriteWithFile:@"bullet-big.png"];
+        normal.position = ccp(size.width - 70, 290 + 30 * i);
+        CCSprite *disabled = [CCSprite spriteWithFile:@"bullet-big-disabled.png"];
+        disabled.position = ccp(size.width - 70, 290 + 30 * i);
+        [_bigBullets addObject:@[normal, disabled]];
+        [self addChild:normal];
+        [self addChild:disabled];
+    }
+    
+   [self updateShootButton];
+    
 }
 
 
@@ -460,7 +475,7 @@
     CGSize size = [CCDirector sharedDirector].winSize;
     
     _pauseLayer = [CCLayerColor layerWithColor:ccc4(100, 100, 100, 200)];
-    CCLabelTTF *pauseTitle = [CCLabelTTF labelWithString:@"Pause" fontName:@"Helvetica" fontSize:28];
+    CCLabelTTF *pauseTitle = [CCLabelTTF labelWithString:@"Pause" fontName:AmenaFontName fontSize:48];
     pauseTitle.color = ccc3(255, 255, 255);
     pauseTitle.position = ccp(size.width / 2, size.height - 100);
     [_pauseLayer addChild:pauseTitle];
@@ -491,18 +506,35 @@
     menu.position = ccp(size.width / 2, size.height / 2);
     
     [_pauseLayer addChild:menu];
+    
+
 
 }
 
 - (void)updateShootButton
 {
-
-    if (_mySnake && _mySnake.numberOfBulletTarget == 0) {
-        _shootItem.visible = YES;
-        _shootItemDisabled.visible = NO;
-    } else {
-        _shootItemDisabled.visible = YES;
+    if (!_mySnake) {
         _shootItem.visible = NO;
+        _shootItemDisabled.visible = YES;
+        return;
+    }
+    
+    if (_mySnake.numberOfBulletTarget == 0) {
+        _shootItem.visible = NO;
+        _shootItemDisabled.visible = YES;
+    } else {
+        _shootItemDisabled.visible = NO;
+        _shootItem.visible = YES;
+    }
+    
+    for (NSUInteger i = 0; i < MAX_BULLET_NUM; ++i) {
+        if (i >= _mySnake.numberOfBulletTarget) {
+            [_bigBullets[i][0] setVisible:NO];
+            [_bigBullets[i][1] setVisible:YES];
+        } else {
+            [_bigBullets[i][0] setVisible:YES];
+            [_bigBullets[i][1] setVisible:NO];
+        }
     }
 }
 
