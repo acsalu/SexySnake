@@ -207,19 +207,19 @@
 //        [_otherSnake finishShooting];
 //    }
     
-    if (_mySnake.isBuilding) {
-        //NSLog(@"mySnake builds");
-        NSMutableArray *grids = [_mySnake grids];
-        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
-        [_mySnake finishBuilding];
-    }
-    
-    if (_otherSnake.isBuilding) {
-        //NSLog(@"otherSnake builds");
-        NSMutableArray *grids = [_otherSnake grids];
-        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
-        [_otherSnake finishBuilding];
-    }
+//    if (_mySnake.isBuilding) {
+//        //NSLog(@"mySnake builds");
+//        NSMutableArray *grids = [_mySnake grids];
+//        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+//        [_mySnake finishBuilding];
+//    }
+//    
+//    if (_otherSnake.isBuilding) {
+//        //NSLog(@"otherSnake builds");
+//        NSMutableArray *grids = [_otherSnake grids];
+//        [_map wallIsBuiltAt:[grids objectAtIndex:[grids count]-1]];
+//        [_otherSnake finishBuilding];
+//    }
     
 //    [_map updatePositionOfBullet];
 }
