@@ -51,6 +51,8 @@
 @property (assign, nonatomic) BOOL startGenBulletTarget;
 @property (strong, nonatomic) NSArray *scoreLabels;
 
+@property (strong, nonatomic) NSMutableArray *bigBullets;
+
 
 // Update UI
 - (void)updateShootButton;
