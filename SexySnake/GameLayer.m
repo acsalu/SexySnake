@@ -413,7 +413,7 @@
         myScoreLabel.color = ccc3(255, 255, 255);
         
         CCLabelTTF *otherScoreLabel = [CCLabelTTF labelWithString:@"That Snake: 1" fontName:AmenaFontName fontSize:40];
-        otherScoreLabel.position = ccp(240, size.height - 60);
+        otherScoreLabel.position = ccp(500, size.height - 60);
         otherScoreLabel.color = ccc3(255, 255, 255);
         
         [self addChild:myScoreLabel];
